@@ -1,0 +1,38 @@
+.sticky-table{
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
+
+  .sticky-header{
+    position: fixed;
+    margin-top: -2px;
+    z-index: 2;
+    //transition: 0.2s;
+
+    .cell{
+      border-bottom: 2px solid #e5e5e5;
+    }
+  }
+  .sticky-column, .sticky-header{
+    background-color: #fff;
+    display: block;
+  }
+  .sticky-column{
+    position: absolute;
+    z-index: 1;
+    border-right: 2px solid #e5e5e5;
+
+    .cell:first-child{
+      padding: 0;
+    }
+  }
+
+  .sticky-table-x-wrapper, .sticky-table-y-wrapper{
+    width: 100%;
+    z-index: 0;
+    position: relative;
+  }
+  .sticky-table-x-wrapper{
+    overflow-x: scroll;
+  }
+}

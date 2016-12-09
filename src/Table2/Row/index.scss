@@ -1,0 +1,12 @@
+.trow{
+  display: table-row;
+
+  &.header{
+    .tcell{
+      font-weight: 600;
+      padding: 1.5rem 0.75rem;
+      padding-top: 0.5rem;
+      vertical-align: bottom;
+    }
+  }
+}
