@@ -9,14 +9,19 @@ body, a, input, select, textarea, h1, h2, h3{
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-weight: normal;
 }
-h1, h2, h3{
-  font-weight: 300;
+h2, h3{
+  font-weight: 400;
 }
 body, a, input, select, textarea{
   font-size: 0.8rem;
 }
 a{
   text-decoration: none;
+}
+h1{
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
+  font-weight: 300;
 }
 
 /* General */
@@ -33,12 +38,23 @@ a{
 }
 
 /* Custom Sticky Table Styles */
-
+.sticky-table{
+  white-space: nowrap;
+  border: 2px solid #e5e5e5;
+  margin-top: 2rem;
+}
+.sticky-table .cell{
+  padding: 0.5rem 0.75rem;
+}
+.sticky-table .row:not(:first-child) .cell{
+  border-bottom: 2px solid #e5e5e5;
+}
 
 /* Demo */
 .wrapper{
-  width: 90%;
-  max-width: 1000px;
+  padding: 0 5rem;
+  max-width: 50rem;
+  min-width: 30rem;
   margin: auto;
 }
 .header{
@@ -49,7 +65,8 @@ a{
   font-weight: 100;
 }
 .header .wrapper{
-  padding: 1rem 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .menu{

@@ -19,7 +19,7 @@ export default class Basic extends Component {
     }
 
     return (
-      <div style={{width: '500px', height: '300px'}}>
+      <div style={{width: '100%', height: '300px'}}>
         <StickyTable>
           {rows}
         </StickyTable>

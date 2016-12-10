@@ -17,6 +17,7 @@ export default class Demo extends Component {
           <div className="examples left">
             <div className="example" id="basic-example">
               <h1>Basic Example</h1>
+              <h3>Try resizing your browser and scrolling both vertically and horizontally</h3>
               <Basic />
             </div>
           </div>
