@@ -7,7 +7,8 @@
   },
   "dependencies": {
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "react-sticky-table": "file: ../react-sticky-table/"
   },
   "scripts": {
     "start": "react-scripts start",
