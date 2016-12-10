@@ -50,23 +50,38 @@ h1{
   border-bottom: 2px solid #e5e5e5;
 }
 
+/* Code samples */
+.codeSample pre{
+  border-radius: 3px;
+  font-size: 1rem;
+  margin-top: 2rem;
+  line-height: 1.4;
+  font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace;
+  padding: 1rem !important;
+}
+
 /* Demo */
 .wrapper{
   padding: 0 5rem;
   max-width: 50rem;
   min-width: 30rem;
+  width: calc(100% - 10rem);
   margin: auto;
 }
 .header{
-  background: linear-gradient(-10deg, #576d81, #6e98a9);
-  margin-bottom: 2rem;
-  color: #fff;
+  background: rgb(40, 44, 52)/*linear-gradient(-10deg, #576d81, #6e98a9)*/;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
   font-size: 2rem;
   font-weight: 100;
 }
 .header .wrapper{
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+.content{
+  padding-top: 6rem;
 }
 
 .menu{

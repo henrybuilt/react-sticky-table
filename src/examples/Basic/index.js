@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import { StickyTable, Row, Cell } from 'react-sticky-table';
 import 'react-sticky-table/dist/react-sticky-table.css';
 
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/styles';
+
 export default class Basic extends Component {
   render() {
     var rows = [];
@@ -18,11 +21,40 @@ export default class Basic extends Component {
       rows.push(<Row key={r}>{cells}</Row>);
     }
 
+    const codeString = '' +
+      "import React, { Component } from 'react';\n" +
+      "import { StickyTable, Row, Cell } from 'react-sticky-table';\n" +
+      "import 'react-sticky-table/dist/react-sticky-table.css';\n\n" +
+
+      'export default class BasicExample extends Component {\n' +
+      '  render() {\n' +
+      '    return (\n' +
+      "      <div style={{width: '100%', height: '200px'}}>\n" +
+      '        <StickyTable>\n' +
+      '          <Row>\n' +
+      '            <Cell>Header 1</Cell>\n' +
+      '            //Other header cells...\n' +
+      '          </Row>\n' +
+      '          <Row>\n' +
+      '            <Cell>Cell 1</Cell>\n' +
+      '            //Other body cells...\n' +
+      '          </Row>\n' +
+      '        </StickyTable>\n' +
+      '      </div>\n' +
+      '    );\n' +
+      '  }\n' +
+      '}\n';
+
     return (
-      <div style={{width: '100%', height: '300px'}}>
-        <StickyTable>
-          {rows}
-        </StickyTable>
+      <div>
+        <div style={{width: '100%', height: '200px'}}>
+          <StickyTable>
+            {rows}
+          </StickyTable>
+        </div>
+        <div className="codeSample">
+          <SyntaxHighlighter language='javascript' style={atomOneDark}>{codeString}</SyntaxHighlighter>
+        </div>
       </div>
     );
   }
