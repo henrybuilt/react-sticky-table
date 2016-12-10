@@ -7,18 +7,32 @@ import Table from './Table';
 import Row from './Row';
 import Cell from './Cell';
 
+/**
+ * StickyTable Component
+ * Responsive, dynamically sized fixed headers and columns for tables
+ * ------------------------------------------------------------------
+ * Intentionally not setting state because we don't want to require
+ * a full re-render every time the user scrolls or changes the
+ * width of a cell.
+ */
 class StickyTable extends Component {
   constructor(props) {
     super(props);
 
+    this.rowCount = 0;
+    this.columnCount = 0;
+
     this.onResize = this.onResize.bind(this);
     this.onColumnResize = this.onColumnResize.bind(this);
-    this.onScrollX = this.onScrollX.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount() {
     if (document.getElementById('sticky-table-x-wrapper')) {
-      document.getElementById('sticky-table-x-wrapper').addEventListener('scroll', this.onScrollX);
+      document.getElementById('sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
+    }
+    if (document.getElementById('sticky-table')) {
+      document.getElementById('sticky-table').addEventListener('scroll', this.onScroll);
     }
 
     if (document.getElementById('sticky-column')) {
@@ -36,16 +50,13 @@ class StickyTable extends Component {
     }
   }
 
-  onScrollX() {
-    var scrollLeft;
-
-    if (document.getElementById('sticky-table-x-wrapper')) {
-      scrollLeft = document.getElementById('sticky-table-x-wrapper').scrollLeft;
-
-      if (document.getElementById('sticky-header')) {
-        document.getElementById('sticky-header').style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0)';
-      }
-    }
+  onScroll() {
+    var scrollLeft = document.getElementById('sticky-table-x-wrapper').scrollLeft;
+    var scrollTop = document.getElementById('sticky-table').scrollTop;
+    console.log(scrollLeft, scrollTop);
+    document.getElementById('sticky-header').style.left = (-1 * scrollLeft) + 'px';
+    document.getElementById('sticky-header').style.top = scrollTop + 'px';
+    //document.getElementById('sticky-header').style.transform = 'translate(' + (-1 * scrollLeft) + ', ' + scrollTop + 'px)';
   }
 
   /**
@@ -83,8 +94,9 @@ class StickyTable extends Component {
   setRowHeights() {
     var r, rowToCopy, height;
 
-    for (r = 0; r < this.props.rowCount; r++) {
-      rowToCopy = document.getElementById('row-' + r);
+    for (r = 0; r < this.rowCount; r++) {
+      //rowToCopy = document.getElementById('row-' + r);
+      rowToCopy = document.getElementById('sticky-table-x-wrapper').firstChild.firstChild.childNodes[r];
 
       if (rowToCopy) {
         height = rowToCopy.clientHeight;
@@ -101,7 +113,7 @@ class StickyTable extends Component {
   setColumnWidths() {
     var c, cellToCopy, computedStyle, width, cell;
 
-    for (c = 0; c < this.props.columnCount; c++) {
+    for (c = 0; c < this.columnCount; c++) {
       cellToCopy = document.getElementById('header-cell-' + c);
 
       if (cellToCopy) {
@@ -125,18 +137,16 @@ class StickyTable extends Component {
     var cells;
     var stickyRows = [];
 
-    if (rows.length === this.props.rowCount) {
-      rows.forEach(proxy((row, r) => {
-        cells = row.props.children;
+    rows.forEach(proxy((row, r) => {
+      cells = row.props.children;
 
-        stickyRows.push(
-          <Row {...row.props} id='' key={r}>
-            <Cell id={'sticky-column-first-cell-' + r}/>
-            {cells[0]}
-          </Row>
-        );
-      }, this));
-    }
+      stickyRows.push(
+        <Row {...row.props} id='' key={r}>
+          <Cell id={'sticky-column-first-cell-' + r}/>
+          {cells[0]}
+        </Row>
+      );
+    }, this));
 
     return stickyRows;
   }
@@ -151,11 +161,9 @@ class StickyTable extends Component {
     var row = rows[0];
     var cells = [];
 
-    if (row.props.children.length === this.props.columnCount) {
-      row.props.children.forEach((cell, c) => {
-        cells.push(React.cloneElement(cell, {id: 'sticky-header-cell-' + c, style: {}}));
-      });
-    }
+    row.props.children.forEach((cell, c) => {
+      cells.push(React.cloneElement(cell, {id: 'sticky-header-cell-' + c, style: {}}));
+    });
 
     return (
       <Row {...row.props} id='sticky-header-row'>
@@ -171,13 +179,16 @@ class StickyTable extends Component {
     var rows = React.Children.toArray(this.props.children);
     var stickyColumn, stickyHeader;
 
+    this.rowCount = rows.length;
+    this.columnCount = rows[0].props.children.length;
+
     if (rows.length) {
       stickyColumn = this.getStickyColumn(rows);
       stickyHeader = this.getStickyHeader(rows);
     }
 
     return (
-      <div className={'sticky-table ' + (this.props.className || '')}>
+      <div className={'sticky-table ' + (this.props.className || '')} id='sticky-table'>
         <div className='sticky-header' id='sticky-header'>
           <Table>
             {stickyHeader}

@@ -102,9 +102,12 @@
 
       var _this = _possibleConstructorReturn(this, (StickyTable.__proto__ || Object.getPrototypeOf(StickyTable)).call(this, props));
 
+      _this.rowCount = 0;
+      _this.columnCount = 0;
+
       _this.onResize = _this.onResize.bind(_this);
       _this.onColumnResize = _this.onColumnResize.bind(_this);
-      _this.onScrollX = _this.onScrollX.bind(_this);
+      _this.onScroll = _this.onScroll.bind(_this);
       return _this;
     }
 
@@ -112,7 +115,10 @@
       key: 'componentDidMount',
       value: function componentDidMount() {
         if (document.getElementById('sticky-table-x-wrapper')) {
-          document.getElementById('sticky-table-x-wrapper').addEventListener('scroll', this.onScrollX);
+          document.getElementById('sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
+        }
+        if (document.getElementById('sticky-table')) {
+          document.getElementById('sticky-table').addEventListener('scroll', this.onScroll);
         }
 
         if (document.getElementById('sticky-column')) {
@@ -131,17 +137,14 @@
         }
       }
     }, {
-      key: 'onScrollX',
-      value: function onScrollX() {
-        var scrollLeft;
-
-        if (document.getElementById('sticky-table-x-wrapper')) {
-          scrollLeft = document.getElementById('sticky-table-x-wrapper').scrollLeft;
-
-          if (document.getElementById('sticky-header')) {
-            document.getElementById('sticky-header').style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
-          }
-        }
+      key: 'onScroll',
+      value: function onScroll() {
+        var scrollLeft = document.getElementById('sticky-table-x-wrapper').scrollLeft;
+        var scrollTop = document.getElementById('sticky-table').scrollTop;
+        console.log(scrollLeft, scrollTop);
+        document.getElementById('sticky-header').style.left = -1 * scrollLeft + 'px';
+        document.getElementById('sticky-header').style.top = scrollTop + 'px';
+        //document.getElementById('sticky-header').style.transform = 'translate(' + (-1 * scrollLeft) + ', ' + scrollTop + 'px)';
       }
     }, {
       key: 'onResize',
@@ -170,8 +173,9 @@
       value: function setRowHeights() {
         var r, rowToCopy, height;
 
-        for (r = 0; r < this.props.rowCount; r++) {
-          rowToCopy = document.getElementById('row-' + r);
+        for (r = 0; r < this.rowCount; r++) {
+          //rowToCopy = document.getElementById('row-' + r);
+          rowToCopy = document.getElementById('sticky-table-x-wrapper').firstChild.firstChild.childNodes[r];
 
           if (rowToCopy) {
             height = rowToCopy.clientHeight;
@@ -185,7 +189,7 @@
       value: function setColumnWidths() {
         var c, cellToCopy, computedStyle, width, cell;
 
-        for (c = 0; c < this.props.columnCount; c++) {
+        for (c = 0; c < this.columnCount; c++) {
           cellToCopy = document.getElementById('header-cell-' + c);
 
           if (cellToCopy) {
@@ -204,18 +208,16 @@
         var cells;
         var stickyRows = [];
 
-        if (rows.length === this.props.rowCount) {
-          rows.forEach(proxy(function (row, r) {
-            cells = row.props.children;
+        rows.forEach(proxy(function (row, r) {
+          cells = row.props.children;
 
-            stickyRows.push(_react2.default.createElement(
-              _Row2.default,
-              _extends({}, row.props, { id: '', key: r }),
-              _react2.default.createElement(_Cell2.default, { id: 'sticky-column-first-cell-' + r }),
-              cells[0]
-            ));
-          }, this));
-        }
+          stickyRows.push(_react2.default.createElement(
+            _Row2.default,
+            _extends({}, row.props, { id: '', key: r }),
+            _react2.default.createElement(_Cell2.default, { id: 'sticky-column-first-cell-' + r }),
+            cells[0]
+          ));
+        }, this));
 
         return stickyRows;
       }
@@ -225,11 +227,9 @@
         var row = rows[0];
         var cells = [];
 
-        if (row.props.children.length === this.props.columnCount) {
-          row.props.children.forEach(function (cell, c) {
-            cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, style: {} }));
-          });
-        }
+        row.props.children.forEach(function (cell, c) {
+          cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, style: {} }));
+        });
 
         return _react2.default.createElement(
           _Row2.default,
@@ -243,6 +243,9 @@
         var rows = _react2.default.Children.toArray(this.props.children);
         var stickyColumn, stickyHeader;
 
+        this.rowCount = rows.length;
+        this.columnCount = rows[0].props.children.length;
+
         if (rows.length) {
           stickyColumn = this.getStickyColumn(rows);
           stickyHeader = this.getStickyHeader(rows);
@@ -250,7 +253,7 @@
 
         return _react2.default.createElement(
           'div',
-          { className: 'sticky-table ' + (this.props.className || '') },
+          { className: 'sticky-table ' + (this.props.className || ''), id: 'sticky-table' },
           _react2.default.createElement(
             'div',
             { className: 'sticky-header', id: 'sticky-header' },
