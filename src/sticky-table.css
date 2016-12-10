@@ -21,9 +21,6 @@
   z-index: 1;
   border-right: 2px solid #e5e5e5;
 }
-.sticky-table .sticky-column .cell:first-child {
-  padding: 0 !important;
-}
 .sticky-table .sticky-table-x-wrapper, .sticky-table .sticky-table-y-wrapper {
   z-index: 0;
   position: relative;

@@ -151,13 +151,15 @@
     }, {
       key: 'onColumnResize',
       value: function onColumnResize() {
-        var column = this.table.querySelector('#sticky-column');
+        var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
         var cell = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.firstChild;
-        var width = this.getSizeWithoutBoxSizing(cell).width;;
+        var dims = this.getSizeWithoutBoxSizing(columnCell);
 
         if (cell) {
-          cell.style.width = width + 'px';
-          cell.style.minWidth = width + 'px';
+          cell.style.width = dims.width + 'px';
+          cell.style.minWidth = dims.width + 'px';
+          //cell.style.height = dims.height + 'px';
+          //cell.style.minHeight = dims.height + 'px';
         }
 
         this.onResize();
@@ -173,7 +175,7 @@
           if (cellToCopy) {
             height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-            this.table.querySelector('#sticky-column-first-cell-' + r).style.height = height + 'px';
+            this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
           }
         }
       }
@@ -206,7 +208,6 @@
           stickyRows.push(_react2.default.createElement(
             _Row2.default,
             _extends({}, row.props, { id: '', key: r }),
-            _react2.default.createElement(_Cell2.default, { id: 'sticky-column-first-cell-' + r }),
             cells[0]
           ));
         }, this));
@@ -240,9 +241,9 @@
       key: 'getSizeWithoutBoxSizing',
       value: function getSizeWithoutBoxSizing(node) {
         var nodeStyle = this.getStyle(node);
-        var width = node.clientWidth - parseFloat(nodeStyle.paddingLeft) - parseFloat(nodeStyle.paddingRight) - parseFloat(nodeStyle.borderLeftWidth) - parseFloat(nodeStyle.borderRightWidth);
+        var width = node.clientWidth - parseFloat(nodeStyle.paddingLeft) - parseFloat(nodeStyle.paddingRight);
 
-        var height = node.clientHeight - parseFloat(nodeStyle.paddingTop) - parseFloat(nodeStyle.paddingBottom) - parseFloat(nodeStyle.borderTopWidth) - parseFloat(nodeStyle.borderBottomWidth);
+        var height = node.clientHeight - parseFloat(nodeStyle.paddingTop) - parseFloat(nodeStyle.paddingBottom);
 
         return { width: width, height: height };
       }

@@ -69,13 +69,15 @@ class StickyTable extends Component {
    * @returns {null} no return necessary
    */
   onColumnResize() {
-    var column = this.table.querySelector('#sticky-column');
+    var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
     var cell = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.firstChild;
-    var width = this.getSizeWithoutBoxSizing(cell).width;;
-
+    var dims = this.getSizeWithoutBoxSizing(columnCell);
+    
     if (cell) {
-      cell.style.width = width + 'px';
-      cell.style.minWidth = width + 'px';
+      cell.style.width = dims.width + 'px';
+      cell.style.minWidth = dims.width + 'px';
+      //cell.style.height = dims.height + 'px';
+      //cell.style.minHeight = dims.height + 'px';
     }
 
     this.onResize();
@@ -94,7 +96,7 @@ class StickyTable extends Component {
       if (cellToCopy) {
         height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-        this.table.querySelector('#sticky-column-first-cell-' + r).style.height = height + 'px';
+        this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
       }
     }
   }
@@ -134,7 +136,6 @@ class StickyTable extends Component {
 
       stickyRows.push(
         <Row {...row.props} id='' key={r}>
-          <Cell id={'sticky-column-first-cell-' + r}/>
           {cells[0]}
         </Row>
       );
@@ -183,15 +184,11 @@ class StickyTable extends Component {
     var nodeStyle = this.getStyle(node);
     var width = node.clientWidth
       - parseFloat(nodeStyle.paddingLeft)
-      - parseFloat(nodeStyle.paddingRight)
-      - parseFloat(nodeStyle.borderLeftWidth)
-      - parseFloat(nodeStyle.borderRightWidth);
+      - parseFloat(nodeStyle.paddingRight);
 
     var height = node.clientHeight
       - parseFloat(nodeStyle.paddingTop)
-      - parseFloat(nodeStyle.paddingBottom)
-      - parseFloat(nodeStyle.borderTopWidth)
-      - parseFloat(nodeStyle.borderBottomWidth);
+      - parseFloat(nodeStyle.paddingBottom);
 
     return {width, height};
   }

@@ -8,14 +8,14 @@ Inspired by [fixed-data-table](https://github.com/facebook/fixed-data-table)'s l
 
 ### Features
 
-- Multiple (and optional) fixed columns & headers
+- Optional fixed columns & headers
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
 - Rows and columns resize as content resizes
-- Custom cells
+- Custom cells (just make sure your custom cell has `display: table-cell` set)
 - Supports `overflow: scroll` on both axes
 - Multiple tables per page
 
-Doesn't yet support: Client side sorting, IE <= 7.
+Doesn't yet support: Multiple columns/headers, Client side sorting, IE <= 7.
 
 ### Usage
