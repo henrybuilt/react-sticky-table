@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
 
-import { StickyTable, Row, Cell } from 'react-sticky-table';
-import 'react-sticky-table/dist/react-sticky-table.css';
+import Basic from '../examples/Basic';
+import './index.css';
 
 export default class Demo extends Component {
   render() {
-    var rows = [];
-    var cells;
-
-    for (var r = 0; r < 50; r++) {
-      cells = [];
-
-      for (var c = 0; c < 20; c++) {
-        cells.push(<Cell key={c}>{(r === 0 ? 'header ' : 'cell ') + c}</Cell>);
-      }
-
-      rows.push(<Row key={r}>{cells}</Row>);
-    }
-
     return (
-      <div style={{width: '500px', height: '300px'}}>
-        <StickyTable>
-          {rows}
-        </StickyTable>
+      <div>
+        <div className="header">
+          <div className="wrapper">Sticky Table</div>
+        </div>
+        <div className="wrapper clearfix">
+          <div className="menu left">
+            <a href="#basic-example">Basic Example</a>
+          </div>
+          <div className="examples left">
+            <div className="example" id="basic-example">
+              <h1>Basic Example</h1>
+              <Basic />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
