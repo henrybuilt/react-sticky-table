@@ -40,7 +40,6 @@ h1{
 /* Custom Sticky Table Styles */
 .sticky-table{
   white-space: nowrap;
-  border: 2px solid #e5e5e5;
   margin-top: 2rem;
 }
 .sticky-table .cell{
@@ -51,7 +50,7 @@ h1{
 }
 
 /* Code samples */
-.codeSample pre{
+.code-sample pre{
   border-radius: 3px;
   font-size: 1rem;
   margin-top: 2rem;
@@ -63,7 +62,7 @@ h1{
 /* Demo */
 .wrapper{
   padding: 0 5rem;
-  max-width: 50rem;
+  max-width: 60rem;
   min-width: 30rem;
   width: calc(100% - 10rem);
   margin: auto;
@@ -75,18 +74,19 @@ h1{
   z-index: 100;
   font-size: 2rem;
   font-weight: 100;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
 }
 .header .wrapper{
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
 .content{
-  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 .menu{
   width: 15%;
-  padding-top: 1.2rem;
+  padding-top: 7.2rem;
   position: fixed;
 }
 .menu a{
@@ -103,4 +103,7 @@ h1{
 .examples{
   width: 70%;
   padding-left: 30%;
+}
+.example{
+  padding-top: 6rem;
 }

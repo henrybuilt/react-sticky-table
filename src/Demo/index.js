@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Basic from '../examples/Basic';
+import ResizingCells from '../examples/ResizingCells';
 import './index.css';
 
 export default class Demo extends Component {
@@ -13,12 +14,18 @@ export default class Demo extends Component {
         <div className="content wrapper clearfix">
           <div className="menu left">
             <a href="#basic-example">Basic Example</a>
+            <a href="#resizing-cells-example">Dynamic Cell Sizes</a>
           </div>
           <div className="examples left">
             <div className="example" id="basic-example">
               <h1>Basic Example</h1>
-              <h3>Try resizing your browser and scrolling both vertically and horizontally</h3>
+              <h3>Try resizing your browser and scrolling both vertically and horizontally.</h3>
               <Basic />
+            </div>
+            <div className="example" id="resizing-cells-example">
+              <h1>Dynamic Cell Sizes</h1>
+              <h3>Try clicking on a cell.</h3>
+              <ResizingCells />
             </div>
           </div>
         </div>

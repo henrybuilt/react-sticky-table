@@ -6,7 +6,15 @@ import 'react-sticky-table/dist/react-sticky-table.css';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/styles';
 
-export default class Basic extends Component {
+import './index.css';
+
+export default class ResizingCells extends Component {
+  onCellClick(event) {
+    if (event.target.innerHTML.indexOf('Click Me!') !== -1) {
+      event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);
+    }
+  }
+
   render() {
     var rows = [];
     var cells;
@@ -15,29 +23,31 @@ export default class Basic extends Component {
       cells = [];
 
       for (var c = 0; c < 20; c++) {
-        cells.push(<Cell key={c}>{(r === 0 ? 'Header ' : 'Cell ') + c}</Cell>);
+        cells.push(<Cell key={c} onClick={this.onCellClick}>{(r === 0 || c === 0 ? '...' : 'Click Me!')}</Cell>);
       }
 
       rows.push(<Row key={r}>{cells}</Row>);
     }
 
     const codeString = '' +
-      "import React, { Component } from 'react';\n" +
-      "import { StickyTable, Row, Cell } from 'react-sticky-table';\n" +
-      "import 'react-sticky-table/dist/react-sticky-table.css';\n\n" +
-
-      'export default class BasicExample extends Component {\n' +
+      'export default class ResizingCellsExample extends Component {\n' +
+      '  onCellClick(event) {\n' +
+      "    if (event.target.innerHTML.indexOf('Click Me!') !== -1) {\n" +
+      "      event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);\n" +
+      '    }\n' +
+      '  }\n' +
+      '  \n' +
       '  render() {\n' +
       '    return (\n' +
       "      <div style={{width: '100%', height: '200px'}}>\n" +
       '        <StickyTable>\n' +
       '          <Row>\n' +
-      '            <Cell>Header 1</Cell>\n' +
+      '            <Cell>...</Cell>\n' +
       '            //Other header cells...\n' +
       '          </Row>\n' +
       '          <Row>\n' +
-      '            <Cell>Cell 1</Cell>\n' +
-      '            //Other body cells...\n' +
+      '            <Cell>...</Cell>\n' +
+      '            <Cell onClick={this.onCellClick}>Click Me!</Cell>\n' +
       '          </Row>\n' +
       '        </StickyTable>\n' +
       '      </div>\n' +
@@ -46,7 +56,7 @@ export default class Basic extends Component {
       '}\n';
 
     return (
-      <div>
+      <div className='resizing-cells'>
         <div style={{width: '100%', height: '200px'}}>
           <StickyTable>
             {rows}
