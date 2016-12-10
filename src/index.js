@@ -19,6 +19,8 @@ class StickyTable extends Component {
   constructor(props) {
     super(props);
 
+    this.id = Math.floor(Math.random() * 1000000000) + '';
+
     this.rowCount = 0;
     this.columnCount = 0;
 
@@ -28,35 +30,29 @@ class StickyTable extends Component {
   }
 
   componentDidMount() {
-    if (document.getElementById('sticky-table-x-wrapper')) {
-      document.getElementById('sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
-    }
-    if (document.getElementById('sticky-table')) {
-      document.getElementById('sticky-table').addEventListener('scroll', this.onScroll);
-    }
+    this.table = document.getElementById('sticky-table-' + this.id);
 
-    if (document.getElementById('sticky-column')) {
-      elementResizeEvent(document.getElementById('sticky-column'), this.onColumnResize);
-    }
+    if (this.table) {
+      this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
 
-    if (document.getElementById('sticky-table-x-wrapper')) {
-      elementResizeEvent(document.getElementById('sticky-table-x-wrapper').firstChild, this.onResize);
+      elementResizeEvent(this.table.querySelector('#sticky-column'), this.onColumnResize);
+      elementResizeEvent(this.table.querySelector('#sticky-table-x-wrapper').firstChild, this.onResize);
+
+      this.setRowHeights();
+      this.setColumnWidths();
     }
   }
 
   componentWillUnmount() {
-    if (document.getElementById('sticky-table-x-wrapper')) {
-      document.getElementById('sticky-table-x-wrapper').removeEventListener('scroll', this.handleScrollX);
+    if (this.table) {
+      this.table.querySelector('#sticky-table-x-wrapper').removeEventListener('scroll', this.handleScrollX);
     }
   }
 
   onScroll() {
-    var scrollLeft = document.getElementById('sticky-table-x-wrapper').scrollLeft;
-    var scrollTop = document.getElementById('sticky-table').scrollTop;
-    console.log(scrollLeft, scrollTop);
-    document.getElementById('sticky-header').style.left = (-1 * scrollLeft) + 'px';
-    document.getElementById('sticky-header').style.top = scrollTop + 'px';
-    //document.getElementById('sticky-header').style.transform = 'translate(' + (-1 * scrollLeft) + ', ' + scrollTop + 'px)';
+    var scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
+
+    this.table.querySelector('#sticky-header').style.left = (-1 * scrollLeft) + 'px';
   }
 
   /**
@@ -73,15 +69,13 @@ class StickyTable extends Component {
    * @returns {null} no return necessary
    */
   onColumnResize() {
-    var column = document.getElementById('sticky-column');
-    var cell = document.getElementById('sticky-table-x-wrapper').firstChild.firstChild.firstChild;
-    var computedStyle = getComputedStyle(cell);
-    var width = parseInt(column.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight), 10);
+    var column = this.table.querySelector('#sticky-column');
+    var cell = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.firstChild;
+    var width = this.getSizeWithoutBoxSizing(cell).width;;
 
     if (cell) {
       cell.style.width = width + 'px';
       cell.style.minWidth = width + 'px';
-      cell.style.backgroundColor = '#000';
     }
 
     this.onResize();
@@ -92,16 +86,15 @@ class StickyTable extends Component {
    * @returns {null} no return necessary
    */
   setRowHeights() {
-    var r, rowToCopy, height;
+    var r, cellToCopy, height;
 
     for (r = 0; r < this.rowCount; r++) {
-      //rowToCopy = document.getElementById('row-' + r);
-      rowToCopy = document.getElementById('sticky-table-x-wrapper').firstChild.firstChild.childNodes[r];
+      cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
 
-      if (rowToCopy) {
-        height = rowToCopy.clientHeight;
+      if (cellToCopy) {
+        height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-        document.getElementById('sticky-column-first-cell-' + r).style.height = height + 'px';
+        this.table.querySelector('#sticky-column-first-cell-' + r).style.height = height + 'px';
       }
     }
   }
@@ -111,15 +104,14 @@ class StickyTable extends Component {
    * @returns {null} no return necessary
    */
   setColumnWidths() {
-    var c, cellToCopy, computedStyle, width, cell;
+    var c, cellToCopy, cellStyle, width, cell;
 
     for (c = 0; c < this.columnCount; c++) {
-      cellToCopy = document.getElementById('header-cell-' + c);
+      cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
 
       if (cellToCopy) {
-        computedStyle = getComputedStyle(cellToCopy);
-        width = cellToCopy.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
-        cell = document.getElementById('sticky-header-cell-' + c);
+        width = this.getSizeWithoutBoxSizing(cellToCopy).width;
+        cell = this.table.querySelector('#sticky-header-cell-' + c);
 
         cell.style.width = width + 'px';
         cell.style.minWidth = width + 'px';
@@ -172,6 +164,39 @@ class StickyTable extends Component {
   }
 
   /**
+   * Fill for browsers that don't support getComputedStyle (*cough* I.E.)
+   * @param  {object} node dom object
+   * @return {object} style object
+   */
+  getStyle(node) {
+    var browserSupportsComputedStyle = typeof getComputedStyle !== 'undefined';
+
+    return browserSupportsComputedStyle ? getComputedStyle(node, null) : node.currentStyle;
+  }
+
+  /**
+   * Get innerWidth and innerHeight of elements
+   * @param  {object} node dom object
+   * @return {object} dimensions
+   */
+  getSizeWithoutBoxSizing(node) {
+    var nodeStyle = this.getStyle(node);
+    var width = node.clientWidth
+      - parseFloat(nodeStyle.paddingLeft)
+      - parseFloat(nodeStyle.paddingRight)
+      - parseFloat(nodeStyle.borderLeftWidth)
+      - parseFloat(nodeStyle.borderRightWidth);
+
+    var height = node.clientHeight
+      - parseFloat(nodeStyle.paddingTop)
+      - parseFloat(nodeStyle.paddingBottom)
+      - parseFloat(nodeStyle.borderTopWidth)
+      - parseFloat(nodeStyle.borderBottomWidth);
+
+    return {width, height};
+  }
+
+  /**
    * Get the column and header to render
    * @returns {null} no return necessary
    */
@@ -180,7 +205,7 @@ class StickyTable extends Component {
     var stickyColumn, stickyHeader;
 
     this.rowCount = rows.length;
-    this.columnCount = rows[0].props.children.length;
+    this.columnCount = (rows[0] && rows[0].props.children.length) || 0;
 
     if (rows.length) {
       stickyColumn = this.getStickyColumn(rows);
@@ -188,13 +213,13 @@ class StickyTable extends Component {
     }
 
     return (
-      <div className={'sticky-table ' + (this.props.className || '')} id='sticky-table'>
+      <div className={'sticky-table ' + (this.props.className || '')} id={'sticky-table-' + this.id}>
         <div className='sticky-header' id='sticky-header'>
           <Table>
             {stickyHeader}
           </Table>
         </div>
-        <div className='sticky-table-y-wrapper'>
+        <div className='sticky-table-y-wrapper' id='sticky-table-y-wrapper'>
           <div className='sticky-column' id='sticky-column'>
             <Table>
               {stickyColumn}

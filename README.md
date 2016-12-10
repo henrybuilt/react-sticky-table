@@ -14,3 +14,8 @@ Inspired by [fixed-data-table](https://github.com/facebook/fixed-data-table)'s l
 - Rows and columns resize as content resizes
 - Custom cells
 - Supports `overflow: scroll` on both axes
+- Multiple tables per page
+
+Doesn't yet support: Client side sorting, IE <= 7.
+
+### Usage

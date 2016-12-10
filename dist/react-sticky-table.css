@@ -10,7 +10,8 @@
 .sticky-table {
   position: relative;
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
+  border: 2px solid #e5e5e5;
 }
 .sticky-table .sticky-header {
   position: absolute;
@@ -30,13 +31,17 @@
   border-right: 2px solid #e5e5e5;
 }
 .sticky-table .sticky-column .cell:first-child {
-  padding: 0;
+  padding: 0 !important;
 }
 .sticky-table .sticky-table-x-wrapper, .sticky-table .sticky-table-y-wrapper {
-  width: 100%;
   z-index: 0;
   position: relative;
 }
 .sticky-table .sticky-table-x-wrapper {
+  width: 100%;
   overflow-x: scroll;
+}
+.sticky-table .sticky-table-y-wrapper {
+  height: 100%;
+  overflow-y: scroll;
 }
