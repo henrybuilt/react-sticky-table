@@ -1,8 +1,9 @@
 # Responsive and dynamically-sized fixed headers and columns for tables
 
-Inspired [fixed-data-table](https://github.com/facebook/fixed-data-table)'lack of responsiveness.
+Inspired by [fixed-data-table](https://github.com/facebook/fixed-data-table)'s lack of responsiveness.
 
-Features:
+### Features
+
 - Multiple (and optional) fixed columns & headers
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
