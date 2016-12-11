@@ -36,9 +36,9 @@
 }
 .sticky-table .sticky-table-x-wrapper {
   width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .sticky-table .sticky-table-y-wrapper {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }

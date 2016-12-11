@@ -162,13 +162,14 @@ class StickyTable extends Component {
     var cells = [];
 
     row.props.children.forEach((cell, c) => {
-      cells.push(React.cloneElement(cell, {id: 'sticky-header-cell-' + c, style: {}}));
+      cells.push(React.cloneElement(cell, {id: 'sticky-header-cell-' + c, key: c}));
     });
 
     return (
       <Row {...row.props} id='sticky-header-row'>
         {cells}
-      </Row>);
+      </Row>
+    );
   }
 
   /**
