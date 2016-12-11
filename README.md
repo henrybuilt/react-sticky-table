@@ -1,8 +1,6 @@
 # Sticky Table
 
-Responsive and dynamically-sized fixed headers and columns for tables.
-
-Inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/example-object-data.html)'s lack of responsiveness.
+Responsive and dynamically-sized fixed headers and columns for tables inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/example-object-data.html)'s lack of responsiveness.
 
 [Demo](https://we-flow.github.io/react-sticky-table/)
 
@@ -20,9 +18,11 @@ Doesn't yet support: Multiple columns/headers, client side sorting, or IE <= 7.
 
 ## Getting Started
 
-Install react-sticky-table using npm.
+Install `react-sticky-table` using npm.
 
-`npm install react-sticky-table --save`
+```
+npm install react-sticky-table --save
+```
 
 Add the default stylesheet `react-sticky-table/dist/react-sticky-table.css`, then import it into any module.
 
