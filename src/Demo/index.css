@@ -70,7 +70,7 @@ h1{
   margin: auto;
 }
 .header{
-  background: rgb(40, 44, 52)/*linear-gradient(-10deg, #576d81, #6e98a9)*/;
+  background: rgb(40, 44, 52);
   position: fixed;
   top: 0;
   left: 0;
