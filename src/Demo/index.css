@@ -45,7 +45,10 @@ h1{
 .sticky-table .cell{
   padding: 0.5rem 0.75rem;
 }
-.sticky-table .row:not(:first-child) .cell{
+.sticky-table .sticky-header{
+  margin-top: 0;
+}
+.sticky-table .sticky-table-y-wrapper .cell{
   border-bottom: 2px solid #e5e5e5;
 }
 
@@ -85,7 +88,7 @@ h1{
 }
 
 .menu{
-  width: 15%;
+  width: 18%;
   padding-top: 7.2rem;
   position: fixed;
 }
