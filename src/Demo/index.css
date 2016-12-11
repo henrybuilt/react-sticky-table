@@ -64,15 +64,16 @@ h1{
 
 /* Demo */
 .wrapper{
-  padding: 0 5rem;
+  padding: 0 2.5rem;
   max-width: 60rem;
-  min-width: 30rem;
-  width: calc(100% - 10rem);
+  width: calc(100% - 5rem);
   margin: auto;
 }
 .header{
   background: rgb(40, 44, 52)/*linear-gradient(-10deg, #576d81, #6e98a9)*/;
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   z-index: 100;
   font-size: 2rem;
@@ -109,4 +110,14 @@ h1{
 }
 .example{
   padding-top: 6rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .menu{
+    display: none;
+  }
+  .examples{
+    padding: 0;
+    width: 100%;
+  }
 }
