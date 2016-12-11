@@ -84,6 +84,15 @@ h1{
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+.header a{
+  font-size: 0.8rem;
+  display: block;
+  margin-top: 1rem;
+  color: #fff;
+}
+.header a:hover{
+  opacity: 0.8;
+}
 .content{
   padding-bottom: 6rem;
 }

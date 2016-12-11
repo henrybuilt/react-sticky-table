@@ -11,7 +11,12 @@ export default class Demo extends Component {
     return (
       <div>
         <div className="header">
-          <div className="wrapper"><span style={{color: 'rgb(224, 108, 117)'}}>S</span><span style={{color: 'rgb(97, 174, 238)'}}>t</span><span style={{color: 'rgb(152, 195, 121)'}}>i</span><span style={{color: 'rgb(198, 120, 221)'}}>c</span><span style={{color: 'rgb(152, 195, 121)'}}>k</span><span style={{color: 'rgb(209, 154, 102)'}}>y</span> <span style={{color: 'rgb(224, 108, 117)'}}>T</span><span style={{color: 'rgb(97, 174, 238)'}}>a</span><span style={{color: 'rgb(209, 154, 102)'}}>b</span><span style={{color: 'rgb(198, 120, 221)'}}>l</span><span style={{color: 'rgb(152, 195, 121)'}}>e</span></div>
+          <div className="wrapper clearfix">
+            <div className="left">
+              <span style={{color: 'rgb(224, 108, 117)'}}>S</span><span style={{color: 'rgb(97, 174, 238)'}}>t</span><span style={{color: 'rgb(152, 195, 121)'}}>i</span><span style={{color: 'rgb(198, 120, 221)'}}>c</span><span style={{color: 'rgb(152, 195, 121)'}}>k</span><span style={{color: 'rgb(209, 154, 102)'}}>y</span> <span style={{color: 'rgb(224, 108, 117)'}}>T</span><span style={{color: 'rgb(97, 174, 238)'}}>a</span><span style={{color: 'rgb(209, 154, 102)'}}>b</span><span style={{color: 'rgb(198, 120, 221)'}}>l</span><span style={{color: 'rgb(152, 195, 121)'}}>e</span>
+            </div>
+            <a className="right" href="https://github.com/we-flow/react-sticky-table">See me on Github</a>
+          </div>
         </div>
         <div className="content wrapper clearfix">
           <div className="menu left">
