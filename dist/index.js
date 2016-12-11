@@ -107,6 +107,9 @@
       _this.rowCount = 0;
       _this.columnCount = 0;
 
+      _this.stickyColumnCount = props.stickyColumnCount === 0 ? 0 : _this.stickyHeaderCount || 1;
+      _this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : _this.stickyHeaderCount || 1;
+
       _this.onResize = _this.onResize.bind(_this);
       _this.onColumnResize = _this.onColumnResize.bind(_this);
       _this.onScroll = _this.onScroll.bind(_this);
@@ -169,13 +172,15 @@
       value: function setRowHeights() {
         var r, cellToCopy, height;
 
-        for (r = 0; r < this.rowCount; r++) {
-          cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
+        if (this.stickyColumnCount) {
+          for (r = 0; r < this.rowCount; r++) {
+            cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
 
-          if (cellToCopy) {
-            height = this.getSizeWithoutBoxSizing(cellToCopy).height;
+            if (cellToCopy) {
+              height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-            this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
+              this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
+            }
           }
         }
       }
@@ -184,15 +189,17 @@
       value: function setColumnWidths() {
         var c, cellToCopy, cellStyle, width, cell;
 
-        for (c = 0; c < this.columnCount; c++) {
-          cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
+        if (this.stickyHeaderCount) {
+          for (c = 0; c < this.columnCount; c++) {
+            cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
 
-          if (cellToCopy) {
-            width = this.getSizeWithoutBoxSizing(cellToCopy).width;
-            cell = this.table.querySelector('#sticky-header-cell-' + c);
+            if (cellToCopy) {
+              width = this.getSizeWithoutBoxSizing(cellToCopy).width;
+              cell = this.table.querySelector('#sticky-header-cell-' + c);
 
-            cell.style.width = width + 'px';
-            cell.style.minWidth = width + 'px';
+              cell.style.width = width + 'px';
+              cell.style.minWidth = width + 'px';
+            }
           }
         }
       }
@@ -257,8 +264,12 @@
         this.columnCount = rows[0] && rows[0].props.children.length || 0;
 
         if (rows.length) {
-          stickyColumn = this.getStickyColumn(rows);
-          stickyHeader = this.getStickyHeader(rows);
+          if (this.stickyColumnCount > 0) {
+            stickyColumn = this.getStickyColumn(rows);
+          }
+          if (this.stickyHeaderCount > 0) {
+            stickyHeader = this.getStickyHeader(rows);
+          }
         }
 
         return _react2.default.createElement(

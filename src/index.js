@@ -24,6 +24,9 @@ class StickyTable extends Component {
     this.rowCount = 0;
     this.columnCount = 0;
 
+    this.stickyColumnCount = props.stickyColumnCount === 0 ? 0 : (this.stickyHeaderCount || 1);
+    this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : (this.stickyHeaderCount || 1);
+
     this.onResize = this.onResize.bind(this);
     this.onColumnResize = this.onColumnResize.bind(this);
     this.onScroll = this.onScroll.bind(this);
@@ -72,7 +75,7 @@ class StickyTable extends Component {
     var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
     var cell = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.firstChild;
     var dims = this.getSizeWithoutBoxSizing(columnCell);
-    
+
     if (cell) {
       cell.style.width = dims.width + 'px';
       cell.style.minWidth = dims.width + 'px';
@@ -90,13 +93,15 @@ class StickyTable extends Component {
   setRowHeights() {
     var r, cellToCopy, height;
 
-    for (r = 0; r < this.rowCount; r++) {
-      cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
+    if (this.stickyColumnCount) {
+      for (r = 0; r < this.rowCount; r++) {
+        cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
 
-      if (cellToCopy) {
-        height = this.getSizeWithoutBoxSizing(cellToCopy).height;
+        if (cellToCopy) {
+          height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-        this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
+          this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
+        }
       }
     }
   }
@@ -108,15 +113,17 @@ class StickyTable extends Component {
   setColumnWidths() {
     var c, cellToCopy, cellStyle, width, cell;
 
-    for (c = 0; c < this.columnCount; c++) {
-      cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
+    if (this.stickyHeaderCount) {
+      for (c = 0; c < this.columnCount; c++) {
+        cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
 
-      if (cellToCopy) {
-        width = this.getSizeWithoutBoxSizing(cellToCopy).width;
-        cell = this.table.querySelector('#sticky-header-cell-' + c);
+        if (cellToCopy) {
+          width = this.getSizeWithoutBoxSizing(cellToCopy).width;
+          cell = this.table.querySelector('#sticky-header-cell-' + c);
 
-        cell.style.width = width + 'px';
-        cell.style.minWidth = width + 'px';
+          cell.style.width = width + 'px';
+          cell.style.minWidth = width + 'px';
+        }
       }
     }
   }
@@ -205,8 +212,12 @@ class StickyTable extends Component {
     this.columnCount = (rows[0] && rows[0].props.children.length) || 0;
 
     if (rows.length) {
-      stickyColumn = this.getStickyColumn(rows);
-      stickyHeader = this.getStickyHeader(rows);
+      if (this.stickyColumnCount > 0) {
+        stickyColumn = this.getStickyColumn(rows);
+      }
+      if (this.stickyHeaderCount > 0) {
+        stickyHeader = this.getStickyHeader(rows);
+      }
     }
 
     return (
@@ -218,14 +229,10 @@ class StickyTable extends Component {
         </div>
         <div className='sticky-table-y-wrapper' id='sticky-table-y-wrapper'>
           <div className='sticky-column' id='sticky-column'>
-            <Table>
-              {stickyColumn}
-            </Table>
+            <Table>{stickyColumn}</Table>
           </div>
           <div className='sticky-table-x-wrapper' id='sticky-table-x-wrapper'>
-            <Table>
-              {rows}
-            </Table>
+            <Table>{rows}</Table>
           </div>
         </div>
       </div>

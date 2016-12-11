@@ -6,9 +6,9 @@ Inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/examp
 
 [Demo](https://we-flow.github.io/react-sticky-table/)
 
-### Features
+## Features
 
-- Optional fixed columns & headers
+- Optional fixed column & header
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
 - Rows and columns resize as content resizes
@@ -16,17 +16,17 @@ Inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/examp
 - Supports `overflow: scroll` on both axes
 - Multiple tables per page
 
-Doesn't yet support: Multiple columns/headers, Client side sorting, or IE <= 7.
+Doesn't yet support: Multiple columns/headers, client side sorting, or IE <= 7.
 
-### Getting Started
+## Getting Started
 
-Install fixed-data-table using npm.
+Install react-sticky-table using npm.
 
 `npm install react-sticky-table --save`
 
 Add the default stylesheet `react-sticky-table/dist/react-sticky-table.css`, then import it into any module.
 
-### Example
+## Example
 ```
 import React, { Component } from 'react';
 
@@ -55,7 +55,7 @@ export default class BasicExample extends Component {
 }
 ```
 
-### License
+## License
 
 (The MIT License)
 
