@@ -17,7 +17,7 @@ Doesn't yet support: Multiple columns/headers, client side sorting, or IE <= 7.
 
 ## Getting Started
 
-Install `react-sticky-table` using npm.
+Install `react-sticky-table` using `npm`.
 
 ```
 npm install react-sticky-table --save
