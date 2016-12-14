@@ -143,7 +143,7 @@
       value: function onScroll() {
         var scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
 
-        this.table.querySelector('#sticky-header').style.left = -1 * scrollLeft + 'px';
+        this.table.querySelector('#sticky-header').style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
       }
     }, {
       key: 'onResize',
@@ -228,7 +228,7 @@
         var cells = [];
 
         row.props.children.forEach(function (cell, c) {
-          cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, style: {} }));
+          cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, key: c }));
         });
 
         return _react2.default.createElement(

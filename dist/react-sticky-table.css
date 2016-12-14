@@ -20,6 +20,7 @@
 }
 .sticky-table .sticky-header .cell {
   border-bottom: 2px solid #e5e5e5;
+  transition: 0.2s;
 }
 .sticky-table .sticky-column, .sticky-table .sticky-header {
   background-color: #fff;

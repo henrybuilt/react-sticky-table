@@ -26,7 +26,7 @@ npm install react-sticky-table --save
 Add the default stylesheet `react-sticky-table/dist/react-sticky-table.css`, then import it into any module.
 
 ## Example
-```
+```javascript
 import React, { Component } from 'react';
 
 import { StickyTable, Row, Cell } from 'react-sticky-table';
@@ -52,6 +52,29 @@ export default class BasicExample extends Component {
     );
   }
 }
+```
+
+## Options
+
+Default settings:
+
+```javascript
+{
+  stickyHeaderCount: 1,
+  stickyColumnCount: 1
+}
+```
+
+Disable sticky header:
+
+```javascript
+<StickyTable stickyHeaderCount={0}>
+```
+
+Disable sticky column:
+
+```javascript
+<StickyTable stickyColumnCount={0}>
 ```
 
 ## License

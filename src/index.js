@@ -55,7 +55,7 @@ class StickyTable extends Component {
   onScroll() {
     var scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
 
-    this.table.querySelector('#sticky-header').style.left = (-1 * scrollLeft) + 'px';
+    this.table.querySelector('#sticky-header').style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0)';
   }
 
   /**
