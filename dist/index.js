@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'react', './Table', './Row', './Cell', 'nodeproxy', 'element-resize-event'], factory);
+    define(['exports', 'react', './Table', './Row', './Cell', 'underscore', 'nodeproxy', 'element-resize-event'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('react'), require('./Table'), require('./Row'), require('./Cell'), require('nodeproxy'), require('element-resize-event'));
+    factory(exports, require('react'), require('./Table'), require('./Row'), require('./Cell'), require('underscore'), require('nodeproxy'), require('element-resize-event'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.react, global.Table, global.Row, global.Cell, global.nodeproxy, global.elementResizeEvent);
+    factory(mod.exports, global.react, global.Table, global.Row, global.Cell, global.underscore, global.nodeproxy, global.elementResizeEvent);
     global.index = mod.exports;
   }
-})(this, function (exports, _react, _Table, _Row, _Cell, proxy, elementResizeEvent) {
+})(this, function (exports, _react, _Table, _Row, _Cell, _, proxy, elementResizeEvent) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -112,7 +112,9 @@
 
       _this.onResize = _this.onResize.bind(_this);
       _this.onColumnResize = _this.onColumnResize.bind(_this);
-      _this.onScroll = _this.onScroll.bind(_this);
+      _this.onScrollX = _this.onScrollX.bind(_this);
+      _this.scrollXScrollbar = _.debounce(_this.scrollXScrollbar.bind(_this), 100);
+      _this.scrollYScrollbar = _.debounce(_this.scrollYScrollbar.bind(_this), 100);
       return _this;
     }
 
@@ -123,10 +125,16 @@
 
         if (this.table) {
           this.realTable = this.table.querySelector('#sticky-table-x-wrapper').firstChild;
+          this.xScrollbar = this.table.querySelector('#x-scrollbar');
+          this.yScrollbar = this.table.querySelector('#y-scrollbar');
+          this.xWrapper = this.table.querySelector('#sticky-table-x-wrapper');
+          this.yWrapper = this.table.querySelector('#sticky-table-y-wrapper');
+          this.stickyHeader = this.table.querySelector('#sticky-header');
+          this.stickyColumn = this.table.querySelector('#sticky-column');
 
-          this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
+          this.xWrapper.addEventListener('scroll', this.onScrollX);
 
-          elementResizeEvent(this.table.querySelector('#sticky-column'), this.onColumnResize);
+          elementResizeEvent(this.stickyColumn, this.onColumnResize);
           elementResizeEvent(this.realTable, this.onResize);
 
           this.onResize();
@@ -137,7 +145,7 @@
       key: 'componentWillUnmount',
       value: function componentWillUnmount() {
         if (this.table) {
-          this.table.querySelector('#sticky-table-x-wrapper').removeEventListener('scroll', this.handleScrollX);
+          this.xWrapper.removeEventListener('scroll', this.onScrollX);
         }
       }
     }, {
@@ -145,29 +153,36 @@
       value: function addScrollBarEventHandlers() {
         var _this2 = this;
 
-        //X scrollbars
-        this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', function () {
-          _this2.table.querySelector('#x-scrollbar').scrollLeft = _this2.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
-        });
-        this.table.querySelector('#x-scrollbar').addEventListener('scroll', function () {
-          _this2.table.querySelector('#sticky-table-x-wrapper').scrollLeft = _this2.table.querySelector('#x-scrollbar').scrollLeft;
-          _this2.onScroll();
-        });
+        //X Scrollbars
+        this.xScrollbar.addEventListener('scroll', proxy(function () {
+          _this2.xWrapper.scrollLeft = _this2.xScrollbar.scrollLeft;
+        }, this));
 
         //Y Scrollbars
-        this.table.querySelector('#sticky-table-y-wrapper').addEventListener('scroll', function () {
-          _this2.table.querySelector('#y-scrollbar').scrollTop = _this2.table.querySelector('#sticky-table-y-wrapper').scrollTop;
-        });
-        this.table.querySelector('#y-scrollbar').addEventListener('scroll', function () {
-          _this2.table.querySelector('#sticky-table-y-wrapper').scrollTop = _this2.table.querySelector('#y-scrollbar').scrollTop;
-        });
+        this.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
+        this.yScrollbar.addEventListener('scroll', proxy(function () {
+          _this2.yWrapper.scrollTop = _this2.yScrollbar.scrollTop;
+        }, this));
       }
     }, {
-      key: 'onScroll',
-      value: function onScroll() {
-        var scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
+      key: 'onScrollX',
+      value: function onScrollX() {
+        //Sticky header
+        var scrollLeft = this.xWrapper.scrollLeft;
+        this.stickyHeader.style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
 
-        this.table.querySelector('#sticky-header').style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
+        //Custom Scrollbar
+        this.scrollXScrollbar();
+      }
+    }, {
+      key: 'scrollXScrollbar',
+      value: function scrollXScrollbar() {
+        this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft;
+      }
+    }, {
+      key: 'scrollYScrollbar',
+      value: function scrollYScrollbar() {
+        this.yScrollbar.scrollTop = this.yWrapper.scrollTop;
       }
     }, {
       key: 'onResize',
@@ -185,7 +200,7 @@
     }, {
       key: 'onColumnResize',
       value: function onColumnResize() {
-        var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
+        var columnCell = this.stickyColumn.firstChild.firstChild.childNodes[0];
         var cell = this.realTable.firstChild.firstChild;
         var dims = this.getSizeWithoutBoxSizing(columnCell);
 
@@ -210,7 +225,7 @@
             if (cellToCopy) {
               height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-              this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
+              this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
             }
           }
         }

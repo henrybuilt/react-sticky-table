@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
+var _ = require('underscore');
 var proxy = require('nodeproxy');
 var elementResizeEvent = require('element-resize-event');
 
@@ -29,7 +30,9 @@ class StickyTable extends Component {
 
     this.onResize = this.onResize.bind(this);
     this.onColumnResize = this.onColumnResize.bind(this);
-    this.onScroll = this.onScroll.bind(this);
+    this.onScrollX = this.onScrollX.bind(this);
+    this.scrollXScrollbar = _.debounce(this.scrollXScrollbar.bind(this), 100);
+    this.scrollYScrollbar = _.debounce(this.scrollYScrollbar.bind(this), 100);
   }
 
   componentDidMount() {
@@ -37,10 +40,16 @@ class StickyTable extends Component {
 
     if (this.table) {
       this.realTable = this.table.querySelector('#sticky-table-x-wrapper').firstChild;
+      this.xScrollbar = this.table.querySelector('#x-scrollbar');
+      this.yScrollbar = this.table.querySelector('#y-scrollbar');
+      this.xWrapper = this.table.querySelector('#sticky-table-x-wrapper');
+      this.yWrapper = this.table.querySelector('#sticky-table-y-wrapper');
+      this.stickyHeader = this.table.querySelector('#sticky-header');
+      this.stickyColumn = this.table.querySelector('#sticky-column');
 
-      this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
+      this.xWrapper.addEventListener('scroll', this.onScrollX);
 
-      elementResizeEvent(this.table.querySelector('#sticky-column'), this.onColumnResize);
+      elementResizeEvent(this.stickyColumn, this.onColumnResize);
       elementResizeEvent(this.realTable, this.onResize);
 
       this.onResize();
@@ -50,7 +59,7 @@ class StickyTable extends Component {
 
   componentWillUnmount() {
     if (this.table) {
-      this.table.querySelector('#sticky-table-x-wrapper').removeEventListener('scroll', this.handleScrollX);
+      this.xWrapper.removeEventListener('scroll', this.onScrollX);
     }
   }
 
@@ -59,28 +68,32 @@ class StickyTable extends Component {
    * @returns {null} no return necessary
    */
   addScrollBarEventHandlers() {
-    //X scrollbars
-    this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', () => {
-      this.table.querySelector('#x-scrollbar').scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
-    });
-    this.table.querySelector('#x-scrollbar').addEventListener('scroll', () => {
-      this.table.querySelector('#sticky-table-x-wrapper').scrollLeft = this.table.querySelector('#x-scrollbar').scrollLeft;
-      this.onScroll();
-    });
+    //X Scrollbars
+    this.xScrollbar.addEventListener('scroll', proxy(() => {
+      this.xWrapper.scrollLeft = this.xScrollbar.scrollLeft;
+    }, this));
 
     //Y Scrollbars
-    this.table.querySelector('#sticky-table-y-wrapper').addEventListener('scroll', () => {
-      this.table.querySelector('#y-scrollbar').scrollTop = this.table.querySelector('#sticky-table-y-wrapper').scrollTop;
-    });
-    this.table.querySelector('#y-scrollbar').addEventListener('scroll', () => {
-      this.table.querySelector('#sticky-table-y-wrapper').scrollTop = this.table.querySelector('#y-scrollbar').scrollTop;
-    });
+    this.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
+    this.yScrollbar.addEventListener('scroll', proxy(() => {
+      this.yWrapper.scrollTop = this.yScrollbar.scrollTop;
+    }, this));
   }
 
-  onScroll() {
-    var scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
+  onScrollX() {
+    //Sticky header
+    var scrollLeft = this.xWrapper.scrollLeft;
+    this.stickyHeader.style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0)';
 
-    this.table.querySelector('#sticky-header').style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0)';
+    //Custom Scrollbar
+    this.scrollXScrollbar();
+  }
+
+  scrollXScrollbar() {
+    this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft
+  }
+  scrollYScrollbar() {
+    this.yScrollbar.scrollTop = this.yWrapper.scrollTop
   }
 
   /**
@@ -103,7 +116,7 @@ class StickyTable extends Component {
    * @returns {null} no return necessary
    */
   onColumnResize() {
-    var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
+    var columnCell = this.stickyColumn.firstChild.firstChild.childNodes[0];
     var cell = this.realTable.firstChild.firstChild;
     var dims = this.getSizeWithoutBoxSizing(columnCell);
 
@@ -131,7 +144,7 @@ class StickyTable extends Component {
         if (cellToCopy) {
           height = this.getSizeWithoutBoxSizing(cellToCopy).height;
 
-          this.table.querySelector('#sticky-column').firstChild.childNodes[r].firstChild.style.height = height + 'px';
+          this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
         }
       }
     }
