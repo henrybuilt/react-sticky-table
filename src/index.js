@@ -36,13 +36,15 @@ class StickyTable extends Component {
     this.table = document.getElementById('sticky-table-' + this.id);
 
     if (this.table) {
+      this.realTable = this.table.querySelector('#sticky-table-x-wrapper').firstChild;
+
       this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
 
       elementResizeEvent(this.table.querySelector('#sticky-column'), this.onColumnResize);
-      elementResizeEvent(this.table.querySelector('#sticky-table-x-wrapper').firstChild, this.onResize);
+      elementResizeEvent(this.realTable, this.onResize);
 
-      this.setRowHeights();
-      this.setColumnWidths();
+      this.onResize();
+      this.addScrollBarEventHandlers();
     }
   }
 
@@ -50,6 +52,29 @@ class StickyTable extends Component {
     if (this.table) {
       this.table.querySelector('#sticky-table-x-wrapper').removeEventListener('scroll', this.handleScrollX);
     }
+  }
+
+  /**
+   * Link scrolling on either axis to scrolling in the scrollbar elements
+   * @returns {null} no return necessary
+   */
+  addScrollBarEventHandlers() {
+    //X scrollbars
+    this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', () => {
+      this.table.querySelector('#x-scrollbar').scrollLeft = this.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
+    });
+    this.table.querySelector('#x-scrollbar').addEventListener('scroll', () => {
+      this.table.querySelector('#sticky-table-x-wrapper').scrollLeft = this.table.querySelector('#x-scrollbar').scrollLeft;
+      this.onScroll();
+    });
+
+    //Y Scrollbars
+    this.table.querySelector('#sticky-table-y-wrapper').addEventListener('scroll', () => {
+      this.table.querySelector('#y-scrollbar').scrollTop = this.table.querySelector('#sticky-table-y-wrapper').scrollTop;
+    });
+    this.table.querySelector('#y-scrollbar').addEventListener('scroll', () => {
+      this.table.querySelector('#sticky-table-y-wrapper').scrollTop = this.table.querySelector('#y-scrollbar').scrollTop;
+    });
   }
 
   onScroll() {
@@ -65,6 +90,12 @@ class StickyTable extends Component {
   onResize() {
     this.setRowHeights();
     this.setColumnWidths();
+    this.setScrollBarDims();
+  }
+
+  setScrollBarDims() {
+    this.table.querySelector('#x-scrollbar div').style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width + 'px';
+    this.table.querySelector('#y-scrollbar div').style.height = this.getSizeWithoutBoxSizing(this.realTable).height + 'px';
   }
 
   /**
@@ -73,7 +104,7 @@ class StickyTable extends Component {
    */
   onColumnResize() {
     var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
-    var cell = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.firstChild;
+    var cell = this.realTable.firstChild.firstChild;
     var dims = this.getSizeWithoutBoxSizing(columnCell);
 
     if (cell) {
@@ -95,7 +126,7 @@ class StickyTable extends Component {
 
     if (this.stickyColumnCount) {
       for (r = 0; r < this.rowCount; r++) {
-        cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
+        cellToCopy = this.realTable.childNodes[r].firstChild;
 
         if (cellToCopy) {
           height = this.getSizeWithoutBoxSizing(cellToCopy).height;
@@ -115,7 +146,7 @@ class StickyTable extends Component {
 
     if (this.stickyHeaderCount) {
       for (c = 0; c < this.columnCount; c++) {
-        cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
+        cellToCopy = this.realTable.firstChild.childNodes[c];
 
         if (cellToCopy) {
           width = this.getSizeWithoutBoxSizing(cellToCopy).width;
@@ -223,10 +254,10 @@ class StickyTable extends Component {
 
     return (
       <div className={'sticky-table ' + (this.props.className || '')} id={'sticky-table-' + this.id}>
+        <div id='x-scrollbar'><div></div></div>
+        <div id='y-scrollbar'><div></div></div>
         <div className='sticky-header' id='sticky-header'>
-          <Table>
-            {stickyHeader}
-          </Table>
+          <Table>{stickyHeader}</Table>
         </div>
         <div className='sticky-table-y-wrapper' id='sticky-table-y-wrapper'>
           <div className='sticky-column' id='sticky-column'>

@@ -122,13 +122,15 @@
         this.table = document.getElementById('sticky-table-' + this.id);
 
         if (this.table) {
+          this.realTable = this.table.querySelector('#sticky-table-x-wrapper').firstChild;
+
           this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', this.onScroll);
 
           elementResizeEvent(this.table.querySelector('#sticky-column'), this.onColumnResize);
-          elementResizeEvent(this.table.querySelector('#sticky-table-x-wrapper').firstChild, this.onResize);
+          elementResizeEvent(this.realTable, this.onResize);
 
-          this.setRowHeights();
-          this.setColumnWidths();
+          this.onResize();
+          this.addScrollBarEventHandlers();
         }
       }
     }, {
@@ -137,6 +139,28 @@
         if (this.table) {
           this.table.querySelector('#sticky-table-x-wrapper').removeEventListener('scroll', this.handleScrollX);
         }
+      }
+    }, {
+      key: 'addScrollBarEventHandlers',
+      value: function addScrollBarEventHandlers() {
+        var _this2 = this;
+
+        //X scrollbars
+        this.table.querySelector('#sticky-table-x-wrapper').addEventListener('scroll', function () {
+          _this2.table.querySelector('#x-scrollbar').scrollLeft = _this2.table.querySelector('#sticky-table-x-wrapper').scrollLeft;
+        });
+        this.table.querySelector('#x-scrollbar').addEventListener('scroll', function () {
+          _this2.table.querySelector('#sticky-table-x-wrapper').scrollLeft = _this2.table.querySelector('#x-scrollbar').scrollLeft;
+          _this2.onScroll();
+        });
+
+        //Y Scrollbars
+        this.table.querySelector('#sticky-table-y-wrapper').addEventListener('scroll', function () {
+          _this2.table.querySelector('#y-scrollbar').scrollTop = _this2.table.querySelector('#sticky-table-y-wrapper').scrollTop;
+        });
+        this.table.querySelector('#y-scrollbar').addEventListener('scroll', function () {
+          _this2.table.querySelector('#sticky-table-y-wrapper').scrollTop = _this2.table.querySelector('#y-scrollbar').scrollTop;
+        });
       }
     }, {
       key: 'onScroll',
@@ -150,12 +174,19 @@
       value: function onResize() {
         this.setRowHeights();
         this.setColumnWidths();
+        this.setScrollBarDims();
+      }
+    }, {
+      key: 'setScrollBarDims',
+      value: function setScrollBarDims() {
+        this.table.querySelector('#x-scrollbar div').style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width + 'px';
+        this.table.querySelector('#y-scrollbar div').style.height = this.getSizeWithoutBoxSizing(this.realTable).height + 'px';
       }
     }, {
       key: 'onColumnResize',
       value: function onColumnResize() {
         var columnCell = this.table.querySelector('#sticky-column').firstChild.firstChild.childNodes[0];
-        var cell = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.firstChild;
+        var cell = this.realTable.firstChild.firstChild;
         var dims = this.getSizeWithoutBoxSizing(columnCell);
 
         if (cell) {
@@ -174,7 +205,7 @@
 
         if (this.stickyColumnCount) {
           for (r = 0; r < this.rowCount; r++) {
-            cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.childNodes[r].firstChild;
+            cellToCopy = this.realTable.childNodes[r].firstChild;
 
             if (cellToCopy) {
               height = this.getSizeWithoutBoxSizing(cellToCopy).height;
@@ -191,7 +222,7 @@
 
         if (this.stickyHeaderCount) {
           for (c = 0; c < this.columnCount; c++) {
-            cellToCopy = this.table.querySelector('#sticky-table-x-wrapper').firstChild.firstChild.childNodes[c];
+            cellToCopy = this.realTable.firstChild.childNodes[c];
 
             if (cellToCopy) {
               width = this.getSizeWithoutBoxSizing(cellToCopy).width;
@@ -275,6 +306,16 @@
         return _react2.default.createElement(
           'div',
           { className: 'sticky-table ' + (this.props.className || ''), id: 'sticky-table-' + this.id },
+          _react2.default.createElement(
+            'div',
+            { id: 'x-scrollbar' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { id: 'y-scrollbar' },
+            _react2.default.createElement('div', null)
+          ),
           _react2.default.createElement(
             'div',
             { className: 'sticky-header', id: 'sticky-header' },

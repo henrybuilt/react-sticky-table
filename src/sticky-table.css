@@ -34,3 +34,32 @@
   height: 100%;
   overflow-y: auto;
 }
+
+/* Scrollbars */
+.sticky-table-y-wrapper::-webkit-scrollbar, .sticky-table-x-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.sticky-table #x-scrollbar, .sticky-table #y-scrollbar {
+  position: absolute;
+  background-color: transparent;
+  z-index: 5;
+  overflow: auto;
+}
+.sticky-table #x-scrollbar {
+  left: 0px;
+  bottom: 0px;
+  height: 20px;
+  width: 100%;
+}
+.sticky-table #y-scrollbar {
+  right: 0px;
+  top: 0px;
+  height: 100%;
+  width: 20px;
+}
+.sticky-table #x-scrollbar div {
+  height: 100%;
+}
+.sticky-table #y-scrollbar div {
+  width: 100%;
+}
