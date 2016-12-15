@@ -107,6 +107,8 @@
       _this.rowCount = 0;
       _this.columnCount = 0;
 
+      _this.suppressScroll = false;
+
       _this.stickyColumnCount = props.stickyColumnCount === 0 ? 0 : _this.stickyHeaderCount || 1;
       _this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : _this.stickyHeaderCount || 1;
 
@@ -156,35 +158,54 @@
         var _this2 = this;
 
         //X Scrollbars
+        this.xWrapper.addEventListener('scroll', this.scrollXScrollbar);
         this.xScrollbar.addEventListener('scroll', proxy(function () {
-          _this2.xWrapper.scrollLeft = _this2.xScrollbar.scrollLeft;
+          console.log('xScrollbar event', _this2.suppressScroll);
+          if (!_this2.suppressScroll) {
+            _this2.xWrapper.scrollLeft = _this2.xScrollbar.scrollLeft;
+            _this2.suppressScroll = true;
+          } else {
+            _this2.suppressScroll = false;
+          }
         }, this));
 
         //Y Scrollbars
         this.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
         this.yScrollbar.addEventListener('scroll', proxy(function () {
-          _this2.yWrapper.scrollTop = _this2.yScrollbar.scrollTop;
+          if (!_this2.suppressScroll) {
+            _this2.yWrapper.scrollTop = _this2.yScrollbar.scrollTop;
+            _this2.suppressScroll = true;
+          } else {
+            _this2.suppressScroll = false;
+          }
         }, this));
       }
     }, {
       key: 'onScrollX',
       value: function onScrollX() {
-        //Sticky header
         var scrollLeft = this.xWrapper.scrollLeft;
         this.stickyHeader.style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
-
-        //Custom Scrollbar
-        this.scrollXScrollbar();
       }
     }, {
       key: 'scrollXScrollbar',
       value: function scrollXScrollbar() {
-        this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft;
+        console.log('xwrapper event', this.suppressScroll);
+        if (!this.suppressScroll) {
+          this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft;
+          this.suppressScroll = true;
+        } else {
+          this.suppressScroll = false;
+        }
       }
     }, {
       key: 'scrollYScrollbar',
       value: function scrollYScrollbar() {
-        this.yScrollbar.scrollTop = this.yWrapper.scrollTop;
+        if (!this.suppressScroll) {
+          this.yScrollbar.scrollTop = this.yWrapper.scrollTop;
+          this.suppressScroll = true;
+        } else {
+          this.suppressScroll = false;
+        }
       }
     }, {
       key: 'onResize',
@@ -196,17 +217,17 @@
     }, {
       key: 'setScrollBarWrapperDims',
       value: function setScrollBarWrapperDims() {
-        this.xScrollbar.style.width = 'calc(100% - ' + this.stickyColumn.clientWidth + 'px)';
-        this.xScrollbar.style.left = this.stickyColumn.clientWidth + 'px';
+        this.xScrollbar.style.width = 'calc(100% - ' + this.stickyColumn.offsetWidth + 'px)';
+        this.xScrollbar.style.left = this.stickyColumn.offsetWidth + 'px';
 
-        this.yScrollbar.style.height = 'calc(100% - ' + this.stickyHeader.clientHeight + 'px)';
-        this.yScrollbar.style.top = this.stickyHeader.clientHeight + 'px';
+        this.yScrollbar.style.height = 'calc(100% - ' + this.stickyHeader.offsetHeight + 'px)';
+        this.yScrollbar.style.top = this.stickyHeader.offsetHeight + 'px';
       }
     }, {
       key: 'setScrollBarDims',
       value: function setScrollBarDims() {
-        this.xScrollbar.firstChild.style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width - this.stickyColumn.clientWidth + 'px';
-        this.yScrollbar.firstChild.style.height = this.getSizeWithoutBoxSizing(this.realTable).height - this.stickyHeader.clientHeight + 'px';
+        this.xScrollbar.firstChild.style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width - this.stickyColumn.offsetWidth + 'px';
+        this.yScrollbar.firstChild.style.height = this.getSizeWithoutBoxSizing(this.realTable).height - this.stickyHeader.offsetHeight + 'px';
       }
     }, {
       key: 'onColumnResize',
@@ -306,9 +327,9 @@
       key: 'getSizeWithoutBoxSizing',
       value: function getSizeWithoutBoxSizing(node) {
         var nodeStyle = this.getStyle(node);
-        var width = node.clientWidth - parseFloat(nodeStyle.paddingLeft) - parseFloat(nodeStyle.paddingRight);
+        var width = node.offsetWidth - parseFloat(nodeStyle.paddingLeft) - parseFloat(nodeStyle.paddingRight) - parseInt(nodeStyle.borderLeftWidth, 10) - parseInt(nodeStyle.borderRightWidth, 10);
 
-        var height = node.clientHeight - parseFloat(nodeStyle.paddingTop) - parseFloat(nodeStyle.paddingBottom);
+        var height = node.offsetHeight - parseFloat(nodeStyle.paddingTop) - parseFloat(nodeStyle.paddingBottom) - parseInt(nodeStyle.borderTopWidth, 10) - parseInt(nodeStyle.borderBottomWidth, 10);
 
         return { width: width, height: height };
       }
