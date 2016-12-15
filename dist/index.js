@@ -160,7 +160,6 @@
         //X Scrollbars
         this.xWrapper.addEventListener('scroll', this.scrollXScrollbar);
         this.xScrollbar.addEventListener('scroll', proxy(function () {
-          console.log('xScrollbar event', _this2.suppressScroll);
           if (!_this2.suppressScroll) {
             _this2.xWrapper.scrollLeft = _this2.xScrollbar.scrollLeft;
             _this2.suppressScroll = true;
@@ -183,13 +182,12 @@
     }, {
       key: 'onScrollX',
       value: function onScrollX() {
-        var scrollLeft = this.xWrapper.scrollLeft;
+        var scrollLeft = Math.max(this.xWrapper.scrollLeft, 0); //Can't have it being less than 0...
         this.stickyHeader.style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
       }
     }, {
       key: 'scrollXScrollbar',
       value: function scrollXScrollbar() {
-        console.log('xwrapper event', this.suppressScroll);
         if (!this.suppressScroll) {
           this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft;
           this.suppressScroll = true;
@@ -257,7 +255,7 @@
 
             if (cellToCopy) {
               height = this.getSizeWithoutBoxSizing(cellToCopy).height;
-
+              console.log(height, cellToCopy.offsetHeight);
               this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
             }
           }

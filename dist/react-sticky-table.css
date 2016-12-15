@@ -12,6 +12,7 @@
   height: 100%;
   overflow: hidden;
   border: 2px solid #e5e5e5;
+  padding-top: 2px;
 }
 .sticky-table .sticky-header {
   position: absolute;
@@ -34,15 +35,19 @@
 .sticky-table .sticky-table-x-wrapper, .sticky-table .sticky-table-y-wrapper {
   z-index: 0;
   position: relative;
-  overflow: -moz-scrollbars-none;
 }
 .sticky-table .sticky-table-x-wrapper {
   width: 100%;
   overflow-x: auto;
+  /* Hack to hide scrollbars */
+  margin-bottom: -17px;
 }
 .sticky-table .sticky-table-y-wrapper {
   height: 100%;
   overflow-y: auto;
+  /* Hack to hide scrollbars */
+  padding-right: 17px;
+  margin-right: -17px;
 }
 /*
 Hack to make table paint on it's own layer.

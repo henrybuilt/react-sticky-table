@@ -98,7 +98,7 @@ class StickyTable extends Component {
   }
 
   onScrollX() {
-    var scrollLeft = this.xWrapper.scrollLeft;
+    var scrollLeft = Math.max(this.xWrapper.scrollLeft, 0); //Can't have it being less than 0...
     this.stickyHeader.style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0)';
   }
 
@@ -178,7 +178,7 @@ class StickyTable extends Component {
 
         if (cellToCopy) {
           height = this.getSizeWithoutBoxSizing(cellToCopy).height;
-
+          console.log(height, cellToCopy.offsetHeight)
           this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
         }
       }
