@@ -178,7 +178,7 @@ class StickyTable extends Component {
 
         if (cellToCopy) {
           height = this.getSizeWithoutBoxSizing(cellToCopy).height;
-          console.log(height, cellToCopy.offsetHeight)
+          
           this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
         }
       }
