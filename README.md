@@ -12,6 +12,7 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 - Rows and columns resize as content resizes
 - Custom cells (just make sure your custom cell has `display: table-cell` set)
 - Multiple tables per page
+- Scrollbars that are smooth and visible at all times
 
 Doesn't yet support: Multiple columns/headers, client side sorting, or IE <= 7.
 
