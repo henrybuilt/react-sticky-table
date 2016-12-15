@@ -1,6 +1,6 @@
 {
   "name": "react-sticky-table",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Dynamically sized fixed header and column for tables",
   "repository": {
     "type": "git",
