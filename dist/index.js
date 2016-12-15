@@ -112,9 +112,10 @@
 
       _this.onResize = _this.onResize.bind(_this);
       _this.onColumnResize = _this.onColumnResize.bind(_this);
+      _this.setScrollBarWrapperDims = _this.setScrollBarWrapperDims.bind(_this);
       _this.onScrollX = _this.onScrollX.bind(_this);
-      _this.scrollXScrollbar = _.debounce(_this.scrollXScrollbar.bind(_this), 100);
-      _this.scrollYScrollbar = _.debounce(_this.scrollYScrollbar.bind(_this), 100);
+      _this.scrollXScrollbar = _.throttle(_this.scrollXScrollbar.bind(_this), 30);
+      _this.scrollYScrollbar = _.throttle(_this.scrollYScrollbar.bind(_this), 30);
       return _this;
     }
 
@@ -139,6 +140,7 @@
 
           this.onResize();
           this.addScrollBarEventHandlers();
+          this.setScrollBarWrapperDims();
         }
       }
     }, {
@@ -192,10 +194,19 @@
         this.setScrollBarDims();
       }
     }, {
+      key: 'setScrollBarWrapperDims',
+      value: function setScrollBarWrapperDims() {
+        this.xScrollbar.style.width = 'calc(100% - ' + this.stickyColumn.clientWidth + 'px)';
+        this.xScrollbar.style.left = this.stickyColumn.clientWidth + 'px';
+
+        this.yScrollbar.style.height = 'calc(100% - ' + this.stickyHeader.clientHeight + 'px)';
+        this.yScrollbar.style.top = this.stickyHeader.clientHeight + 'px';
+      }
+    }, {
       key: 'setScrollBarDims',
       value: function setScrollBarDims() {
-        this.table.querySelector('#x-scrollbar div').style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width + 'px';
-        this.table.querySelector('#y-scrollbar div').style.height = this.getSizeWithoutBoxSizing(this.realTable).height + 'px';
+        this.xScrollbar.firstChild.style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width - this.stickyColumn.clientWidth + 'px';
+        this.yScrollbar.firstChild.style.height = this.getSizeWithoutBoxSizing(this.realTable).height - this.stickyHeader.clientHeight + 'px';
       }
     }, {
       key: 'onColumnResize',
@@ -212,6 +223,7 @@
         }
 
         this.onResize();
+        this.setScrollBarWrapperDims();
       }
     }, {
       key: 'setRowHeights',

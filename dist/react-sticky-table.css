@@ -43,6 +43,16 @@
   height: 100%;
   overflow-y: auto;
 }
+/*
+Hack to make table paint on it's own layer.
+Because of this it won't paint when the scrollbar paints.
+This one was crucial for performance.
+Scrolling is probably 10-20x smoother.
+*/
+.sticky-table .sticky-table-x-wrapper .table{
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
 
 /* Scrollbars */
 .sticky-table-y-wrapper::-webkit-scrollbar, .sticky-table-x-wrapper::-webkit-scrollbar {
@@ -53,6 +63,8 @@
   background-color: transparent;
   z-index: 5;
   overflow: auto;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .sticky-table #x-scrollbar {
   left: 0px;

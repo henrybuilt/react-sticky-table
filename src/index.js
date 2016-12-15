@@ -30,9 +30,10 @@ class StickyTable extends Component {
 
     this.onResize = this.onResize.bind(this);
     this.onColumnResize = this.onColumnResize.bind(this);
+    this.setScrollBarWrapperDims = this.setScrollBarWrapperDims.bind(this);
     this.onScrollX = this.onScrollX.bind(this);
-    this.scrollXScrollbar = _.debounce(this.scrollXScrollbar.bind(this), 100);
-    this.scrollYScrollbar = _.debounce(this.scrollYScrollbar.bind(this), 100);
+    this.scrollXScrollbar = _.throttle(this.scrollXScrollbar.bind(this), 30);
+    this.scrollYScrollbar = _.throttle(this.scrollYScrollbar.bind(this), 30);
   }
 
   componentDidMount() {
@@ -54,6 +55,7 @@ class StickyTable extends Component {
 
       this.onResize();
       this.addScrollBarEventHandlers();
+      this.setScrollBarWrapperDims();
     }
   }
 
@@ -106,9 +108,17 @@ class StickyTable extends Component {
     this.setScrollBarDims();
   }
 
+  setScrollBarWrapperDims() {
+    this.xScrollbar.style.width = 'calc(100% - ' + this.stickyColumn.clientWidth + 'px)';
+    this.xScrollbar.style.left = this.stickyColumn.clientWidth + 'px';
+
+    this.yScrollbar.style.height = 'calc(100% - ' + this.stickyHeader.clientHeight + 'px)';
+    this.yScrollbar.style.top = this.stickyHeader.clientHeight + 'px';
+  }
+
   setScrollBarDims() {
-    this.table.querySelector('#x-scrollbar div').style.width = this.getSizeWithoutBoxSizing(this.realTable.firstChild).width + 'px';
-    this.table.querySelector('#y-scrollbar div').style.height = this.getSizeWithoutBoxSizing(this.realTable).height + 'px';
+    this.xScrollbar.firstChild.style.width = (this.getSizeWithoutBoxSizing(this.realTable.firstChild).width - this.stickyColumn.clientWidth) + 'px';
+    this.yScrollbar.firstChild.style.height = (this.getSizeWithoutBoxSizing(this.realTable).height - this.stickyHeader.clientHeight) + 'px';
   }
 
   /**
@@ -128,6 +138,7 @@ class StickyTable extends Component {
     }
 
     this.onResize();
+    this.setScrollBarWrapperDims();
   }
 
   /**
