@@ -3,6 +3,7 @@
   height: 100%;
   overflow: hidden;
   border: 2px solid #e5e5e5;
+  padding-top: 2px;
 }
 .sticky-table .sticky-header {
   position: absolute;
@@ -25,7 +26,6 @@
 .sticky-table .sticky-table-x-wrapper, .sticky-table .sticky-table-y-wrapper {
   z-index: 0;
   position: relative;
-  overflow: -moz-scrollbars-none;
 }
 .sticky-table .sticky-table-x-wrapper {
   width: 100%;
