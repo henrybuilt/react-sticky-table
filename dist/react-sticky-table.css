@@ -18,6 +18,8 @@
   left: 0;
   top: 0;
   z-index: 3;
+}
+.sticky-table .sticky-corner .cell{
   border-right: 2px solid #e5e5e5;
   border-bottom: 2px solid #e5e5e5;
 }
