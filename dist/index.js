@@ -134,6 +134,7 @@
           this.yWrapper = this.table.querySelector('#sticky-table-y-wrapper');
           this.stickyHeader = this.table.querySelector('#sticky-header');
           this.stickyColumn = this.table.querySelector('#sticky-column');
+          this.stickyCorner = this.table.querySelector('#sticky-corner');
 
           this.xWrapper.addEventListener('scroll', this.onScrollX);
 
@@ -255,8 +256,12 @@
 
             if (cellToCopy) {
               height = this.getSizeWithoutBoxSizing(cellToCopy).height;
-              console.log(height, cellToCopy.offsetHeight);
+
               this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
+
+              if (r === 0) {
+                this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
+              }
             }
           }
         }
@@ -276,6 +281,13 @@
 
               cell.style.width = width + 'px';
               cell.style.minWidth = width + 'px';
+
+              if (c === 0) {
+                cell = this.stickyCorner.firstChild.firstChild.firstChild;
+
+                cell.style.width = width + 'px';
+                cell.style.minWidth = width + 'px';
+              }
             }
           }
         }
@@ -315,6 +327,26 @@
         );
       }
     }, {
+      key: 'getStickyCorner',
+      value: function getStickyCorner(rows) {
+        var cells;
+        var stickyCorner = [];
+
+        rows.forEach(proxy(function (row, r) {
+          if (r === 0) {
+            cells = row.props.children;
+
+            stickyCorner.push(_react2.default.createElement(
+              _Row2.default,
+              _extends({}, row.props, { id: '', key: r }),
+              cells[0]
+            ));
+          }
+        }, this));
+
+        return stickyCorner;
+      }
+    }, {
       key: 'getStyle',
       value: function getStyle(node) {
         var browserSupportsComputedStyle = typeof getComputedStyle !== 'undefined';
@@ -335,12 +367,15 @@
       key: 'render',
       value: function render() {
         var rows = _react2.default.Children.toArray(this.props.children);
-        var stickyColumn, stickyHeader;
+        var stickyColumn, stickyHeader, stickyCorner;
 
         this.rowCount = rows.length;
         this.columnCount = rows[0] && rows[0].props.children.length || 0;
 
         if (rows.length) {
+          if (this.stickyColumnCount > 0) {
+            stickyCorner = this.getStickyCorner(rows);
+          }
           if (this.stickyColumnCount > 0) {
             stickyColumn = this.getStickyColumn(rows);
           }
@@ -361,6 +396,15 @@
             'div',
             { id: 'y-scrollbar' },
             _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'sticky-corner', id: 'sticky-corner' },
+            _react2.default.createElement(
+              _Table2.default,
+              null,
+              stickyCorner
+            )
           ),
           _react2.default.createElement(
             'div',

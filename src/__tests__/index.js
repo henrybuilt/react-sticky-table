@@ -20,7 +20,7 @@ describe('StickyTable', () => {
       </StickyTable>
     );
 
-    expect(table.find('.cell')).to.have.length(8);
+    expect(table.find('.cell')).to.have.length(9);
   });
 
   it('shouldn\'t render columns when opting out', () => {
@@ -55,7 +55,7 @@ describe('StickyTable', () => {
       </StickyTable>
     );
 
-    expect(table.find('.cell')).to.have.length(6);
+    expect(table.find('.cell')).to.have.length(7);
     expect(table.find('#sticky-header .cell')).to.have.length(0);
   });
 });

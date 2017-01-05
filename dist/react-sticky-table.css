@@ -13,6 +13,13 @@
   overflow: hidden;
   border: 2px solid #e5e5e5;
 }
+.sticky-table .sticky-corner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  border-right: 2px solid #e5e5e5;
+}
 .sticky-table .sticky-header {
   position: absolute;
   margin-top: -2px;
@@ -22,7 +29,7 @@
   border-bottom: 2px solid #e5e5e5;
   transition: 0.2s;
 }
-.sticky-table .sticky-column, .sticky-table .sticky-header {
+.sticky-table .sticky-column, .sticky-table .sticky-header, .sticky-table .sticky-corner {
   background-color: #fff;
   display: block;
 }

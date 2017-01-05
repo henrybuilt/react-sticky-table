@@ -49,6 +49,7 @@ class StickyTable extends Component {
       this.yWrapper = this.table.querySelector('#sticky-table-y-wrapper');
       this.stickyHeader = this.table.querySelector('#sticky-header');
       this.stickyColumn = this.table.querySelector('#sticky-column');
+      this.stickyCorner = this.table.querySelector('#sticky-corner');
 
       this.xWrapper.addEventListener('scroll', this.onScrollX);
 
@@ -78,8 +79,7 @@ class StickyTable extends Component {
       if (!this.suppressScroll) {
         this.xWrapper.scrollLeft = this.xScrollbar.scrollLeft;
         this.suppressScroll = true;
-      }
-      else {
+      } else {
         this.suppressScroll = false;
       }
     }, this));
@@ -90,8 +90,7 @@ class StickyTable extends Component {
       if (!this.suppressScroll) {
         this.yWrapper.scrollTop = this.yScrollbar.scrollTop;
         this.suppressScroll = true;
-      }
-      else {
+      } else {
         this.suppressScroll = false;
       }
     }, this));
@@ -106,8 +105,7 @@ class StickyTable extends Component {
     if (!this.suppressScroll) {
       this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft;
       this.suppressScroll = true;
-    }
-    else {
+    } else {
       this.suppressScroll = false;
     }
   }
@@ -116,8 +114,7 @@ class StickyTable extends Component {
     if (!this.suppressScroll) {
       this.yScrollbar.scrollTop = this.yWrapper.scrollTop;
       this.suppressScroll = true;
-    }
-    else {
+    } else {
       this.suppressScroll = false;
     }
   }
@@ -178,8 +175,12 @@ class StickyTable extends Component {
 
         if (cellToCopy) {
           height = this.getSizeWithoutBoxSizing(cellToCopy).height;
-          
+
           this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
+
+          if (r === 0) {
+            this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
+          }
         }
       }
     }
@@ -202,6 +203,13 @@ class StickyTable extends Component {
 
           cell.style.width = width + 'px';
           cell.style.minWidth = width + 'px';
+
+          if (c === 0) {
+            cell = this.stickyCorner.firstChild.firstChild.firstChild;
+
+            cell.style.width = width + 'px';
+            cell.style.minWidth = width + 'px';
+          }
         }
       }
     }
@@ -252,6 +260,31 @@ class StickyTable extends Component {
   }
 
   /**
+   * Get the jsx cells for sticky columns by copying
+   * children elements
+   * @param {array} rows provided child row elements
+   * @returns {array} array of <Row> elements for sticky column
+   */
+  getStickyCorner(rows) {
+    var cells;
+    var stickyCorner = [];
+
+    rows.forEach(proxy((row, r) => {
+      if (r === 0) {
+        cells = row.props.children;
+
+        stickyCorner.push(
+          <Row {...row.props} id='' key={r}>
+            {cells[0]}
+          </Row>
+        );
+      }
+    }, this));
+
+    return stickyCorner;
+  }
+
+  /**
    * Fill for browsers that don't support getComputedStyle (*cough* I.E.)
    * @param  {object} node dom object
    * @return {object} style object
@@ -290,12 +323,15 @@ class StickyTable extends Component {
    */
   render() {
     var rows = React.Children.toArray(this.props.children);
-    var stickyColumn, stickyHeader;
+    var stickyColumn, stickyHeader, stickyCorner;
 
     this.rowCount = rows.length;
     this.columnCount = (rows[0] && rows[0].props.children.length) || 0;
 
     if (rows.length) {
+      if (this.stickyColumnCount > 0) {
+        stickyCorner = this.getStickyCorner(rows);
+      }
       if (this.stickyColumnCount > 0) {
         stickyColumn = this.getStickyColumn(rows);
       }
@@ -308,6 +344,9 @@ class StickyTable extends Component {
       <div className={'sticky-table ' + (this.props.className || '')} id={'sticky-table-' + this.id}>
         <div id='x-scrollbar'><div></div></div>
         <div id='y-scrollbar'><div></div></div>
+        <div className='sticky-corner' id='sticky-corner'>
+          <Table>{stickyCorner}</Table>
+        </div>
         <div className='sticky-header' id='sticky-header'>
           <Table>{stickyHeader}</Table>
         </div>
