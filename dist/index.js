@@ -373,7 +373,7 @@
         this.columnCount = rows[0] && rows[0].props.children.length || 0;
 
         if (rows.length) {
-          if (this.stickyColumnCount > 0) {
+          if (this.stickyColumnCount > 0 && this.stickyHeaderCount > 0) {
             stickyCorner = this.getStickyCorner(rows);
           }
           if (this.stickyColumnCount > 0) {
