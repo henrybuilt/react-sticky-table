@@ -142,6 +142,7 @@
           elementResizeEvent(this.realTable, this.onResize);
 
           this.onResize();
+          setTimeout(this.onResize);
           this.addScrollBarEventHandlers();
           this.setScrollBarWrapperDims();
         }

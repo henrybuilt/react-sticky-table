@@ -1,17 +1,17 @@
 {
   "name": "react-sticky-table",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Dynamically sized fixed header and column for tables",
   "repository": {
     "type": "git",
-    "url": "https://github.com/we-flow/react-sticky-table.git"
+    "url": "https://github.com/henrybuilt/react-sticky-table.git"
   },
   "author": "Weflow",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/we-flow/react-sticky-table/issues"
+    "url": "https://github.com/henrybuilt/react-sticky-table/issues"
   },
-  "homepage": "https://github.com/we-flow/react-sticky-table",
+  "homepage": "https://github.com/henrybuilt/react-sticky-table",
   "keywords": [
     "react-component",
     "table",
