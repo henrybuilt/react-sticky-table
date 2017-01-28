@@ -2,7 +2,7 @@
 
 Responsive and dynamically-sized fixed headers and columns for tables inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/example-object-data.html)'s lack of responsiveness.
 
-[Demo](https://we-flow.github.io/react-sticky-table/)
+[Demo](https://henrybuilt.github.io/react-sticky-table/)
 
 ## Features
 
