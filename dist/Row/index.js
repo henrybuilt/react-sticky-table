@@ -104,7 +104,7 @@
         return _react2.default.createElement(
           'div',
           _extends({}, this.props, { className: 'row ' + (this.props.className || '') }),
-          _react2.default.Children.toArray(this.props.children)
+          this.props.children
         );
       }
     }]);

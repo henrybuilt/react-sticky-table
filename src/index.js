@@ -179,7 +179,7 @@ class StickyTable extends Component {
 
           this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
 
-          if (r === 0) {
+          if (r === 0 && this.stickyCorner.firstChild.firstChild) {
             this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
           }
         }
@@ -205,7 +205,7 @@ class StickyTable extends Component {
           cell.style.width = width + 'px';
           cell.style.minWidth = width + 'px';
 
-          if (c === 0) {
+          if (c === 0 && this.stickyCorner.firstChild.firstChild) {
             cell = this.stickyCorner.firstChild.firstChild.firstChild;
 
             cell.style.width = width + 'px';
@@ -227,7 +227,7 @@ class StickyTable extends Component {
     var stickyRows = [];
 
     rows.forEach(proxy((row, r) => {
-      cells = row.props.children;
+      cells = React.Children.toArray(row.props.children);
 
       stickyRows.push(
         <Row {...row.props} id='' key={r}>
@@ -249,7 +249,7 @@ class StickyTable extends Component {
     var row = rows[0];
     var cells = [];
 
-    row.props.children.forEach((cell, c) => {
+    React.Children.toArray(row.props.children).forEach((cell, c) => {
       cells.push(React.cloneElement(cell, {id: 'sticky-header-cell-' + c, key: c}));
     });
 
@@ -272,7 +272,7 @@ class StickyTable extends Component {
 
     rows.forEach(proxy((row, r) => {
       if (r === 0) {
-        cells = row.props.children;
+        cells = React.Children.toArray(row.props.children);
 
         stickyCorner.push(
           <Row {...row.props} id='' key={r}>
@@ -327,7 +327,7 @@ class StickyTable extends Component {
     var stickyColumn, stickyHeader, stickyCorner;
 
     this.rowCount = rows.length;
-    this.columnCount = (rows[0] && rows[0].props.children.length) || 0;
+    this.columnCount = (rows[0] && React.Children.toArray(rows[0].props.children).length) || 0;
 
     if (rows.length) {
       if (this.stickyColumnCount > 0 && this.stickyHeaderCount > 0) {

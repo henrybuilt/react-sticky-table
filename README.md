@@ -24,7 +24,7 @@ Install `react-sticky-table` using `npm`.
 npm install react-sticky-table --save
 ```
 
-Make sure you import the mandatory stylesheet: `react-sticky-table/dist/react-sticky-table.css`. Feel free to overwrite it, though. It should be unobtrusive.
+Make sure you import the mandatory stylesheet: [react-sticky-table/dist/react-sticky-table.css](https://github.com/henrybuilt/react-sticky-table/blob/master/dist/react-sticky-table.css). Feel free to overwrite it, though. It should be unobtrusive.
 
 ## Example
 ```javascript

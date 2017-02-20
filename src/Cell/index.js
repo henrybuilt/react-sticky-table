@@ -5,7 +5,7 @@ export default class Cell extends Component {
   render() {
     return (
       <div {...this.props} className={'cell ' + (this.props.className || '')}>
-        {React.Children.toArray(this.props.children)}
+        {this.props.children}
       </div>
     );
   }

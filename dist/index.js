@@ -260,7 +260,7 @@
 
               this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
 
-              if (r === 0) {
+              if (r === 0 && this.stickyCorner.firstChild.firstChild) {
                 this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
               }
             }
@@ -283,7 +283,7 @@
               cell.style.width = width + 'px';
               cell.style.minWidth = width + 'px';
 
-              if (c === 0) {
+              if (c === 0 && this.stickyCorner.firstChild.firstChild) {
                 cell = this.stickyCorner.firstChild.firstChild.firstChild;
 
                 cell.style.width = width + 'px';
@@ -300,7 +300,7 @@
         var stickyRows = [];
 
         rows.forEach(proxy(function (row, r) {
-          cells = row.props.children;
+          cells = _react2.default.Children.toArray(row.props.children);
 
           stickyRows.push(_react2.default.createElement(
             _Row2.default,
@@ -317,7 +317,7 @@
         var row = rows[0];
         var cells = [];
 
-        row.props.children.forEach(function (cell, c) {
+        _react2.default.Children.toArray(row.props.children).forEach(function (cell, c) {
           cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, key: c }));
         });
 
@@ -335,7 +335,7 @@
 
         rows.forEach(proxy(function (row, r) {
           if (r === 0) {
-            cells = row.props.children;
+            cells = _react2.default.Children.toArray(row.props.children);
 
             stickyCorner.push(_react2.default.createElement(
               _Row2.default,
@@ -371,7 +371,7 @@
         var stickyColumn, stickyHeader, stickyCorner;
 
         this.rowCount = rows.length;
-        this.columnCount = rows[0] && rows[0].props.children.length || 0;
+        this.columnCount = rows[0] && _react2.default.Children.toArray(rows[0].props.children).length || 0;
 
         if (rows.length) {
           if (this.stickyColumnCount > 0 && this.stickyHeaderCount > 0) {

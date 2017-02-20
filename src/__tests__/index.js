@@ -20,7 +20,7 @@ describe('StickyTable', () => {
       </StickyTable>
     );
 
-    expect(table.find('.cell')).to.have.length(9);
+    expect(table.find('.cell')).to.have.length(9); //4 body, 2 header, 2 column, 1 corner
   });
 
   it('shouldn\'t render columns when opting out', () => {
@@ -37,7 +37,7 @@ describe('StickyTable', () => {
       </StickyTable>
     );
 
-    expect(table.find('.cell')).to.have.length(6);
+    expect(table.find('.cell')).to.have.length(6); //4 body, 2 header
     expect(table.find('#sticky-column .cell')).to.have.length(0);
   });
 
@@ -55,7 +55,20 @@ describe('StickyTable', () => {
       </StickyTable>
     );
 
-    expect(table.find('.cell')).to.have.length(7);
+    expect(table.find('.cell')).to.have.length(6); //4 body, 2 column
     expect(table.find('#sticky-header .cell')).to.have.length(0);
+  });
+
+  it('should support sibling components and arrays', () => {
+    const table = mount(
+      <StickyTable>
+        <Row>
+          <Cell>{'header 1'}</Cell>
+          {[<Cell key={1}>{'header 2'}</Cell>]}
+        </Row>
+      </StickyTable>
+    );
+
+    expect(table.find('.cell')).to.have.length(6); //2 body, 2 header, 2 column
   });
 });

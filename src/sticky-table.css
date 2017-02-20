@@ -35,6 +35,7 @@
 .sticky-table .sticky-table-x-wrapper, .sticky-table .sticky-table-y-wrapper {
   z-index: 0;
   position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 .sticky-table .sticky-table-x-wrapper {
   width: 100%;
