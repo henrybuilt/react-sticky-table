@@ -33,11 +33,11 @@ export default class Basic extends Component {
       '        <StickyTable>\n' +
       '          <Row>\n' +
       '            <Cell>Header 1</Cell>\n' +
-      '            //Other header cells...\n' +
+      '            <Cell>Header 2</Cell>\n' +
       '          </Row>\n' +
       '          <Row>\n' +
       '            <Cell>Cell 1</Cell>\n' +
-      '            //Other body cells...\n' +
+      '            <Cell>Cell 2</Cell>\n' +
       '          </Row>\n' +
       '        </StickyTable>\n' +
       '      </div>\n' +
