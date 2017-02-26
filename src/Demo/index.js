@@ -4,6 +4,7 @@ import Basic from '../examples/Basic';
 import ResizingCells from '../examples/ResizingCells';
 import NoHeader from '../examples/NoHeader';
 import NoColumn from '../examples/NoColumn';
+import ChangingContent from '../examples/ChangingContent';
 import './index.css';
 
 export default class Demo extends Component {
@@ -24,6 +25,7 @@ export default class Demo extends Component {
             <a href="#resizing-cells-example">Dynamic Cell Sizes</a>
             <a href="#no-column-example">Only Sticky Header</a>
             <a href="#no-header-example">Only Sticky Column</a>
+            <a href="#changing-content-example">Changing Content</a>
           </div>
           <div className="examples left">
             <div className="example" id="basic-example">
@@ -45,6 +47,11 @@ export default class Demo extends Component {
               <h1>Only Sticky Column</h1>
               <h3>{'Try scrolling in both directions.'}</h3>
               <NoHeader />
+            </div>
+            <div className="example" id="changing-content-example">
+              <h1>Changing Content</h1>
+              <h3>{'Try clicking the button below to change the table values'}</h3>
+              <ChangingContent />
             </div>
           </div>
         </div>
