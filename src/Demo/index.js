@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
+import './index.css';
+import Button from '../Button';
+
 import Basic from '../examples/Basic';
 import ResizingCells from '../examples/ResizingCells';
 import NoHeader from '../examples/NoHeader';
 import NoColumn from '../examples/NoColumn';
 import ChangingContent from '../examples/ChangingContent';
-import './index.css';
 
 export default class Demo extends Component {
   render() {
@@ -32,26 +34,31 @@ export default class Demo extends Component {
               <h1>Basic Example</h1>
               <h3>Try resizing your browser and scrolling both vertically and horizontally.</h3>
               <Basic />
+              <a href="https://github.com/henrybuilt/react-sticky-table/blob/gh-pages/src/examples/Basic/index.js"><Button>Example Source Code</Button></a>
             </div>
             <div className="example" id="resizing-cells-example">
               <h1>Dynamic Cell Sizes</h1>
               <h3>Try clicking on a cell.</h3>
               <ResizingCells />
+              <a href="https://github.com/henrybuilt/react-sticky-table/blob/gh-pages/src/examples/ResizingCells/index.js"><Button>Example Source Code</Button></a>
             </div>
             <div className="example" id="no-column-example">
               <h1>Only Sticky Header</h1>
               <h3>{'Try scrolling in both directions.'}</h3>
               <NoColumn />
+              <a href="https://github.com/henrybuilt/react-sticky-table/blob/gh-pages/src/examples/NoColumn/index.js"><Button>Example Source Code</Button></a>
             </div>
             <div className="example" id="no-header-example">
               <h1>Only Sticky Column</h1>
               <h3>{'Try scrolling in both directions.'}</h3>
               <NoHeader />
+              <a href="https://github.com/henrybuilt/react-sticky-table/blob/gh-pages/src/examples/NoHeader/index.js"><Button>Example Source Code</Button></a>
             </div>
             <div className="example" id="changing-content-example">
               <h1>Changing Content</h1>
               <h3>{'Try clicking the button below to change the table values'}</h3>
               <ChangingContent />
+              <a href="https://github.com/henrybuilt/react-sticky-table/blob/gh-pages/src/examples/ChangingContent/index.js"><Button>Example Source Code</Button></a>
             </div>
           </div>
         </div>

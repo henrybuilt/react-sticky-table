@@ -30,7 +30,22 @@ export default class ResizingCells extends Component {
     }
 
     const codeString = '' +
-      'export default class ResizingCellsExample extends Component {\n' +
+      "import React, { Component } from 'react';\n" +
+      "import { StickyTable, Row, Cell } from 'react-sticky-table';\n" +
+      "import 'react-sticky-table/dist/react-sticky-table.css';\n\n" +
+
+      'export default class ChangingContent extends Component {\n' +
+      '  constructor(props) {\n'+
+      '    super(props);\n'+
+      '\n'+
+      '    var rows = [];\n'+
+      '    for (var i=0; i<10; i++) {\n'+
+      '      rows.push((<Row><Cell>1st</Cell><Cell onClick={this.onCellClick}>Click Me!</Cell></Row>));\n'+
+      '    }\n'+
+      '\n'+
+      '    this.state = {rows};\n'+
+      '  }\n'+
+      '  \n'+
       '  onCellClick(event) {\n' +
       "    if (event.target.innerHTML.indexOf('Click Me!') !== -1) {\n" +
       "      event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);\n" +
@@ -41,14 +56,7 @@ export default class ResizingCells extends Component {
       '    return (\n' +
       "      <div style={{width: '100%', height: '200px'}}>\n" +
       '        <StickyTable>\n' +
-      '          <Row>\n' +
-      '            <Cell>...</Cell>\n' +
-      '            //Other header cells...\n' +
-      '          </Row>\n' +
-      '          <Row>\n' +
-      '            <Cell>...</Cell>\n' +
-      '            <Cell onClick={this.onCellClick}>Click Me!</Cell>\n' +
-      '          </Row>\n' +
+      '          {this.state.rows}\n'+
       '        </StickyTable>\n' +
       '      </div>\n' +
       '    );\n' +

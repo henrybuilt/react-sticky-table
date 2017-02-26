@@ -26,19 +26,23 @@ export default class Basic extends Component {
       "import { StickyTable, Row, Cell } from 'react-sticky-table';\n" +
       "import 'react-sticky-table/dist/react-sticky-table.css';\n\n" +
 
-      'export default class BasicExample extends Component {\n' +
+      'export default class ChangingContent extends Component {\n' +
+      '  constructor(props) {\n'+
+      '    super(props);\n'+
+      '\n'+
+      '    var rows = [];\n'+
+      '    for (var i=0; i<10; i++) {\n'+
+      '      rows.push((<Row><Cell>a {i}</Cell><Cell>b {i}</Cell></Row>));\n'+
+      '    }\n'+
+      '\n'+
+      '    this.state = {rows};\n'+
+      '  }\n'+
+      '  \n'+
       '  render() {\n' +
       '    return (\n' +
       "      <div style={{width: '100%', height: '200px'}}>\n" +
       '        <StickyTable>\n' +
-      '          <Row>\n' +
-      '            <Cell>Header 1</Cell>\n' +
-      '            <Cell>Header 2</Cell>\n' +
-      '          </Row>\n' +
-      '          <Row>\n' +
-      '            <Cell>Cell 1</Cell>\n' +
-      '            <Cell>Cell 2</Cell>\n' +
-      '          </Row>\n' +
+      '          {this.state.rows}\n'+
       '        </StickyTable>\n' +
       '      </div>\n' +
       '    );\n' +
