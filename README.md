@@ -6,7 +6,7 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 ## Features
 
-- Optional fixed column & header
+- Optional fixed columns & header
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
 - Rows and columns resize as content resizes
@@ -14,7 +14,7 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 - Multiple tables per page
 - Scrollbars that are smooth and visible at all times
 
-Doesn't yet support: Multiple columns/headers, client side sorting, or IE <= 7.
+Doesn't yet support: Multiple headers, client side sorting, or IE <= 7.
 
 ## Getting Started
 
@@ -62,7 +62,7 @@ Default settings:
 ```javascript
 {
   stickyHeaderCount: 1,
-  stickyColumnCount: 1
+  stickyColumnsCount: 1
 }
 ```
 
@@ -75,7 +75,28 @@ Disable sticky header:
 Disable sticky column:
 
 ```javascript
-<StickyTable stickyColumnCount={0}>
+<StickyTable stickyColumnsCount={0}>
+```
+
+## Events
+
+Scroll event:
+
+```javascript
+<StickyTable onScroll={function(object) {}}>
+```
+
+Scroll event object:
+
+```javascript
+{
+  scrollTop: 0,
+  scrollHeight: 2304,
+  clientHeight: 259,
+  scrollLeft: 0,
+  scrollWidth: 27953,
+  clientWidth: 887
+}
 ```
 
 ## License

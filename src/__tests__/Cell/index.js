@@ -14,6 +14,6 @@ describe('Cell', () => {
       </Cell>
     );
 
-    expect(cell.find('.cell span')).to.have.length(2);
+    expect(cell.find('.sticky-table-cell span')).to.have.length(2);
   });
 });
