@@ -8,7 +8,7 @@ import {StickyTable, Row, Cell} from '../index';
 describe('StickyTable', () => {
   it('should render the correct number of children', () => {
     const table = mount(
-      <StickyTable>
+      <StickyTable stickyColumnsCount={1}>
         <Row>
           <Cell>{'header 1'}</Cell>
           <Cell>{'header 2'}</Cell>
@@ -67,7 +67,7 @@ describe('StickyTable', () => {
 
   it('shouldn\'t render headers when opting out', () => {
     const table = mount(
-      <StickyTable stickyHeaderCount={0}>
+      <StickyTable stickyColumnsCount={1} stickyHeaderCount={0}>
         <Row>
           <Cell>{'header 1'}</Cell>
           <Cell>{'header 2'}</Cell>
@@ -85,7 +85,7 @@ describe('StickyTable', () => {
 
   it('should support sibling components and arrays', () => {
     const table = mount(
-      <StickyTable>
+      <StickyTable stickyColumnsCount={1}>
         <Row>
           <Cell>{'header 1'}</Cell>
           {[<Cell key={1}>{'header 2'}</Cell>]}

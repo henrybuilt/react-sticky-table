@@ -11,9 +11,9 @@ import { StickyTable, Table, Row, Cell } from '../src/index';
 class Example extends Component {
     state = {
         colsCount: 50,
-        rowsCount: 30,
+        rowsCount: 1,
         renderTable: true,
-        locked: 2
+        locked: 1
     };
 
     handleLocked = (inc) => {
