@@ -227,7 +227,7 @@ class StickyTable extends PureComponent {
       this.setScrollBarPaddings();
     }
 
-    var width = this.getSize(this.realTable.firstChild).width + this.yScrollSize;
+    var width = this.getSize(this.realTable.firstChild).width;
     this.xScrollbar.firstChild.style.width = width + 'px';
 
     var height = this.getSize(this.realTable).height + this.xScrollSize - this.stickyHeader.offsetHeight;

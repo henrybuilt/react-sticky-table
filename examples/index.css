@@ -21,3 +21,19 @@
 .sticky-table-cell {
     padding: 10px;
 }
+
+.controls {
+    padding: 15px;
+}
+
+.controls * {
+    margin-right: 10px;
+}
+
+.table {
+    border: 1px solid #eee;
+}
+
+.auto-width .sticky-table-container {
+    width: 100%;
+}

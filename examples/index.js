@@ -8,11 +8,17 @@ import '../src/Table/index.css';
 import './index.css';
 import { StickyTable, Table, Row, Cell } from '../src/index';
 
+const defaultStyle = {
+    width: '900px',
+    height: '300px'
+};
+
 class Example extends Component {
     state = {
-        colsCount: 50,
-        rowsCount: 1,
+        colsCount: 4,
+        rowsCount: 10,
         renderTable: true,
+        autoWidthTable: true,
         locked: 1
     };
 
@@ -30,9 +36,9 @@ class Example extends Component {
         });
     }
 
-    handleToggle = () => {
+    handleToggle = (option) => {
         this.setState({
-            renderTable: !this.state.renderTable
+            [option]: !this.state[option]
         });
     }
 
@@ -41,7 +47,9 @@ class Example extends Component {
     }
 
     render() {
-        var { renderTable, rowsCount, colsCount, locked } = this.state;
+        var { autoWidthTable, renderTable, rowsCount, colsCount, locked } = this.state;
+
+        var tableClass = autoWidthTable ? 'auto-width' : '';
         var rows = [];
         var cells;
 
@@ -62,9 +70,12 @@ class Example extends Component {
 
         return (
             <div>
-                <div>
-                    <button onClick={this.handleToggle}>
-                        Toggle
+                <div className='controls'>
+                    <button onClick={() => this.handleToggle('renderTable')}>
+                        Toggle table
+                    </button>
+                    <button onClick={() => this.handleToggle('autoWidthTable')}>
+                        Toggle width
                     </button>
                     <button onClick={() => this.handleLocked(true)}>
                         Fixed +
@@ -83,13 +94,15 @@ class Example extends Component {
                         onChange={this.handleValue('rowsCount')}
                         title="rows" />
                 </div>
-                { renderTable && (
-                    <div style={{width: '900px', height: '300px'}}>
-                        <StickyTable onScroll={this.handleScroll} stickyColumnsCount={locked}>
-                            {rows}
-                        </StickyTable>
-                    </div>
-                ) }
+                <div>
+                    { renderTable &&
+                        <div className={'table ' + tableClass} style={defaultStyle}>
+                            <StickyTable onScroll={this.handleScroll} stickyColumnsCount={locked}>
+                                {rows}
+                            </StickyTable>
+                        </div>
+                    }
+                </div>
             </div>
         );
     }
