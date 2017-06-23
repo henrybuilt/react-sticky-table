@@ -170,10 +170,12 @@
       };
 
       _this.onResize = function () {
-        _this.setRowHeights();
-        _this.setColumnWidths();
         _this.setScrollBarDims();
         _this.setScrollBarWrapperDims();
+
+        _this.setRowHeights();
+        _this.setColumnWidths();
+
         _this.setScrollData();
         _this.handleScroll();
       };

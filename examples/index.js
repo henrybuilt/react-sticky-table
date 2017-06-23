@@ -9,7 +9,7 @@ import './index.css';
 import { StickyTable, Table, Row, Cell } from '../src/index';
 
 const defaultStyle = {
-    width: '900px',
+    width: '100%',
     height: '300px'
 };
 
@@ -19,7 +19,7 @@ class Example extends Component {
         rowsCount: 10,
         renderTable: true,
         autoWidthTable: true,
-        locked: 1
+        locked: 0
     };
 
     handleLocked = (inc) => {
@@ -58,7 +58,7 @@ class Example extends Component {
 
             for (var c = 1; c <= colsCount; c++) {
                 cells.push(
-                    <Cell key={c}>
+                    <Cell style={{width: c === 2 ? '': '70px'}} key={c}>
                         { r == 1 && `Column${c}` }
                         { r != 1 && `Cell ${c} of row ${r}`}
                     </Cell>

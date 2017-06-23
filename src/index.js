@@ -184,10 +184,12 @@ class StickyTable extends PureComponent {
    * @returns {null} no return necessary
    */
   onResize = () => {
-    this.setRowHeights();
-    this.setColumnWidths();
     this.setScrollBarDims();
     this.setScrollBarWrapperDims();
+
+    this.setRowHeights();
+    this.setColumnWidths();
+
     this.setScrollData();
     this.handleScroll();
   }
@@ -199,7 +201,6 @@ class StickyTable extends PureComponent {
   setScrollBarPaddings() {
     var scrollPadding = '0px 0px ' + this.xScrollSize + 'px 0px';
     this.table.style.padding = scrollPadding;
-
 
     var scrollPadding = '0px ' + this.yScrollSize + 'px 0px 0px';
     this.xWrapper.firstChild.style.padding = scrollPadding;
