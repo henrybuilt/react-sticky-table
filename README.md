@@ -1,8 +1,8 @@
-# Sticky Table
+# Experium Sticky Table
 
-Responsive and dynamically-sized fixed headers and columns for tables inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/example-object-data.html)'s lack of responsiveness.
+[![Build Status](https://travis-ci.org/experium/react-sticky-table.svg?branch=master)](https://travis-ci.org/experium/react-sticky-table)
 
-[Demo](https://henrybuilt.github.io/react-sticky-table/)
+Responsive and dynamically-sized fixed headers and columns for tables forked from [henrybuilt](https://henrybuilt.github.io/react-sticky-table/).
 
 ## Features
 
@@ -10,18 +10,14 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
 - Rows and columns resize as content resizes
-- Custom cells (just make sure your custom cell has `display: table-cell` set)
-- Multiple tables per page
 - Scrollbars that are smooth and visible at all times
-
-Doesn't yet support: Multiple headers, client side sorting, or IE <= 7.
 
 ## Getting Started
 
-Install `react-sticky-table` using `npm`.
+Install `experium-react-sticky-table` using `npm`.
 
 ```
-npm install react-sticky-table --save
+npm install experium-react-sticky-table --save
 ```
 
 Make sure you import the mandatory stylesheet: [react-sticky-table/dist/react-sticky-table.css](https://github.com/henrybuilt/react-sticky-table/blob/master/dist/react-sticky-table.css). Feel free to overwrite it, though. It should be unobtrusive.
@@ -36,7 +32,6 @@ import 'react-sticky-table/dist/react-sticky-table.css';
 export default class BasicExample extends Component {
   render() {
     return (
-      <div>
         <div style={{width: '100%', height: '400px'}}>
           <StickyTable>
             <Row>
@@ -49,7 +44,6 @@ export default class BasicExample extends Component {
             </Row>
           </StickyTable>
         </div>
-      </div>
     );
   }
 }

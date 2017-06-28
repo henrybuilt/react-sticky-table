@@ -1,10 +1,9 @@
 {
   "name": "experium-react-sticky-table",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "index.js",
   "module": "./index.js",
   "description": "Dynamically sized fixed header and columns for tables",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/experium/react-sticky-table.git"
@@ -14,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/experium/react-sticky-table/issues"
   },
-  "homepage": "https://github.com/henrybuilt/react-sticky-table",
+  "homepage": "https://github.com/experium/react-sticky-table",
   "keywords": [
     "react-component",
     "table",
@@ -30,10 +29,9 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "npm run prepublish",
-    "prepublish": "npm run prepublish-js && npm run prepublish-css",
-    "prepublish-js": "babel --plugins 'transform-es2015-modules-umd' src --ignore __tests__ --out-dir ./dist",
-    "prepublish-css": "cat src/**/*.css src/*.css > dist/react-sticky-table.css",
+    "build": "npm run build-js && npm run build-css",
+    "build-js": "babel --plugins 'transform-es2015-modules-umd' src --ignore __tests__ --out-dir ./dist",
+    "build-css": "cat src/**/*.css src/*.css > dist/react-sticky-table.css",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
     "testonly": "mocha $npm_package_options_mocha",
@@ -63,6 +61,7 @@
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
+    "prop-types": "^15.5.7",
     "sinon": "^1.17.3",
     "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.28.1",
@@ -74,8 +73,9 @@
     "webpack-dev-server": "^2.4.4"
   },
   "peerDependencies": {
-    "react": "~0.14.8 || ^15.0.0",
-    "react-dom": "~0.14.8 || ^15.0.0"
+    "react": "^15.0.0",
+    "react-dom": " ^15.0.0",
+    "prop-types": "^15.5.7"
   },
   "dependencies": {
     "element-resize-event": "^2.0.9"

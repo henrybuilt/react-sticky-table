@@ -16,6 +16,18 @@ import Cell from './Cell';
  * width of a cell.
  */
 class StickyTable extends PureComponent {
+  static propTypes = {
+    stickyHeaderCount: PropTypes.number,
+    stickyColumnsCount: PropTypes.number,
+
+    onScroll: PropTypes.func
+  };
+
+  static defaultProps = {
+    stickyHeaderCount: 1,
+    stickyColumnsCount: 1
+  };
+
   constructor(props) {
     super(props);
 
@@ -430,14 +442,5 @@ class StickyTable extends PureComponent {
     );
   }
 }
-
-StickyTable.propTypes = {
-  stickyHeaderCount: PropTypes.number,
-  stickyColumnsCount: PropTypes.number,
-  onScroll: PropTypes.func,
-
-  rowCount: PropTypes.number, //Including header
-  columnCount: PropTypes.number
-};
 
 export {StickyTable, Table, Row, Cell};

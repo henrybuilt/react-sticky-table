@@ -110,7 +110,7 @@ class Example extends Component {
 
 window.onload = () => {
     ReactDOM.render(
-        <Example/>,
+        <Example />,
         document.getElementById('example')
     );
 };
