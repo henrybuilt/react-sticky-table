@@ -1,0 +1,39 @@
+.sticky-table-corner .sticky-table-cell {
+    background-color: green;
+}
+
+.sticky-table-header .sticky-table-cell {
+    background-color: darkred;
+}
+
+.sticky-table-column .sticky-table-cell {
+    background-color: greenyellow;
+}
+
+.sticky-table-x-wrapper .sticky-table-cell {
+    background-color: blue;
+}
+
+.sticky-table-cell {
+    border: 1px solid palevioletred;
+}
+
+.sticky-table-cell {
+    padding: 10px;
+}
+
+.controls {
+    padding: 15px;
+}
+
+.controls * {
+    margin-right: 10px;
+}
+
+.table {
+    border: 1px solid #eee;
+}
+
+.auto-width .sticky-table-container {
+    width: 100%;
+}
