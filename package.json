@@ -1,19 +1,19 @@
 {
-  "name": "experium-react-sticky-table",
+  "name": "react-sticky-table",
   "version": "1.0.3",
   "main": "index.js",
   "module": "./index.js",
   "description": "Dynamically sized fixed header and columns for tables",
   "repository": {
     "type": "git",
-    "url": "https://github.com/experium/react-sticky-table.git"
+    "url": "https://github.com/henrybuilt/react-sticky-table.git"
   },
   "author": "Weflow",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/experium/react-sticky-table/issues"
+    "url": "https://github.com/henrybuilt/react-sticky-table/issues"
   },
-  "homepage": "https://github.com/experium/react-sticky-table",
+  "homepage": "https://github.com/henrybuilt/react-sticky-table",
   "keywords": [
     "react-component",
     "table",
