@@ -41,15 +41,17 @@ h1{
 .sticky-table{
   white-space: nowrap;
   margin-top: 2rem;
+  border: 2px solid #e5e5e5;
 }
-.sticky-table .cell{
+.sticky-table .sticky-table-cell{
   padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid #e5e5e5;
+}
+.sticky-table .sticky-table-corner, .sticky-table .sticky-table-column{
+  border-right: 2px solid #e5e5e5;
 }
 .sticky-table .sticky-header{
   margin-top: 0;
-}
-.sticky-table .sticky-table-y-wrapper .cell{
-  border-bottom: 2px solid #e5e5e5;
 }
 
 @media only screen and (max-device-width : 736px) {
