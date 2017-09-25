@@ -28,7 +28,6 @@
     "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js --require ignore-styles --require src/__tests__/config.js"
   },
   "scripts": {
-    "start": "webpack-dev-server",
     "build": "npm run build-js && npm run build-css",
     "build-js": "babel --plugins 'transform-es2015-modules-umd' src --ignore __tests__ --out-dir ./dist",
     "build-css": "cat src/**/*.css src/*.css > dist/react-sticky-table.css",
@@ -62,15 +61,7 @@
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
     "prop-types": "^15.5.7",
-    "sinon": "^1.17.3",
-    "clean-webpack-plugin": "^0.1.16",
-    "css-loader": "^0.28.1",
-    "extract-text-webpack-plugin": "^2.1.0",
-    "html-loader": "^0.4.5",
-    "html-webpack-plugin": "^2.28.0",
-    "style-loader": "^0.17.0",
-    "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.4"
+    "sinon": "^1.17.3"
   },
   "peerDependencies": {
     "react": "^15.0.0",
