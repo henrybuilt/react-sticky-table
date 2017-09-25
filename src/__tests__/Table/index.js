@@ -16,7 +16,7 @@ describe('Table', () => {
       </Table>
     );
 
-    expect(table.find('.row')).to.have.length(1);
-    expect(table.find('.cell')).to.have.length(2);
+    expect(table.find('.sticky-table-row')).to.have.length(1);
+    expect(table.find('.sticky-table-cell')).to.have.length(2);
   });
 });

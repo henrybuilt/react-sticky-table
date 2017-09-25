@@ -1,4 +1,4 @@
-# Sticky Table
+# React Sticky Table
 
 Responsive and dynamically-sized fixed headers and columns for tables inspired by [fixed-data-table](https://facebook.github.io/fixed-data-table/example-object-data.html)'s lack of responsiveness.
 
@@ -76,6 +76,27 @@ Disable sticky column:
 
 ```javascript
 <StickyTable stickyColumnCount={0}>
+```
+
+## Events
+
+Scroll event:
+
+```javascript
+<StickyTable onScroll={function(object) {}}>
+```
+
+Scroll event object:
+
+```javascript
+{
+  scrollTop: 0,
+  scrollHeight: 2304,
+  clientHeight: 259,
+  scrollLeft: 0,
+  scrollWidth: 27953,
+  clientWidth: 887
+}
 ```
 
 ## License

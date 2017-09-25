@@ -2,51 +2,45 @@
   position: relative;
   height: 100%;
   overflow: hidden;
-  border: 2px solid #e5e5e5;
+  box-sizing: border-box;
 }
-.sticky-table .sticky-corner {
+.sticky-table .sticky-table-corner {
   position: absolute;
   left: 0;
   top: 0;
   z-index: 3;
 }
-.sticky-table .sticky-corner .cell{
-  border-right: 2px solid #e5e5e5;
-  border-bottom: 2px solid #e5e5e5;
-}
-.sticky-table .sticky-header {
+.sticky-table .sticky-table-header {
   position: absolute;
-  margin-top: -2px;
   z-index: 2;
 }
-.sticky-table .sticky-header .cell {
-  border-bottom: 2px solid #e5e5e5;
-  transition: 0.2s;
-}
-.sticky-table .sticky-column, .sticky-table .sticky-header, .sticky-table .sticky-corner {
+.sticky-table .sticky-table-column,
+.sticky-table .sticky-table-header,
+.sticky-table .sticky-table-corner {
   background-color: #fff;
   display: block;
 }
-.sticky-table .sticky-column {
+.sticky-table .sticky-table-column {
   position: absolute;
   z-index: 1;
-  border-right: 2px solid #e5e5e5;
 }
-.sticky-table .sticky-table-x-wrapper, .sticky-table .sticky-table-y-wrapper {
+.sticky-table .sticky-table-x-wrapper,
+.sticky-table .sticky-table-y-wrapper {
   z-index: 0;
   position: relative;
   -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
 }
 .sticky-table .sticky-table-x-wrapper {
+  min-height: 100%;
   width: 100%;
   overflow-x: auto;
 }
 .sticky-table .sticky-table-y-wrapper {
   height: 100%;
   overflow-y: auto;
-  /* Hack to hide scrollbars */
-  padding-right: 17px;
   margin-right: -17px;
+  padding-right: 17px;
 }
 /*
 Hack to make table paint on it's own layer.
@@ -54,16 +48,18 @@ Because of this it won't paint when the scrollbar paints.
 This one was crucial for performance.
 Scrolling is probably 10-20x smoother.
 */
-.sticky-table .sticky-table-x-wrapper .table{
+.sticky-table .sticky-table-x-wrapper .sticky-table-container {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 }
 
 /* Scrollbars */
-.sticky-table-y-wrapper::-webkit-scrollbar, .sticky-table-x-wrapper::-webkit-scrollbar {
+.sticky-table-y-wrapper::-webkit-scrollbar,
+.sticky-table-x-wrapper::-webkit-scrollbar {
   display: none;
 }
-.sticky-table #x-scrollbar, .sticky-table #y-scrollbar {
+.sticky-table #x-scrollbar,
+.sticky-table #y-scrollbar {
   position: absolute;
   background-color: transparent;
   z-index: 5;
@@ -75,7 +71,6 @@ Scrolling is probably 10-20x smoother.
   left: 0px;
   bottom: 0px;
   height: 20px;
-  width: 100%;
 }
 .sticky-table #y-scrollbar {
   right: 0px;
