@@ -287,7 +287,7 @@
       value: function setRowHeights() {
         var r, cellToCopy, height;
 
-        if (this.props.stickyColumnsCount) {
+        if (this.props.stickyColumnCount) {
           for (r = 0; r < this.rowCount; r++) {
             cellToCopy = this.realTable.childNodes[r].firstChild;
 
@@ -343,7 +343,7 @@
     }, {
       key: 'getStickyColumns',
       value: function getStickyColumns(rows) {
-        var columnsCount = this.props.stickyColumnsCount;
+        var columnsCount = this.props.stickyColumnCount;
         var cells;
         var stickyRows = [];
 
@@ -378,7 +378,7 @@
     }, {
       key: 'getStickyCorner',
       value: function getStickyCorner(rows) {
-        var columnsCount = this.props.stickyColumnsCount;
+        var columnsCount = this.props.stickyColumnCount;
         var cells;
         var stickyCorner = [];
 
@@ -414,10 +414,10 @@
         this.columnCount = rows[0] && _react2.default.Children.toArray(rows[0].props.children).length || 0;
 
         if (rows.length) {
-          if (this.props.stickyColumnsCount > 0 && this.stickyHeaderCount > 0) {
+          if (this.props.stickyColumnCount > 0 && this.stickyHeaderCount > 0) {
             stickyCorner = this.getStickyCorner(rows);
           }
-          if (this.props.stickyColumnsCount > 0) {
+          if (this.props.stickyColumnCount > 0) {
             stickyColumn = this.getStickyColumns(rows);
           }
           if (this.stickyHeaderCount > 0) {
@@ -487,13 +487,13 @@
 
   StickyTable.propTypes = {
     stickyHeaderCount: _propTypes2.default.number,
-    stickyColumnsCount: _propTypes2.default.number,
+    stickyColumnCount: _propTypes2.default.number,
 
     onScroll: _propTypes2.default.func
   };
   StickyTable.defaultProps = {
     stickyHeaderCount: 1,
-    stickyColumnsCount: 1
+    stickyColumnCount: 1
   };
   exports.StickyTable = StickyTable;
   exports.Table = _Table2.default;

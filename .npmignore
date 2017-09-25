@@ -8,5 +8,4 @@
 .eslintrc
 npm-debug.log
 lib
-examples
 webpack.config.js
