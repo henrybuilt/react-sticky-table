@@ -1,3 +1,4 @@
+/*global define b:true*/
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
     define(['exports', 'react', 'prop-types', './Table', './Row', './Cell', 'element-resize-event'], factory);
@@ -295,9 +296,16 @@
               height = this.getSize(cellToCopy).height;
               this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
 
-              if (r === 0 && this.stickyCorner.firstChild.childNodes[r]) {
-                this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
+              if(this.props.hasOwnProperty('stickyHeaderCount')){
+                if (r < this.props.stickyHeaderCount && this.stickyCorner.firstChild.childNodes[r]) {
+                  this.stickyCorner.firstChild.childNodes[r].firstChild.style.height = height + 'px';
+                }
+              }else{
+                if (r === 0 && this.stickyCorner.firstChild.childNodes[r]) {
+                  this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
+                }
               }
+              
             }
           }
         }
@@ -332,10 +340,15 @@
                 cell.style.minWidth = width + 'px';
 
                 stickyWidth += width;
+
               }
             }
           }
-
+          
+          if(this.stickyCorner.firstChild !== undefined){
+            this.stickyCorner.firstChild.style.width = width + 'px'
+            this.stickyCorner.firstChild.style.minWidth = width + 'px';
+          }
           this.stickyColumn.firstChild.style.width = stickyWidth + 'px';
           this.stickyColumn.firstChild.style.minWidth = stickyWidth + 'px';
         }
@@ -362,30 +375,40 @@
     }, {
       key: 'getStickyHeader',
       value: function getStickyHeader(rows) {
-        var row = rows[0];
         var cells = [];
+        var rowCount = this.props.stickyHeaderCount;
+        var stickyRows = [];
+        var stickyCols = rows.slice(0, rowCount);
 
-        _react2.default.Children.toArray(row.props.children).forEach(function (cell, c) {
-          cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, key: c }));
-        });
+        stickyCols.forEach(function (stickycells, r) {
+        
+          if(cells[r] === undefined){
+            cells[r] = [];
+          }
+          _react2.default.Children.toArray(stickycells.props.children).forEach(function (cell, c) {
+            cells[r].push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, key: 'header-cell'+c }));
+          });
 
-        return _react2.default.createElement(
-          _Row2.default,
-          _extends({}, row.props, { id: 'sticky-header-row' }),
-          cells
-        );
+          stickyRows.push(_react2.default.createElement(
+            _Row2.default,
+            _extends({}, stickycells.props, { id:  'sticky-header-row' + r, key:'header-row'+r }),
+            cells[r]
+          ));
+        })
+        
+        return stickyRows;
       }
     }, {
       key: 'getStickyCorner',
       value: function getStickyCorner(rows) {
         var columnsCount = this.props.stickyColumnCount;
+        var rowsCount = this.props.stickyHeaderCount;
         var cells;
         var stickyCorner = [];
 
         rows.forEach(function (row, r) {
-          if (r === 0) {
+          if (r < rowsCount) {
             cells = _react2.default.Children.toArray(row.props.children);
-
             stickyCorner.push(_react2.default.createElement(
               _Row2.default,
               _extends({}, row.props, { id: '', key: r }),
