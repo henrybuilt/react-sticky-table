@@ -195,7 +195,9 @@
 
       _this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : _this.stickyHeaderCount || 1;
 
-      _this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+      if (typeof navigator != 'undefined') {
+        _this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+      }
       return _this;
     }
 
