@@ -57,8 +57,6 @@ class StickyTable extends PureComponent {
       this.stickyCorner = this.table.querySelector('#sticky-table-corner');
       this.setScrollData();
 
-      elementResizeEvent(this.realTable, this.onResize);
-
       this.onResize();
       setTimeout(this.onResize);
       this.addScrollBarEventHandlers();
@@ -78,7 +76,6 @@ class StickyTable extends PureComponent {
       this.yWrapper.removeEventListener('scroll', this.scrollYScrollbar);
       this.yScrollbar.removeEventListener('scroll', this.onScrollBarY);
 
-      elementResizeEvent.unbind(this.realTable);
     }
   }
 
@@ -435,7 +432,7 @@ class StickyTable extends PureComponent {
             <Table>{stickyColumn}</Table>
           </div>
           <div className='sticky-table-x-wrapper' id='sticky-table-x-wrapper'>
-            <Table>{rows}</Table>
+            <Table onResize={this.onResize}>{rows}</Table>
           </div>
         </div>
       </div>

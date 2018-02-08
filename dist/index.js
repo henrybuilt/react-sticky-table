@@ -215,8 +215,6 @@
           this.stickyCorner = this.table.querySelector('#sticky-table-corner');
           this.setScrollData();
 
-          elementResizeEvent(this.realTable, this.onResize);
-
           this.onResize();
           setTimeout(this.onResize);
           this.addScrollBarEventHandlers();
@@ -237,8 +235,6 @@
 
           this.yWrapper.removeEventListener('scroll', this.scrollYScrollbar);
           this.yScrollbar.removeEventListener('scroll', this.onScrollBarY);
-
-          elementResizeEvent.unbind(this.realTable);
         }
       }
     }, {
@@ -473,7 +469,7 @@
               { className: 'sticky-table-x-wrapper', id: 'sticky-table-x-wrapper' },
               _react2.default.createElement(
                 _Table2.default,
-                null,
+                { onResize: this.onResize },
                 rows
               )
             )
