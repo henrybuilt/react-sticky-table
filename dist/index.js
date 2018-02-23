@@ -104,7 +104,7 @@
 
       var _this = _possibleConstructorReturn(this, (StickyTable.__proto__ || Object.getPrototypeOf(StickyTable)).call(this, props));
 
-      _this.id = Math.floor(Math.random() * 1000000000) + ''; //TODO make uuid
+      _this.id = Math.floor(Math.random() * 1000000000) + '';
 
       _this.rowCount = 0;
       _this.columnCount = 0;
@@ -120,6 +120,11 @@
       });
       return _this;
     }
+
+    /**
+     * @returns {undefined}
+     */
+
 
     _createClass(StickyTable, [{
       key: 'componentDidMount',
@@ -144,8 +149,9 @@
 
           this.setScrollData();
 
+          this.considerResizing();
           setTimeout(function () {
-            return _this2.considerResizing({ forceCellTableResize: true });
+            return _this2.considerResizing();
           });
 
           this.resizeInterval = setInterval(this.considerResizing, 60);
@@ -326,43 +332,41 @@
       value: function setRowHeights() {
         var _this3 = this;
 
+        var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow, row;
+
         if (this.rowCount > 0 && this.props.stickyColumnCount > 0) {
-          var bodyRows = this.dom.bodyTable.childNodes;
-          var stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
+          bodyRows = this.dom.bodyTable.childNodes;
+          stickyColumnRows = this.dom.stickyColumnTable.childNodes;
 
-          var stickyCornerRows = this.dom.stickyCornerTable.childNodes;
-          var stickyColumnRows = this.dom.stickyColumnTable.childNodes;
+          stickyCornerRows = this.dom.stickyCornerTable.childNodes;
+          stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
 
-          var resizeRow = function resizeRow(row) {
-            var bodyCell, columnCell;
+          resizeRow = function resizeRow(row) {
+            cells = [];
 
             if (row < _this3.props.stickyHeaderCount) {
               //It's a sticky column
-              columnCell = stickyCornerRows[row].childNodes[0];
-              bodyCell = stickyHeaderRows[row].childNodes[0];
+              cells[0] = stickyCornerRows[row].childNodes[0];
+              cells[1] = stickyHeaderRows[row].childNodes[0];
             } else {
               //It's a body column
-              columnCell = stickyColumnRows[row - _this3.props.stickyHeaderCount].childNodes[0];
-              bodyCell = bodyRows[row - _this3.props.stickyHeaderCount].childNodes[0];
+              cells[0] = stickyColumnRows[row - _this3.props.stickyHeaderCount].childNodes[0];
+              cells[1] = bodyRows[row - _this3.props.stickyHeaderCount].childNodes[0];
             }
 
-            if (bodyCell && columnCell) {
-              var cells = [columnCell, bodyCell];
+            cells.forEach(function (cell) {
+              return cell.style.height = '';
+            });
 
-              cells.forEach(function (cell) {
-                return cell.style.height = '';
-              });
+            columnHeight = Math.max(_this3.getNodeSize(cells[0]).height, _this3.getNodeSize(cells[1]).height);
 
-              var columnHeight = Math.max(_this3.getNodeSize(bodyCell).height, _this3.getNodeSize(columnCell).height);
-
-              cells.forEach(function (cell) {
-                return cell.style.height = Math.round(columnHeight) + 'px';
-              });
-            }
+            cells.forEach(function (cell) {
+              return cell.style.height = Math.round(columnHeight) + 'px';
+            });
           };
 
-          for (var row = 0; row < this.rowCount; row++) {
-            resizeRow(row);
+          for (row = 0; row < this.rowCount; row++) {
+            setTimeout(resizeRow(row));
           }
         }
       }
@@ -371,47 +375,43 @@
       value: function setColumnWidths() {
         var _this4 = this;
 
+        var firstBodyRowCells, firstStickyHeaderRowCells, firstStickyCornerRowCells, firstStickyColumnRowCells, cells, resizeColumn, column;
+
         if (this.columnCount > 0 && this.props.stickyHeaderCount > 0) {
-          var firstBodyRowCells = this.dom.bodyTable.childNodes[0].childNodes;
-          var firstStickyHeaderRowCells = this.dom.stickyHeaderTable.childNodes[0].childNodes;
+          firstBodyRowCells = this.dom.bodyTable.childNodes[0].childNodes;
+          firstStickyHeaderRowCells = this.dom.stickyHeaderTable.childNodes[0].childNodes;
 
-          var firstStickyCornerRowCells = this.dom.stickyCornerTable.childNodes[0].childNodes;
-          var firstStickyColumnRowCells = this.dom.stickyColumnTable.childNodes[0].childNodes;
+          firstStickyCornerRowCells = this.dom.stickyCornerTable.childNodes[0].childNodes;
+          firstStickyColumnRowCells = this.dom.stickyColumnTable.childNodes[0].childNodes;
 
-          var resizeColumn = function resizeColumn(column) {
-            var bodyCell, headerCell;
+          resizeColumn = function resizeColumn(column) {
+            cells = [];
 
             if (column < _this4.props.stickyColumnCount) {
               //It's a sticky column
-              bodyCell = firstStickyColumnRowCells[column];
-              headerCell = firstStickyCornerRowCells[column];
+              cells[0] = firstStickyColumnRowCells[column];
+              cells[1] = firstStickyCornerRowCells[column];
             } else {
               //It's a body column
-              bodyCell = firstBodyRowCells[column - _this4.props.stickyColumnCount];
-              headerCell = firstStickyHeaderRowCells[column - _this4.props.stickyColumnCount];
+              cells[0] = firstBodyRowCells[column - _this4.props.stickyColumnCount];
+              cells[1] = firstStickyHeaderRowCells[column - _this4.props.stickyColumnCount];
             }
 
-            if (bodyCell && headerCell) {
-              var cells = [headerCell, bodyCell];
+            //IMPORTANT: minWidth is a necessary property here
+            //because display: table-cell desparately wants to be dynamic/minimum in size
+            cells.forEach(function (cell) {
+              return cell.style.width = cell.style.minWidth = '';
+            });
 
-              //IMPORTANT: minWidth is a necessary property here
-              //because display: table-cell desparately wants to be dynamic/minimum in size
-              cells.forEach(function (cell) {
-                cell.style.width = '';
-                cell.style.minWidth = '';
-              });
+            var columnWidth = Math.max(_this4.getNodeSize(cells[0]).width, _this4.getNodeSize(cells[1]).width);
 
-              var columnWidth = Math.max(_this4.getNodeSize(bodyCell).width, _this4.getNodeSize(headerCell).width);
-
-              cells.forEach(function (cell) {
-                cell.style.width = columnWidth + 'px';
-                cell.style.minWidth = columnWidth + 'px';
-              });
-            }
+            cells.forEach(function (cell) {
+              return cell.style.width = cell.style.minWidth = columnWidth + 'px';
+            });
           };
 
-          for (var column = 0; column < this.columnCount; column++) {
-            resizeColumn(column);
+          for (column = 0; column < this.columnCount; column++) {
+            setTimeout(resizeColumn(column));
           }
         }
       }
@@ -467,12 +467,14 @@
     }, {
       key: 'getRowSubset',
       value: function getRowSubset(rows, includeRow, includeColumn) {
-        var stickyRows = [];
+        var stickyRows = [],
+            cells,
+            cellsSubset;
 
         rows.forEach(function (row, r) {
           if (includeRow(r)) {
-            var cells = _react2.default.Children.toArray(row.props.children);
-            var cellsSubset = [];
+            cells = _react2.default.Children.toArray(row.props.children);
+            cellsSubset = [];
 
             cells.forEach(function (cell, c) {
               if (includeColumn(c)) {

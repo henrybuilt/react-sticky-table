@@ -66,7 +66,8 @@ class StickyTable extends PureComponent {
 
       this.setScrollData();
 
-      setTimeout(() => this.considerResizing({forceCellTableResize: true}));
+      this.considerResizing();
+      setTimeout(() => this.considerResizing());
 
       this.resizeInterval = setInterval(this.considerResizing, 60);
 
@@ -282,12 +283,14 @@ class StickyTable extends PureComponent {
 
     if (this.rowCount > 0 && this.props.stickyColumnCount > 0) {
       bodyRows = this.dom.bodyTable.childNodes;
-      stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
-
-      stickyCornerRows = this.dom.stickyCornerTable.childNodes;
       stickyColumnRows = this.dom.stickyColumnTable.childNodes;
 
+      stickyCornerRows = this.dom.stickyCornerTable.childNodes;
+      stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
+
       resizeRow = row => {
+        cells = [];
+
         if (row < this.props.stickyHeaderCount) { //It's a sticky column
           cells[0] = stickyCornerRows[row].childNodes[0];
           cells[1] = stickyHeaderRows[row].childNodes[0];
@@ -298,13 +301,13 @@ class StickyTable extends PureComponent {
 
         cells.forEach(cell => cell.style.height = '');
 
-        columnHeight = Math.max(this.getNodeSize(cells[0]).height, this.getNodeSize(cells[0]).height);
+        columnHeight = Math.max(this.getNodeSize(cells[0]).height, this.getNodeSize(cells[1]).height);
 
         cells.forEach(cell => cell.style.height = `${Math.round(columnHeight)}px`);
       };
 
       for (row = 0; row < this.rowCount; row++) {
-        resizeRow(row);
+        setTimeout(resizeRow(row));
       }
     }
   }
@@ -325,6 +328,8 @@ class StickyTable extends PureComponent {
       firstStickyColumnRowCells = this.dom.stickyColumnTable.childNodes[0].childNodes;
 
       resizeColumn = column => {
+        cells = [];
+
         if (column < this.props.stickyColumnCount) { //It's a sticky column
           cells[0] = firstStickyColumnRowCells[column];
           cells[1] = firstStickyCornerRowCells[column];
@@ -337,13 +342,13 @@ class StickyTable extends PureComponent {
         //because display: table-cell desparately wants to be dynamic/minimum in size
         cells.forEach(cell => cell.style.width = cell.style.minWidth = '');
 
-        var columnWidth = Math.max(this.getNodeSize(bodyCell).width, this.getNodeSize(headerCell).width);
+        var columnWidth = Math.max(this.getNodeSize(cells[0]).width, this.getNodeSize(cells[1]).width);
 
         cells.forEach(cell => cell.style.width = cell.style.minWidth = `${columnWidth}px`);
       };
 
       for (column = 0; column < this.columnCount; column++) {
-        resizeColumn(column);
+        setTimeout(resizeColumn(column));
       }
     }
   }

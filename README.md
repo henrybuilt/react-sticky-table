@@ -62,8 +62,8 @@ export default class BasicExample extends Component {
 
 ## Options
 
-- `stickyHeaderCount`: default: `1`, valid: `any integer >= 0`
-- `stickyColumnCount`: default: `1`, valid: `any integer >= 0`
+- `stickyHeaderCount`: default: `1`, value: `any integer >= 0`
+- `stickyColumnCount`: default: `1`, value: `any integer >= 0`
 
 Disable sticky header:
 

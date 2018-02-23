@@ -37,7 +37,7 @@ describe('StickyTable', () => {
       </StickyTable>
     );
 
-    expect(table.find('.sticky-table-cell')).to.have.length(4); //2 body, 2 header
+    expect(table.find('.sticky-table-cell')).to.have.length(4);
     expect(table.find('.sticky-table-column .sticky-table-cell')).to.have.length(0);
   });
 
