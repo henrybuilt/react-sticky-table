@@ -6,15 +6,20 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 ## Features
 
-- Optional fixed column & header
+- Any number of fixed columns & headers
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
-- Rows and columns resize as content resizes
+- Table rows/columns resize as content resizes
 - Custom cells (just make sure your custom cell has `display: table-cell` set)
 - Multiple tables per page
 - Scrollbars that are smooth and visible at all times
+- Native vertical scrolling
+- 0 dependencies
 
-Doesn't yet support: Multiple columns/headers, client side sorting, or IE <= 7.
+#### Doesn't yet support
+
+- Client side sorting
+- IE <= 7
 
 ## Getting Started
 
@@ -24,7 +29,7 @@ Install `react-sticky-table` using `npm`.
 npm install react-sticky-table --save
 ```
 
-Make sure you import the mandatory stylesheet: [react-sticky-table/dist/react-sticky-table.css](https://github.com/henrybuilt/react-sticky-table/blob/master/dist/react-sticky-table.css). Feel free to overwrite it, though. It should be unobtrusive.
+Make sure you import the mandatory stylesheet: [react-sticky-table/dist/react-sticky-table.css](https://github.com/henrybuilt/react-sticky-table/blob/master/dist/react-sticky-table.css). It should be unobtrusive.
 
 ## Example
 ```javascript
@@ -57,14 +62,8 @@ export default class BasicExample extends Component {
 
 ## Options
 
-Default settings:
-
-```javascript
-{
-  stickyHeaderCount: 1,
-  stickyColumnCount: 1
-}
-```
+- `stickyHeaderCount`: default: `1`, valid: `any integer >= 0`
+- `stickyColumnCount`: default: `1`, valid: `any integer >= 0`
 
 Disable sticky header:
 
@@ -83,7 +82,7 @@ Disable sticky column:
 Scroll event:
 
 ```javascript
-<StickyTable onScroll={function(object) {}}>
+<StickyTable onScroll={event => {}}>
 ```
 
 Scroll event object:

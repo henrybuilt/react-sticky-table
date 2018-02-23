@@ -5,24 +5,30 @@
   box-sizing: border-box;
 }
 .sticky-table .sticky-table-corner {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 3;
+  z-index: 4;
 }
 .sticky-table .sticky-table-header {
-  position: absolute;
-  z-index: 2;
+  z-index: 3;
+  overflow: hidden;
+}
+.sticky-table .sticky-table-column {
+  min-height: 100%;
 }
 .sticky-table .sticky-table-column,
 .sticky-table .sticky-table-header,
-.sticky-table .sticky-table-corner {
-  background-color: #fff;
-  display: block;
+.sticky-table .sticky-table-corner,
+.sticky-table .sticky-table-x-wrapper {
+  display: inline-block;
+  vertical-align: top;
 }
-.sticky-table .sticky-table-column {
-  position: absolute;
-  z-index: 1;
+.sticky-table .sticky-table-column.hidden,
+.sticky-table .sticky-table-header.hidden,
+.sticky-table .sticky-table-corner.hidden {
+  display: none;
+}
+.sticky-table .sticky-table-y-wrapper,
+.sticky-table .sticky-table-header-wrapper {
+  white-space: nowrap;
 }
 .sticky-table .sticky-table-x-wrapper,
 .sticky-table .sticky-table-y-wrapper {
@@ -33,22 +39,23 @@
 }
 .sticky-table .sticky-table-x-wrapper {
   min-height: 100%;
-  width: 100%;
   overflow-x: auto;
 }
 .sticky-table .sticky-table-y-wrapper {
   height: 100%;
   overflow-y: auto;
-  margin-right: -17px;
-  padding-right: 17px;
+  padding-bottom: 1px;
+}
+.sticky-table .sticky-table-table {
+  overflow: visible;
 }
 /*
 Hack to make table paint on it's own layer.
 Because of this it won't paint when the scrollbar paints.
 This one was crucial for performance.
-Scrolling is probably 10-20x smoother.
+Scrolling is ~10-20x smoother.
 */
-.sticky-table .sticky-table-x-wrapper .sticky-table-container {
+.sticky-table .sticky-table-table {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 }
@@ -58,8 +65,8 @@ Scrolling is probably 10-20x smoother.
 .sticky-table-x-wrapper::-webkit-scrollbar {
   display: none;
 }
-.sticky-table #x-scrollbar,
-.sticky-table #y-scrollbar {
+.sticky-table .x-scrollbar,
+.sticky-table .y-scrollbar {
   position: absolute;
   background-color: transparent;
   z-index: 5;
@@ -67,20 +74,21 @@ Scrolling is probably 10-20x smoother.
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 }
-.sticky-table #x-scrollbar {
+.sticky-table .x-scrollbar {
   left: 0px;
   bottom: 0px;
-  height: 20px;
+  width: 100%;
+  height: 17px;
 }
-.sticky-table #y-scrollbar {
+.sticky-table .y-scrollbar {
   right: 0px;
   top: 0px;
   height: 100%;
-  width: 20px;
+  width: 17px;
 }
-.sticky-table #x-scrollbar div {
+.sticky-table .x-scrollbar div {
   height: 100%;
 }
-.sticky-table #y-scrollbar div {
+.sticky-table .y-scrollbar div {
   width: 100%;
 }

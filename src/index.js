@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-var elementResizeEvent = require('element-resize-event');
-
 import Table from './Table';
 import Row from './Row';
 import Cell from './Cell';
@@ -19,7 +17,6 @@ class StickyTable extends PureComponent {
   static propTypes = {
     stickyHeaderCount: PropTypes.number,
     stickyColumnCount: PropTypes.number,
-
     onScroll: PropTypes.func
   };
 
@@ -40,89 +37,98 @@ class StickyTable extends PureComponent {
 
     this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : (this.stickyHeaderCount || 1);
 
-    this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    this.isFirefox = navigator && navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+
+    ['onScrollX', 'onScrollBarX', 'onScrollBarY', 'scrollXScrollbar', 'scrollYScrollbar', 'considerResizing'].forEach(fn => {
+      this[fn] = this[fn].bind(this);
+    });
   }
 
+  /**
+   * @returns {undefined}
+   */
   componentDidMount() {
-    this.table = document.getElementById('sticky-table-' + this.id);
+    this.dom = {};
 
-    if (this.table) {
-      this.realTable = this.table.querySelector('#sticky-table-x-wrapper').firstChild;
-      this.xScrollbar = this.table.querySelector('#x-scrollbar');
-      this.yScrollbar = this.table.querySelector('#y-scrollbar');
-      this.xWrapper = this.table.querySelector('#sticky-table-x-wrapper');
-      this.yWrapper = this.table.querySelector('#sticky-table-y-wrapper');
-      this.stickyHeader = this.table.querySelector('#sticky-table-header');
-      this.stickyColumn = this.table.querySelector('#sticky-table-column');
-      this.stickyCorner = this.table.querySelector('#sticky-table-corner');
+    if (document.getElementById('sticky-table-' + this.id)) {
+      this.dom.wrapper = document.getElementById('sticky-table-' + this.id);
+      this.dom.bodyTable = this.dom.wrapper.querySelector('.sticky-table-x-wrapper .sticky-table-table');
+      this.dom.xScrollbar = this.dom.wrapper.querySelector('.x-scrollbar');
+      this.dom.yScrollbar = this.dom.wrapper.querySelector('.y-scrollbar');
+      this.dom.xWrapper = this.dom.wrapper.querySelector('.sticky-table-x-wrapper');
+      this.dom.yWrapper = this.dom.wrapper.querySelector('.sticky-table-y-wrapper');
+      this.dom.stickyHeader = this.dom.wrapper.querySelector('.sticky-table-header');
+      this.dom.stickyColumn = this.dom.wrapper.querySelector('.sticky-table-column');
+      this.dom.stickyCorner = this.dom.wrapper.querySelector('.sticky-table-corner');
+      this.dom.stickyHeaderTable = this.dom.stickyHeader.querySelector('.sticky-table-table');
+      this.dom.stickyColumnTable = this.dom.stickyColumn.querySelector('.sticky-table-table');
+      this.dom.stickyCornerTable = this.dom.stickyCorner.querySelector('.sticky-table-table');
+
       this.setScrollData();
 
-      elementResizeEvent(this.realTable, this.onResize);
+      setTimeout(() => this.considerResizing({forceCellTableResize: true}));
 
-      this.onResize();
-      setTimeout(this.onResize);
-      this.addScrollBarEventHandlers();
-    }
-  }
+      this.resizeInterval = setInterval(this.considerResizing, 60);
 
-  componentDidUpdate() {
-    this.onResize();
-  }
+      //X Scrollbars
+      this.dom.xWrapper.addEventListener('scroll', this.onScrollX);
+      this.dom.xWrapper.addEventListener('scroll', this.scrollXScrollbar);
+      this.dom.xScrollbar.addEventListener('scroll', this.onScrollBarX);
 
-  componentWillUnmount() {
-    if (this.table) {
-      this.xWrapper.removeEventListener('scroll', this.onScrollX);
-      this.xWrapper.removeEventListener('scroll', this.scrollXScrollbar);
-      this.xScrollbar.removeEventListener('scroll', this.onScrollBarX);
-
-      this.yWrapper.removeEventListener('scroll', this.scrollYScrollbar);
-      this.yScrollbar.removeEventListener('scroll', this.onScrollBarY);
-
-      elementResizeEvent.unbind(this.realTable);
+      //Y Scrollbars
+      this.dom.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
+      this.dom.yScrollbar.addEventListener('scroll', this.onScrollBarY);
     }
   }
 
   /**
-   * Link scrolling on either axis to scrolling in the scrollbar elements
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  addScrollBarEventHandlers() {
-    this.xWrapper.addEventListener('scroll', this.onScrollX);
+  componentDidUpdate() {
+    this.considerResizing();
+  }
 
-    //X Scrollbars
-    this.xWrapper.addEventListener('scroll', this.scrollXScrollbar);
-    this.xScrollbar.addEventListener('scroll', this.onScrollBarX);
+  /**
+   * @returns {undefined}
+   */
+  componentWillUnmount() {
+    if (this.dom.wrapper) {
+      this.dom.xWrapper.removeEventListener('scroll', this.onScrollX);
+      this.dom.xWrapper.removeEventListener('scroll', this.scrollXScrollbar);
+      this.dom.xScrollbar.removeEventListener('scroll', this.onScrollBarX);
 
-    //Y Scrollbars
-    this.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
-    this.yScrollbar.addEventListener('scroll', this.onScrollBarY);
+      this.dom.yWrapper.removeEventListener('scroll', this.scrollYScrollbar);
+      this.dom.yScrollbar.removeEventListener('scroll', this.onScrollBarY);
+
+      clearInterval(this.resizeInterval);
+    }
   }
 
   /**
    * Set scroll data on resize for handle scroll events
    * @returns {object} current scroll data object
    */
-  setScrollData = () => {
+  setScrollData() {
     this.suppressScrollX = false;
     this.suppressScrollY = false;
 
     return this.scrollData = {
-      scrollTop: this.yScrollbar.scrollTop,
-      scrollHeight: this.yScrollbar.scrollHeight,
-      clientHeight: this.yScrollbar.clientHeight,
-      scrollLeft: this.xScrollbar.scrollLeft,
-      scrollWidth: this.xScrollbar.scrollWidth,
-      clientWidth: this.xScrollbar.clientWidth
+      scrollTop: this.dom.yScrollbar.scrollTop,
+      scrollHeight: this.dom.yScrollbar.scrollHeight,
+      clientHeight: this.dom.yScrollbar.clientHeight,
+      scrollLeft: this.dom.xScrollbar.scrollLeft,
+      scrollWidth: this.dom.xScrollbar.scrollWidth,
+      clientWidth: this.dom.xScrollbar.clientWidth
     };
   }
 
   /**
    * Handle horizontal scroll wrapper X event
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  onScrollBarX = () => {
+  onScrollBarX() {
     if (!this.suppressScrollX) {
-      this.scrollData.scrollLeft = this.xWrapper.scrollLeft = this.xScrollbar.scrollLeft;
+      this.scrollData.scrollLeft = this.dom.xWrapper.scrollLeft = this.dom.xScrollbar.scrollLeft;
       this.suppressScrollX = true;
     } else {
       this.handleScroll();
@@ -132,11 +138,11 @@ class StickyTable extends PureComponent {
 
   /**
    * Handle vertical scroll wrapper Y event
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  onScrollBarY = () => {
+  onScrollBarY() {
     if (!this.suppressScrollY) {
-      this.scrollData.scrollTop = this.yWrapper.scrollTop = this.yScrollbar.scrollTop;
+      this.scrollData.scrollTop = this.dom.yWrapper.scrollTop = this.dom.yScrollbar.scrollTop;
       this.suppressScrollY = true;
     } else {
       this.handleScroll();
@@ -146,20 +152,20 @@ class StickyTable extends PureComponent {
 
   /**
    * Handle horizontal scroll bar X event for header
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  onScrollX = () => {
-    var scrollLeft = Math.max(this.xWrapper.scrollLeft, 0);
-    this.stickyHeader.style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0)';
+  onScrollX() {
+    var scrollLeft = Math.max(this.dom.xWrapper.scrollLeft, 0);
+    this.dom.stickyHeaderTable.style.transform = 'translate(' + (-1 * scrollLeft) + 'px, 0) translateZ(0)';
   }
 
   /**
    * Handle horizontal scroll bar X event
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  scrollXScrollbar = () => {
+  scrollXScrollbar() {
     if (!this.suppressScrollX) {
-      this.scrollData.scrollLeft = this.xScrollbar.scrollLeft = this.xWrapper.scrollLeft;
+      this.scrollData.scrollLeft = this.dom.xScrollbar.scrollLeft = this.dom.xWrapper.scrollLeft;
       this.suppressScrollX = true;
     } else {
       this.handleScroll();
@@ -169,11 +175,11 @@ class StickyTable extends PureComponent {
 
   /**
    * Handle vertical scroll bar Y event
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  scrollYScrollbar = () => {
+  scrollYScrollbar() {
     if (!this.suppressScrollY) {
-      this.scrollData.scrollTop = this.yScrollbar.scrollTop = this.yWrapper.scrollTop;
+      this.scrollData.scrollTop = this.dom.yScrollbar.scrollTop = this.dom.yWrapper.scrollTop;
       this.suppressScrollY = true;
     } else {
       this.handleScroll();
@@ -183,9 +189,9 @@ class StickyTable extends PureComponent {
 
   /**
    * Handle scroll events
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  handleScroll = () => {
+  handleScroll() {
     if (this.props.onScroll) {
       this.props.onScroll(this.scrollData);
     }
@@ -193,196 +199,153 @@ class StickyTable extends PureComponent {
 
   /**
    * Handle real cell resize events
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  onResize = () => {
-    this.setScrollBarDims();
-    this.setScrollBarWrapperDims();
+  considerResizing({forceCellTableResize=false, forceWrapperResize=false} = {}) {
+    var wrapperSize = {width: this.dom.wrapper.offsetWidth, height: this.dom.wrapper.offsetWidth};
+    var tableCellSizes = {
+      corner: {width: this.dom.stickyCornerTable.offsetWidth, height: this.dom.stickyCornerTable.offsetHeight},
+      header: {width: this.dom.stickyHeaderTable.offsetWidth, height: this.dom.stickyHeaderTable.offsetHeight},
+      column: {width: this.dom.stickyColumnTable.offsetWidth, height: this.dom.stickyColumnTable.offsetHeight},
+      body: {width: this.dom.bodyTable.offsetWidth, height: this.dom.bodyTable.offsetHeight}
+    };
 
-    this.setRowHeights();
-    this.setColumnWidths();
+    if (forceCellTableResize || !this.oldTableCellSizes || JSON.stringify(tableCellSizes) !== JSON.stringify(this.oldTableCellSizes)) {
+      this.setRowHeights();
+      this.setColumnWidths();
 
-    this.setScrollData();
-    this.handleScroll();
+      this.oldTableCellSizes = tableCellSizes;
+    }
+
+    if (forceWrapperResize || !this.oldWrapperSize || JSON.stringify(wrapperSize) !== JSON.stringify(this.oldWrapperSize)) {
+      this.setScrollBarDims();
+      this.setScrollBarWrapperDims();
+      this.setScrollData();
+      this.handleScroll();
+
+      this.dom.xWrapper.style.maxWidth = `calc(100% - ${this.dom.stickyColumn.offsetWidth}px`;
+      this.dom.yWrapper.style.height = `calc(100% - ${this.dom.stickyHeader.offsetHeight}px`;
+
+      this.oldWrapperSize = wrapperSize;
+    }
   }
 
   /**
-   * Set
-   * @returns {null} no return necessary
+   * Set padding on scroll bars
+   * @returns {undefined}
    */
   setScrollBarPaddings() {
     var scrollPadding = '0px 0px ' + this.xScrollSize + 'px 0px';
-    this.table.style.padding = scrollPadding;
+    this.dom.wrapper.style.padding = scrollPadding;
 
     var scrollPadding = '0px ' + this.yScrollSize + 'px 0px 0px';
-    this.xWrapper.firstChild.style.padding = scrollPadding;
+    this.dom.xWrapper.firstChild.style.padding = scrollPadding;
   }
 
   /**
    * Set scroll bar wrappers size
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
-  setScrollBarWrapperDims = () => {
-    this.xScrollbar.style.width = 'calc(100% - ' + this.yScrollSize + 'px)';
-    this.yScrollbar.style.height = 'calc(100% - ' + this.stickyHeader.offsetHeight + 'px)';
-    this.yScrollbar.style.top = this.stickyHeader.offsetHeight + 'px';
+  setScrollBarWrapperDims() {
+    this.dom.yScrollbar.style.height = 'calc(100% - ' + this.dom.stickyHeader.offsetHeight + 'px)';
+    this.dom.yScrollbar.style.top = this.dom.stickyHeader.offsetHeight + 'px';
   }
 
   /**
    * Set visible scroll bar elements size
-   * @return {null} no return necessary
+   * @returns {undefined}
    */
   setScrollBarDims() {
-    this.xScrollSize = this.xScrollbar.offsetHeight - this.xScrollbar.clientHeight;
-    this.yScrollSize = this.yScrollbar.offsetWidth - this.yScrollbar.clientWidth;
+    this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
+    this.yScrollSize = this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
 
     if (!this.isFirefox) {
       this.setScrollBarPaddings();
     }
 
-    var width = this.getSize(this.realTable.firstChild).width;
-    this.xScrollbar.firstChild.style.width = width + 'px';
+    var width = this.getNodeSize(this.dom.bodyTable.firstChild).width;
+    this.dom.xScrollbar.firstChild.style.width = width + 'px';
 
-    var height = this.getSize(this.realTable).height + this.xScrollSize - this.stickyHeader.offsetHeight;
-    this.yScrollbar.firstChild.style.height = height + 'px';
+    var height = this.getNodeSize(this.dom.bodyTable).height + this.xScrollSize - this.dom.stickyHeader.offsetHeight;
+    this.dom.yScrollbar.firstChild.style.height = height + 'px';
 
-    if (this.xScrollSize) this.xScrollbar.style.height = this.xScrollSize + 1 + 'px';
-    if (this.yScrollSize)  this.yScrollbar.style.width = this.yScrollSize + 1  + 'px';
+    if (this.xScrollSize) this.dom.xScrollbar.style.height = this.xScrollSize + 1 + 'px';
+    if (this.yScrollSize)  this.dom.yScrollbar.style.width = this.yScrollSize + 1  + 'px';
   }
 
   /**
    * Get the height of each row in the table
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
   setRowHeights() {
-    var r, cellToCopy, height;
+    var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow, row;
 
-    if (this.props.stickyColumnCount) {
-      for (r = 0; r < this.rowCount; r++) {
-        cellToCopy = this.realTable.childNodes[r].firstChild;
+    if (this.rowCount > 0 && this.props.stickyColumnCount > 0) {
+      bodyRows = this.dom.bodyTable.childNodes;
+      stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
 
-        if (cellToCopy) {
-          height = this.getSize(cellToCopy).height;
-          this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
+      stickyCornerRows = this.dom.stickyCornerTable.childNodes;
+      stickyColumnRows = this.dom.stickyColumnTable.childNodes;
 
-          if (r === 0 && this.stickyCorner.firstChild.childNodes[r]) {
-            this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
-          }
+      resizeRow = row => {
+        if (row < this.props.stickyHeaderCount) { //It's a sticky column
+          cells[0] = stickyCornerRows[row].childNodes[0];
+          cells[1] = stickyHeaderRows[row].childNodes[0];
+        } else { //It's a body column
+          cells[0] = stickyColumnRows[row - this.props.stickyHeaderCount].childNodes[0];
+          cells[1] = bodyRows[row - this.props.stickyHeaderCount].childNodes[0];
         }
+
+        cells.forEach(cell => cell.style.height = '');
+
+        columnHeight = Math.max(this.getNodeSize(cells[0]).height, this.getNodeSize(cells[0]).height);
+
+        cells.forEach(cell => cell.style.height = `${Math.round(columnHeight)}px`);
+      };
+
+      for (row = 0; row < this.rowCount; row++) {
+        resizeRow(row);
       }
     }
   }
 
   /**
    * Get the width of each column in the table
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
   setColumnWidths() {
-    var c, cellToCopy, cellStyle, width, cell, stickyWidth;
+    var firstBodyRowCells, firstStickyHeaderRowCells, firstStickyCornerRowCells, firstStickyColumnRowCells,
+      cells, resizeColumn, column;
 
-    if (this.stickyHeaderCount) {
-      stickyWidth = 0;
+    if (this.columnCount > 0 && this.props.stickyHeaderCount > 0) {
+      firstBodyRowCells = this.dom.bodyTable.childNodes[0].childNodes;
+      firstStickyHeaderRowCells = this.dom.stickyHeaderTable.childNodes[0].childNodes;
 
-      for (c = 0; c < this.columnCount; c++) {
-        cellToCopy = this.realTable.firstChild.childNodes[c];
+      firstStickyCornerRowCells = this.dom.stickyCornerTable.childNodes[0].childNodes;
+      firstStickyColumnRowCells = this.dom.stickyColumnTable.childNodes[0].childNodes;
 
-        if (cellToCopy) {
-          width = this.getSize(cellToCopy).width;
-
-          cell = this.table.querySelector('#sticky-header-cell-' + c);
-
-          cell.style.width = width + 'px';
-          cell.style.minWidth = width + 'px';
-
-          const fixedColumnsHeader = this.stickyCorner.firstChild.firstChild;
-          if (fixedColumnsHeader && fixedColumnsHeader.childNodes[c]) {
-            cell = fixedColumnsHeader.childNodes[c];
-            cell.style.width = width + 'px';
-            cell.style.minWidth = width + 'px';
-
-            cell = fixedColumnsHeader.childNodes[c];
-            cell.style.width = width + 'px';
-            cell.style.minWidth = width + 'px';
-
-            stickyWidth += width;
-          }
+      resizeColumn = column => {
+        if (column < this.props.stickyColumnCount) { //It's a sticky column
+          cells[0] = firstStickyColumnRowCells[column];
+          cells[1] = firstStickyCornerRowCells[column];
+        } else { //It's a body column
+          cells[0] = firstBodyRowCells[column - this.props.stickyColumnCount];
+          cells[1] = firstStickyHeaderRowCells[column - this.props.stickyColumnCount];
         }
-      }
 
-      this.stickyColumn.firstChild.style.width = stickyWidth + 'px';
-      this.stickyColumn.firstChild.style.minWidth = stickyWidth + 'px';
+        //IMPORTANT: minWidth is a necessary property here
+        //because display: table-cell desparately wants to be dynamic/minimum in size
+        cells.forEach(cell => cell.style.width = cell.style.minWidth = '');
+
+        var columnWidth = Math.max(this.getNodeSize(bodyCell).width, this.getNodeSize(headerCell).width);
+
+        cells.forEach(cell => cell.style.width = cell.style.minWidth = `${columnWidth}px`);
+      };
+
+      for (column = 0; column < this.columnCount; column++) {
+        resizeColumn(column);
+      }
     }
-  }
-
-  /**
-   * Get the jsx cells for sticky columns by copying
-   * children elements
-   * @param {array} rows provided child row elements
-   * @returns {array} array of <Row> elements for sticky column
-   */
-  getStickyColumns(rows) {
-    const columnsCount = this.props.stickyColumnCount;
-    var cells;
-    var stickyRows = [];
-
-    rows.forEach((row, r) => {
-      cells = React.Children.toArray(row.props.children);
-
-      stickyRows.push(
-        <Row {...row.props} id='' key={r}>
-          {cells.slice(0, columnsCount)}
-        </Row>
-      );
-    });
-
-    return stickyRows;
-  }
-
-  /**
-   * Get the jsx header cells and row by copying
-   * children elements
-   * @param {array} rows provided child row elements
-   * @returns {jsx} <Row> of <Cell> elements for sticky header
-   */
-  getStickyHeader(rows) {
-    var row = rows[0];
-    var cells = [];
-
-    React.Children.toArray(row.props.children).forEach((cell, c) => {
-      cells.push(React.cloneElement(cell, {id: 'sticky-header-cell-' + c, key: c}));
-    });
-
-    return (
-      <Row {...row.props} id='sticky-header-row'>
-        {cells}
-      </Row>
-    );
-  }
-
-  /**
-   * Get the jsx cells for sticky columns by copying
-   * children elements
-   * @param {array} rows provided child row elements
-   * @returns {array} array of <Row> elements for sticky column
-   */
-  getStickyCorner(rows) {
-    const columnsCount = this.props.stickyColumnCount;
-    var cells;
-    var stickyCorner = [];
-
-    rows.forEach((row, r) => {
-      if (r === 0) {
-        cells = React.Children.toArray(row.props.children);
-
-        stickyCorner.push(
-          <Row {...row.props} id='' key={r}>
-            {cells.slice(0, columnsCount)}
-          </Row>
-        );
-      }
-    });
-
-    return stickyCorner;
   }
 
   /**
@@ -390,52 +353,91 @@ class StickyTable extends PureComponent {
    * @param  {object} node dom object
    * @return {object} dimensions
    */
-  getSize(node) {
-    var width = node ? node.getBoundingClientRect().width : 0;
-    var height = node ? node.getBoundingClientRect().height : 0;
+  getNodeSize(node) {
+    return node.getBoundingClientRect();
+  }
 
-    return {width, height};
+  getStickyColumnRows(rows) {
+    return this.getRowSubset(rows, (r => r >= this.props.stickyHeaderCount), (c => c < this.props.stickyColumnCount));
+  }
+
+  getStickyHeaderRows(rows) {
+    return this.getRowSubset(rows, (r => r < this.props.stickyHeaderCount), (c => c >= this.props.stickyColumnCount));
+  }
+
+  getStickyCornerRows(rows) {
+    return this.getRowSubset(rows, (r => r < this.props.stickyHeaderCount), (c => c < this.props.stickyColumnCount));
+  }
+
+  getBodyRows(rows) {
+    return this.getRowSubset(rows, (r => r >= this.props.stickyHeaderCount), (c => c >= this.props.stickyColumnCount));
+  }
+
+  /**
+   * Get the first n cells of the first m rows
+   * @param {array} rows array of <Row> elements
+   * @param {fn} includeRow return boolean indicating whether to include row or not
+   * @param {fn} includeColumn return boolean indicating whether to include column or not
+   * @returns {jsx} subset of row and cell elements
+   */
+  getRowSubset(rows, includeRow, includeColumn) {
+    var stickyRows = [], cells, cellsSubset;
+
+    rows.forEach((row, r) => {
+      if (includeRow(r)) {
+        cells = React.Children.toArray(row.props.children);
+        cellsSubset = [];
+
+        cells.forEach((cell, c) => {
+          if (includeColumn(c)) {
+            cellsSubset.push(cell);
+          }
+        });
+
+        stickyRows.push(
+          <Row {...row.props} id='' key={r}>
+            {cellsSubset}
+          </Row>
+        );
+      }
+    });
+
+    return stickyRows;
   }
 
   /**
    * Get the column and header to render
-   * @returns {null} no return necessary
+   * @returns {undefined}
    */
   render() {
     var rows = React.Children.toArray(this.props.children);
-    var stickyColumn, stickyHeader, stickyCorner;
+
+    var stickyCornerRows = this.getStickyCornerRows(rows);
+    var stickyColumnRows = this.getStickyColumnRows(rows);
+    var stickyHeaderRows = this.getStickyHeaderRows(rows);
+    var bodyRows = this.getBodyRows(rows);
 
     this.rowCount = rows.length;
     this.columnCount = (rows[0] && React.Children.toArray(rows[0].props.children).length) || 0;
 
-    if (rows.length) {
-      if (this.props.stickyColumnCount > 0 && this.stickyHeaderCount > 0) {
-        stickyCorner = this.getStickyCorner(rows);
-      }
-      if (this.props.stickyColumnCount > 0) {
-        stickyColumn = this.getStickyColumns(rows);
-      }
-      if (this.stickyHeaderCount > 0) {
-        stickyHeader = this.getStickyHeader(rows);
-      }
-    }
-
     return (
       <div className={'sticky-table ' + (this.props.className || '')} id={'sticky-table-' + this.id}>
-        <div id='x-scrollbar'><div></div></div>
-        <div id='y-scrollbar'><div></div></div>
-        <div className='sticky-table-corner' id='sticky-table-corner'>
-          <Table>{stickyCorner}</Table>
-        </div>
-        <div className='sticky-table-header' id='sticky-table-header'>
-          <Table>{stickyHeader}</Table>
-        </div>
-        <div className='sticky-table-y-wrapper' id='sticky-table-y-wrapper'>
-          <div className='sticky-table-column' id='sticky-table-column'>
-            <Table>{stickyColumn}</Table>
+        <div className='x-scrollbar'><div></div></div>
+        <div className='y-scrollbar'><div></div></div>
+        <div className='sticky-table-header-wrapper'>
+          <div className={['sticky-table-corner', (this.props.stickyHeaderCount && this.props.stickyColumnCount) ? '' : 'hidden'].join(' ')}>
+            <Table>{stickyCornerRows}</Table>
           </div>
-          <div className='sticky-table-x-wrapper' id='sticky-table-x-wrapper'>
-            <Table>{rows}</Table>
+          <div className={['sticky-table-header', this.props.stickyHeaderCount ? '' : 'hidden'].join(' ')}>
+            <Table>{stickyHeaderRows}</Table>
+          </div>
+        </div>
+        <div className='sticky-table-y-wrapper'>
+          <div className={['sticky-table-column', this.props.stickyColumnCount ? '' : 'hidden'].join(' ')}>
+            <Table>{stickyColumnRows}</Table>
+          </div>
+          <div className='sticky-table-x-wrapper'>
+            <Table>{bodyRows}</Table>
           </div>
         </div>
       </div>
