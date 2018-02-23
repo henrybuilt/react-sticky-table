@@ -10,9 +10,7 @@ import './index.css';
 
 export default class ResizingCells extends Component {
   onCellClick(event) {
-    if (event.target.innerHTML.indexOf('Click Me!') !== -1) {
-      event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);
-    }
+    event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);
   }
 
   render() {
@@ -23,7 +21,7 @@ export default class ResizingCells extends Component {
       cells = [];
 
       for (var c = 0; c < 20; c++) {
-        cells.push(<Cell key={c} onClick={this.onCellClick}>{(r === 0 || c === 0 ? '...' : 'Click Me!')}</Cell>);
+        cells.push(<Cell key={c} onClick={this.onCellClick}>{'Click Me!'}</Cell>);
       }
 
       rows.push(<Row key={r}>{cells}</Row>);
@@ -47,9 +45,7 @@ export default class ResizingCells extends Component {
       '  }\n'+
       '  \n'+
       '  onCellClick(event) {\n' +
-      "    if (event.target.innerHTML.indexOf('Click Me!') !== -1) {\n" +
-      "      event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);\n" +
-      '    }\n' +
+      "    event.target.innerHTML = Math.floor(Math.random() * 1000000000) + '<br>' + Math.floor(Math.random() * 1000000000);\n" +
       '  }\n' +
       '  \n' +
       '  render() {\n' +

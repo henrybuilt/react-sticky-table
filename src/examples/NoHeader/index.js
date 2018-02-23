@@ -41,7 +41,7 @@ export default class NoHeader extends Component {
       '  render() {\n' +
       '    return (\n' +
       "      <div style={{width: '100%', height: '200px'}}>\n" +
-      '        <StickyTable stickyHeaderCount={0}>\n' +
+      '        <StickyTable stickyHeaderCount={0} stickyColumnCount={2}>\n' +
       '          {this.state.rows}\n'+
       '        </StickyTable>\n' +
       '      </div>\n' +
@@ -52,7 +52,7 @@ export default class NoHeader extends Component {
     return (
       <div>
         <div style={{width: '100%', height: '200px'}}>
-          <StickyTable stickyHeaderCount={0}>
+          <StickyTable stickyHeaderCount={0} stickyColumnCount={2}>
             {rows}
           </StickyTable>
         </div>

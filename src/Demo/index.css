@@ -38,19 +38,20 @@ h1{
 }
 
 /* Custom Sticky Table Styles */
-.sticky-table{
+.sticky-table {
   white-space: nowrap;
   margin-top: 2rem;
   border: 2px solid #e5e5e5;
 }
-.sticky-table .sticky-table-cell{
+.sticky-table .sticky-table-cell {
   padding: 0.5rem 0.75rem;
   border-bottom: 2px solid #e5e5e5;
+  background-color: #fff;
 }
-.sticky-table .sticky-table-corner, .sticky-table .sticky-table-column{
+.sticky-table .sticky-table-corner, .sticky-table .sticky-table-column {
   border-right: 2px solid #e5e5e5;
 }
-.sticky-table .sticky-header{
+.sticky-table .sticky-header {
   margin-top: 0;
 }
 

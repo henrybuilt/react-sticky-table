@@ -19,7 +19,4 @@ Intended to show off React Sticky Table!
 ### Building
 
 - run `npm run build` on this branch (`gh-pages`)
-- Copy and paste `index.html` from `/build/index.html` to `/index.html`
-  - Set `<base href="https://henrybuilt.github.io/react-sticky-table/">` in `<head>` tag
-  - Set `<title>React Sticky Table</title>` in `<head>` tag
-  - Prepend both the css and js links to the built files with `build` so they look like `href="build/static/..` and are relative paths so they adhere to the `<base>` tag.
+- Update the changed built files (copy the two 8-character filename hashes from `/build/index.html` to `/index.html`)
