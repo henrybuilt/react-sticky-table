@@ -39,12 +39,14 @@
 }
 .sticky-table .sticky-table-x-wrapper {
   min-height: 100%;
+  width: 100%;
   overflow-x: auto;
 }
 .sticky-table .sticky-table-y-wrapper {
   height: 100%;
   overflow-y: auto;
-  padding-bottom: 1px;
+  margin-right: -17px;
+  padding-right: 17px;
 }
 .sticky-table .sticky-table-table {
   overflow: visible;
