@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'react', 'prop-types', './Table', './Row', './Cell', 'element-resize-event'], factory);
+    define(['exports', 'react', 'prop-types', './Table', './Row', './Cell'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('react'), require('prop-types'), require('./Table'), require('./Row'), require('./Cell'), require('element-resize-event'));
+    factory(exports, require('react'), require('prop-types'), require('./Table'), require('./Row'), require('./Cell'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.react, global.propTypes, global.Table, global.Row, global.Cell, global.elementResizeEvent);
+    factory(mod.exports, global.react, global.propTypes, global.Table, global.Row, global.Cell);
     global.index = mod.exports;
   }
-})(this, function (exports, _react, _propTypes, _Table, _Row, _Cell, elementResizeEvent) {
+})(this, function (exports, _react, _propTypes, _Table, _Row, _Cell) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -104,88 +104,6 @@
 
       var _this = _possibleConstructorReturn(this, (StickyTable.__proto__ || Object.getPrototypeOf(StickyTable)).call(this, props));
 
-      _this.setScrollData = function () {
-        _this.suppressScrollX = false;
-        _this.suppressScrollY = false;
-
-        return _this.scrollData = {
-          scrollTop: _this.yScrollbar.scrollTop,
-          scrollHeight: _this.yScrollbar.scrollHeight,
-          clientHeight: _this.yScrollbar.clientHeight,
-          scrollLeft: _this.xScrollbar.scrollLeft,
-          scrollWidth: _this.xScrollbar.scrollWidth,
-          clientWidth: _this.xScrollbar.clientWidth
-        };
-      };
-
-      _this.onScrollBarX = function () {
-        if (!_this.suppressScrollX) {
-          _this.scrollData.scrollLeft = _this.xWrapper.scrollLeft = _this.xScrollbar.scrollLeft;
-          _this.suppressScrollX = true;
-        } else {
-          _this.handleScroll();
-          _this.suppressScrollX = false;
-        }
-      };
-
-      _this.onScrollBarY = function () {
-        if (!_this.suppressScrollY) {
-          _this.scrollData.scrollTop = _this.yWrapper.scrollTop = _this.yScrollbar.scrollTop;
-          _this.suppressScrollY = true;
-        } else {
-          _this.handleScroll();
-          _this.suppressScrollY = false;
-        }
-      };
-
-      _this.onScrollX = function () {
-        var scrollLeft = Math.max(_this.xWrapper.scrollLeft, 0);
-        _this.stickyHeader.style.transform = 'translate(' + -1 * scrollLeft + 'px, 0)';
-      };
-
-      _this.scrollXScrollbar = function () {
-        if (!_this.suppressScrollX) {
-          _this.scrollData.scrollLeft = _this.xScrollbar.scrollLeft = _this.xWrapper.scrollLeft;
-          _this.suppressScrollX = true;
-        } else {
-          _this.handleScroll();
-          _this.suppressScrollX = false;
-        }
-      };
-
-      _this.scrollYScrollbar = function () {
-        if (!_this.suppressScrollY) {
-          _this.scrollData.scrollTop = _this.yScrollbar.scrollTop = _this.yWrapper.scrollTop;
-          _this.suppressScrollY = true;
-        } else {
-          _this.handleScroll();
-          _this.suppressScrollY = false;
-        }
-      };
-
-      _this.handleScroll = function () {
-        if (_this.props.onScroll) {
-          _this.props.onScroll(_this.scrollData);
-        }
-      };
-
-      _this.onResize = function () {
-        _this.setScrollBarDims();
-        _this.setScrollBarWrapperDims();
-
-        _this.setRowHeights();
-        _this.setColumnWidths();
-
-        _this.setScrollData();
-        _this.handleScroll();
-      };
-
-      _this.setScrollBarWrapperDims = function () {
-        _this.xScrollbar.style.width = 'calc(100% - ' + _this.yScrollSize + 'px)';
-        _this.yScrollbar.style.height = 'calc(100% - ' + _this.stickyHeader.offsetHeight + 'px)';
-        _this.yScrollbar.style.top = _this.stickyHeader.offsetHeight + 'px';
-      };
-
       _this.id = Math.floor(Math.random() * 1000000000) + '';
 
       _this.rowCount = 0;
@@ -195,286 +113,452 @@
 
       _this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : _this.stickyHeaderCount || 1;
 
-      _this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+      _this.isFirefox = navigator && navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+
+      ['onScrollX', 'onScrollBarX', 'onScrollBarY', 'scrollXScrollbar', 'scrollYScrollbar', 'considerResizing'].forEach(function (fn) {
+        _this[fn] = _this[fn].bind(_this);
+      });
       return _this;
     }
+
+    /**
+     * @returns {undefined}
+     */
+
 
     _createClass(StickyTable, [{
       key: 'componentDidMount',
       value: function componentDidMount() {
-        this.table = document.getElementById('sticky-table-' + this.id);
+        var _this2 = this;
 
-        if (this.table) {
-          this.realTable = this.table.querySelector('#sticky-table-x-wrapper').firstChild;
-          this.xScrollbar = this.table.querySelector('#x-scrollbar');
-          this.yScrollbar = this.table.querySelector('#y-scrollbar');
-          this.xWrapper = this.table.querySelector('#sticky-table-x-wrapper');
-          this.yWrapper = this.table.querySelector('#sticky-table-y-wrapper');
-          this.stickyHeader = this.table.querySelector('#sticky-table-header');
-          this.stickyColumn = this.table.querySelector('#sticky-table-column');
-          this.stickyCorner = this.table.querySelector('#sticky-table-corner');
+        this.dom = {};
+
+        if (document.getElementById('sticky-table-' + this.id)) {
+          this.dom.wrapper = document.getElementById('sticky-table-' + this.id);
+          this.dom.bodyTable = this.dom.wrapper.querySelector('.sticky-table-x-wrapper .sticky-table-table');
+          this.dom.xScrollbar = this.dom.wrapper.querySelector('.x-scrollbar');
+          this.dom.yScrollbar = this.dom.wrapper.querySelector('.y-scrollbar');
+          this.dom.xWrapper = this.dom.wrapper.querySelector('.sticky-table-x-wrapper');
+          this.dom.yWrapper = this.dom.wrapper.querySelector('.sticky-table-y-wrapper');
+          this.dom.stickyHeader = this.dom.wrapper.querySelector('.sticky-table-header');
+          this.dom.stickyColumn = this.dom.wrapper.querySelector('.sticky-table-column');
+          this.dom.stickyCorner = this.dom.wrapper.querySelector('.sticky-table-corner');
+          this.dom.stickyHeaderTable = this.dom.stickyHeader.querySelector('.sticky-table-table');
+          this.dom.stickyColumnTable = this.dom.stickyColumn.querySelector('.sticky-table-table');
+          this.dom.stickyCornerTable = this.dom.stickyCorner.querySelector('.sticky-table-table');
+
           this.setScrollData();
 
-          elementResizeEvent(this.realTable, this.onResize);
+          this.considerResizing();
+          setTimeout(function () {
+            return _this2.considerResizing();
+          });
 
-          this.onResize();
-          setTimeout(this.onResize);
-          this.addScrollBarEventHandlers();
+          this.resizeInterval = setInterval(this.considerResizing, 60);
+
+          //X Scrollbars
+          this.dom.xWrapper.addEventListener('scroll', this.onScrollX);
+          this.dom.xWrapper.addEventListener('scroll', this.scrollXScrollbar);
+          this.dom.xScrollbar.addEventListener('scroll', this.onScrollBarX);
+
+          //Y Scrollbars
+          this.dom.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
+          this.dom.yScrollbar.addEventListener('scroll', this.onScrollBarY);
         }
       }
     }, {
       key: 'componentDidUpdate',
       value: function componentDidUpdate() {
-        this.onResize();
+        this.considerResizing();
       }
     }, {
       key: 'componentWillUnmount',
       value: function componentWillUnmount() {
-        if (this.table) {
-          this.xWrapper.removeEventListener('scroll', this.onScrollX);
-          this.xWrapper.removeEventListener('scroll', this.scrollXScrollbar);
-          this.xScrollbar.removeEventListener('scroll', this.onScrollBarX);
+        if (this.dom.wrapper) {
+          this.dom.xWrapper.removeEventListener('scroll', this.onScrollX);
+          this.dom.xWrapper.removeEventListener('scroll', this.scrollXScrollbar);
+          this.dom.xScrollbar.removeEventListener('scroll', this.onScrollBarX);
 
-          this.yWrapper.removeEventListener('scroll', this.scrollYScrollbar);
-          this.yScrollbar.removeEventListener('scroll', this.onScrollBarY);
+          this.dom.yWrapper.removeEventListener('scroll', this.scrollYScrollbar);
+          this.dom.yScrollbar.removeEventListener('scroll', this.onScrollBarY);
 
-          elementResizeEvent.unbind(this.realTable);
+          clearInterval(this.resizeInterval);
         }
       }
     }, {
-      key: 'addScrollBarEventHandlers',
-      value: function addScrollBarEventHandlers() {
-        this.xWrapper.addEventListener('scroll', this.onScrollX);
+      key: 'setScrollData',
+      value: function setScrollData() {
+        this.suppressScrollX = false;
+        this.suppressScrollY = false;
 
-        //X Scrollbars
-        this.xWrapper.addEventListener('scroll', this.scrollXScrollbar);
-        this.xScrollbar.addEventListener('scroll', this.onScrollBarX);
+        return this.scrollData = {
+          scrollTop: this.dom.yScrollbar.scrollTop,
+          scrollHeight: this.dom.yScrollbar.scrollHeight,
+          clientHeight: this.dom.yScrollbar.clientHeight,
+          scrollLeft: this.dom.xScrollbar.scrollLeft,
+          scrollWidth: this.dom.xScrollbar.scrollWidth,
+          clientWidth: this.dom.xScrollbar.clientWidth
+        };
+      }
+    }, {
+      key: 'onScrollBarX',
+      value: function onScrollBarX() {
+        if (!this.suppressScrollX) {
+          this.scrollData.scrollLeft = this.dom.xWrapper.scrollLeft = this.dom.xScrollbar.scrollLeft;
+          this.suppressScrollX = true;
+        } else {
+          this.handleScroll();
+          this.suppressScrollX = false;
+        }
+      }
+    }, {
+      key: 'onScrollBarY',
+      value: function onScrollBarY() {
+        if (!this.suppressScrollY) {
+          this.scrollData.scrollTop = this.dom.yWrapper.scrollTop = this.dom.yScrollbar.scrollTop;
+          this.suppressScrollY = true;
+        } else {
+          this.handleScroll();
+          this.suppressScrollY = false;
+        }
+      }
+    }, {
+      key: 'onScrollX',
+      value: function onScrollX() {
+        var scrollLeft = Math.max(this.dom.xWrapper.scrollLeft, 0);
+        this.dom.stickyHeaderTable.style.transform = 'translate(' + -1 * scrollLeft + 'px, 0) translateZ(0)';
+      }
+    }, {
+      key: 'scrollXScrollbar',
+      value: function scrollXScrollbar() {
+        if (!this.suppressScrollX) {
+          this.scrollData.scrollLeft = this.dom.xScrollbar.scrollLeft = this.dom.xWrapper.scrollLeft;
+          this.suppressScrollX = true;
+        } else {
+          this.handleScroll();
+          this.suppressScrollX = false;
+        }
+      }
+    }, {
+      key: 'scrollYScrollbar',
+      value: function scrollYScrollbar() {
+        if (!this.suppressScrollY) {
+          this.scrollData.scrollTop = this.dom.yScrollbar.scrollTop = this.dom.yWrapper.scrollTop;
+          this.suppressScrollY = true;
+        } else {
+          this.handleScroll();
+          this.suppressScrollY = false;
+        }
+      }
+    }, {
+      key: 'handleScroll',
+      value: function handleScroll() {
+        if (this.props.onScroll) {
+          this.props.onScroll(this.scrollData);
+        }
+      }
+    }, {
+      key: 'considerResizing',
+      value: function considerResizing() {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref$forceCellTableRe = _ref.forceCellTableResize,
+            forceCellTableResize = _ref$forceCellTableRe === undefined ? false : _ref$forceCellTableRe,
+            _ref$forceWrapperResi = _ref.forceWrapperResize,
+            forceWrapperResize = _ref$forceWrapperResi === undefined ? false : _ref$forceWrapperResi;
 
-        //Y Scrollbars
-        this.yWrapper.addEventListener('scroll', this.scrollYScrollbar);
-        this.yScrollbar.addEventListener('scroll', this.onScrollBarY);
+        var wrapperSize = { width: this.dom.wrapper.offsetWidth, height: this.dom.wrapper.offsetWidth };
+        var tableCellSizes = {
+          corner: { width: this.dom.stickyCornerTable.offsetWidth, height: this.dom.stickyCornerTable.offsetHeight },
+          header: { width: this.dom.stickyHeaderTable.offsetWidth, height: this.dom.stickyHeaderTable.offsetHeight },
+          column: { width: this.dom.stickyColumnTable.offsetWidth, height: this.dom.stickyColumnTable.offsetHeight },
+          body: { width: this.dom.bodyTable.offsetWidth, height: this.dom.bodyTable.offsetHeight }
+        };
+
+        if (forceCellTableResize || !this.oldTableCellSizes || JSON.stringify(tableCellSizes) !== JSON.stringify(this.oldTableCellSizes)) {
+          this.setRowHeights();
+          this.setColumnWidths();
+
+          this.oldTableCellSizes = tableCellSizes;
+        }
+
+        if (forceWrapperResize || !this.oldWrapperSize || JSON.stringify(wrapperSize) !== JSON.stringify(this.oldWrapperSize)) {
+          this.setScrollBarDims();
+          this.setScrollBarWrapperDims();
+          this.setScrollData();
+          this.handleScroll();
+
+          this.dom.xWrapper.style.maxWidth = 'calc(100% - ' + this.dom.stickyColumn.offsetWidth + 'px';
+          this.dom.yWrapper.style.height = 'calc(100% - ' + this.dom.stickyHeader.offsetHeight + 'px';
+
+          this.oldWrapperSize = wrapperSize;
+        }
       }
     }, {
       key: 'setScrollBarPaddings',
       value: function setScrollBarPaddings() {
         var scrollPadding = '0px 0px ' + this.xScrollSize + 'px 0px';
-        this.table.style.padding = scrollPadding;
+        this.dom.wrapper.style.padding = scrollPadding;
 
         var scrollPadding = '0px ' + this.yScrollSize + 'px 0px 0px';
-        this.xWrapper.firstChild.style.padding = scrollPadding;
+        this.dom.xWrapper.firstChild.style.padding = scrollPadding;
+      }
+    }, {
+      key: 'setScrollBarWrapperDims',
+      value: function setScrollBarWrapperDims() {
+        this.dom.yScrollbar.style.height = 'calc(100% - ' + this.dom.stickyHeader.offsetHeight + 'px)';
+        this.dom.yScrollbar.style.top = this.dom.stickyHeader.offsetHeight + 'px';
       }
     }, {
       key: 'setScrollBarDims',
       value: function setScrollBarDims() {
-        this.xScrollSize = this.xScrollbar.offsetHeight - this.xScrollbar.clientHeight;
-        this.yScrollSize = this.yScrollbar.offsetWidth - this.yScrollbar.clientWidth;
+        this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
+        this.yScrollSize = this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
 
         if (!this.isFirefox) {
           this.setScrollBarPaddings();
         }
 
-        var width = this.getSize(this.realTable.firstChild).width;
-        this.xScrollbar.firstChild.style.width = width + 'px';
+        var width = this.getNodeSize(this.dom.bodyTable.firstChild).width;
+        this.dom.xScrollbar.firstChild.style.width = width + 'px';
 
-        var height = this.getSize(this.realTable).height + this.xScrollSize - this.stickyHeader.offsetHeight;
-        this.yScrollbar.firstChild.style.height = height + 'px';
+        var height = this.getNodeSize(this.dom.bodyTable).height + this.xScrollSize - this.dom.stickyHeader.offsetHeight;
+        this.dom.yScrollbar.firstChild.style.height = height + 'px';
 
-        if (this.xScrollSize) this.xScrollbar.style.height = this.xScrollSize + 1 + 'px';
-        if (this.yScrollSize) this.yScrollbar.style.width = this.yScrollSize + 1 + 'px';
+        if (this.xScrollSize) this.dom.xScrollbar.style.height = this.xScrollSize + 1 + 'px';
+        if (this.yScrollSize) this.dom.yScrollbar.style.width = this.yScrollSize + 1 + 'px';
       }
     }, {
       key: 'setRowHeights',
       value: function setRowHeights() {
-        var r, cellToCopy, height;
+        var _this3 = this;
 
-        if (this.props.stickyColumnCount) {
-          for (r = 0; r < this.rowCount; r++) {
-            cellToCopy = this.realTable.childNodes[r].firstChild;
+        var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow, row;
 
-            if (cellToCopy) {
-              height = this.getSize(cellToCopy).height;
-              this.stickyColumn.firstChild.childNodes[r].firstChild.style.height = height + 'px';
+        if (this.rowCount > 0 && this.props.stickyColumnCount > 0) {
+          bodyRows = this.dom.bodyTable.childNodes;
+          stickyColumnRows = this.dom.stickyColumnTable.childNodes;
 
-              if (r === 0 && this.stickyCorner.firstChild.childNodes[r]) {
-                this.stickyCorner.firstChild.firstChild.firstChild.style.height = height + 'px';
-              }
+          stickyCornerRows = this.dom.stickyCornerTable.childNodes;
+          stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
+
+          resizeRow = function resizeRow(row) {
+            cells = [];
+
+            if (row < _this3.props.stickyHeaderCount) {
+              //It's a sticky column
+              cells[0] = stickyCornerRows[row].childNodes[0];
+              cells[1] = stickyHeaderRows[row].childNodes[0];
+            } else {
+              //It's a body column
+              cells[0] = stickyColumnRows[row - _this3.props.stickyHeaderCount].childNodes[0];
+              cells[1] = bodyRows[row - _this3.props.stickyHeaderCount].childNodes[0];
             }
+
+            cells.forEach(function (cell) {
+              return cell.style.height = '';
+            });
+
+            columnHeight = Math.max(_this3.getNodeSize(cells[0]).height, _this3.getNodeSize(cells[1]).height);
+
+            cells.forEach(function (cell) {
+              return cell.style.height = Math.round(columnHeight) + 'px';
+            });
+          };
+
+          for (row = 0; row < this.rowCount; row++) {
+            setTimeout(resizeRow(row));
           }
         }
       }
     }, {
       key: 'setColumnWidths',
       value: function setColumnWidths() {
-        var c, cellToCopy, cellStyle, width, cell, stickyWidth;
+        var _this4 = this;
 
-        if (this.stickyHeaderCount) {
-          stickyWidth = 0;
+        var firstBodyRowCells, firstStickyHeaderRowCells, firstStickyCornerRowCells, firstStickyColumnRowCells, cells, resizeColumn, column;
 
-          for (c = 0; c < this.columnCount; c++) {
-            cellToCopy = this.realTable.firstChild.childNodes[c];
+        if (this.columnCount > 0 && this.props.stickyHeaderCount > 0) {
+          firstBodyRowCells = this.dom.bodyTable.childNodes[0].childNodes;
+          firstStickyHeaderRowCells = this.dom.stickyHeaderTable.childNodes[0].childNodes;
 
-            if (cellToCopy) {
-              width = this.getSize(cellToCopy).width;
+          firstStickyCornerRowCells = this.dom.stickyCornerTable.childNodes[0].childNodes;
+          firstStickyColumnRowCells = this.dom.stickyColumnTable.childNodes[0].childNodes;
 
-              cell = this.table.querySelector('#sticky-header-cell-' + c);
+          resizeColumn = function resizeColumn(column) {
+            cells = [];
 
-              cell.style.width = width + 'px';
-              cell.style.minWidth = width + 'px';
-
-              var fixedColumnsHeader = this.stickyCorner.firstChild.firstChild;
-              if (fixedColumnsHeader && fixedColumnsHeader.childNodes[c]) {
-                cell = fixedColumnsHeader.childNodes[c];
-                cell.style.width = width + 'px';
-                cell.style.minWidth = width + 'px';
-
-                cell = fixedColumnsHeader.childNodes[c];
-                cell.style.width = width + 'px';
-                cell.style.minWidth = width + 'px';
-
-                stickyWidth += width;
-              }
+            if (column < _this4.props.stickyColumnCount) {
+              //It's a sticky column
+              cells[0] = firstStickyColumnRowCells[column];
+              cells[1] = firstStickyCornerRowCells[column];
+            } else {
+              //It's a body column
+              cells[0] = firstBodyRowCells[column - _this4.props.stickyColumnCount];
+              cells[1] = firstStickyHeaderRowCells[column - _this4.props.stickyColumnCount];
             }
-          }
 
-          this.stickyColumn.firstChild.style.width = stickyWidth + 'px';
-          this.stickyColumn.firstChild.style.minWidth = stickyWidth + 'px';
+            //IMPORTANT: minWidth is a necessary property here
+            //because display: table-cell desparately wants to be dynamic/minimum in size
+            cells.forEach(function (cell) {
+              return cell.style.width = cell.style.minWidth = '';
+            });
+
+            var columnWidth = Math.max(_this4.getNodeSize(cells[0]).width, _this4.getNodeSize(cells[1]).width);
+
+            cells.forEach(function (cell) {
+              return cell.style.width = cell.style.minWidth = columnWidth + 'px';
+            });
+          };
+
+          for (column = 0; column < this.columnCount; column++) {
+            setTimeout(resizeColumn(column));
+          }
         }
       }
     }, {
-      key: 'getStickyColumns',
-      value: function getStickyColumns(rows) {
-        var columnsCount = this.props.stickyColumnCount;
-        var cells;
-        var stickyRows = [];
+      key: 'getNodeSize',
+      value: function getNodeSize(node) {
+        return node.getBoundingClientRect();
+      }
+    }, {
+      key: 'getStickyColumnRows',
+      value: function getStickyColumnRows(rows) {
+        var _this5 = this;
+
+        return this.getRowSubset(rows, function (r) {
+          return r >= _this5.props.stickyHeaderCount;
+        }, function (c) {
+          return c < _this5.props.stickyColumnCount;
+        });
+      }
+    }, {
+      key: 'getStickyHeaderRows',
+      value: function getStickyHeaderRows(rows) {
+        var _this6 = this;
+
+        return this.getRowSubset(rows, function (r) {
+          return r < _this6.props.stickyHeaderCount;
+        }, function (c) {
+          return c >= _this6.props.stickyColumnCount;
+        });
+      }
+    }, {
+      key: 'getStickyCornerRows',
+      value: function getStickyCornerRows(rows) {
+        var _this7 = this;
+
+        return this.getRowSubset(rows, function (r) {
+          return r < _this7.props.stickyHeaderCount;
+        }, function (c) {
+          return c < _this7.props.stickyColumnCount;
+        });
+      }
+    }, {
+      key: 'getBodyRows',
+      value: function getBodyRows(rows) {
+        var _this8 = this;
+
+        return this.getRowSubset(rows, function (r) {
+          return r >= _this8.props.stickyHeaderCount;
+        }, function (c) {
+          return c >= _this8.props.stickyColumnCount;
+        });
+      }
+    }, {
+      key: 'getRowSubset',
+      value: function getRowSubset(rows, includeRow, includeColumn) {
+        var stickyRows = [],
+            cells,
+            cellsSubset;
 
         rows.forEach(function (row, r) {
-          cells = _react2.default.Children.toArray(row.props.children);
+          if (includeRow(r)) {
+            cells = _react2.default.Children.toArray(row.props.children);
+            cellsSubset = [];
 
-          stickyRows.push(_react2.default.createElement(
-            _Row2.default,
-            _extends({}, row.props, { id: '', key: r }),
-            cells.slice(0, columnsCount)
-          ));
+            cells.forEach(function (cell, c) {
+              if (includeColumn(c)) {
+                cellsSubset.push(cell);
+              }
+            });
+
+            stickyRows.push(_react2.default.createElement(
+              _Row2.default,
+              _extends({}, row.props, { id: '', key: r }),
+              cellsSubset
+            ));
+          }
         });
 
         return stickyRows;
       }
     }, {
-      key: 'getStickyHeader',
-      value: function getStickyHeader(rows) {
-        var row = rows[0];
-        var cells = [];
-
-        _react2.default.Children.toArray(row.props.children).forEach(function (cell, c) {
-          cells.push(_react2.default.cloneElement(cell, { id: 'sticky-header-cell-' + c, key: c }));
-        });
-
-        return _react2.default.createElement(
-          _Row2.default,
-          _extends({}, row.props, { id: 'sticky-header-row' }),
-          cells
-        );
-      }
-    }, {
-      key: 'getStickyCorner',
-      value: function getStickyCorner(rows) {
-        var columnsCount = this.props.stickyColumnCount;
-        var cells;
-        var stickyCorner = [];
-
-        rows.forEach(function (row, r) {
-          if (r === 0) {
-            cells = _react2.default.Children.toArray(row.props.children);
-
-            stickyCorner.push(_react2.default.createElement(
-              _Row2.default,
-              _extends({}, row.props, { id: '', key: r }),
-              cells.slice(0, columnsCount)
-            ));
-          }
-        });
-
-        return stickyCorner;
-      }
-    }, {
-      key: 'getSize',
-      value: function getSize(node) {
-        var width = node ? node.getBoundingClientRect().width : 0;
-        var height = node ? node.getBoundingClientRect().height : 0;
-
-        return { width: width, height: height };
-      }
-    }, {
       key: 'render',
       value: function render() {
         var rows = _react2.default.Children.toArray(this.props.children);
-        var stickyColumn, stickyHeader, stickyCorner;
+
+        var stickyCornerRows = this.getStickyCornerRows(rows);
+        var stickyColumnRows = this.getStickyColumnRows(rows);
+        var stickyHeaderRows = this.getStickyHeaderRows(rows);
+        var bodyRows = this.getBodyRows(rows);
 
         this.rowCount = rows.length;
         this.columnCount = rows[0] && _react2.default.Children.toArray(rows[0].props.children).length || 0;
-
-        if (rows.length) {
-          if (this.props.stickyColumnCount > 0 && this.stickyHeaderCount > 0) {
-            stickyCorner = this.getStickyCorner(rows);
-          }
-          if (this.props.stickyColumnCount > 0) {
-            stickyColumn = this.getStickyColumns(rows);
-          }
-          if (this.stickyHeaderCount > 0) {
-            stickyHeader = this.getStickyHeader(rows);
-          }
-        }
 
         return _react2.default.createElement(
           'div',
           { className: 'sticky-table ' + (this.props.className || ''), id: 'sticky-table-' + this.id },
           _react2.default.createElement(
             'div',
-            { id: 'x-scrollbar' },
+            { className: 'x-scrollbar' },
             _react2.default.createElement('div', null)
           ),
           _react2.default.createElement(
             'div',
-            { id: 'y-scrollbar' },
+            { className: 'y-scrollbar' },
             _react2.default.createElement('div', null)
           ),
           _react2.default.createElement(
             'div',
-            { className: 'sticky-table-corner', id: 'sticky-table-corner' },
-            _react2.default.createElement(
-              _Table2.default,
-              null,
-              stickyCorner
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'sticky-table-header', id: 'sticky-table-header' },
-            _react2.default.createElement(
-              _Table2.default,
-              null,
-              stickyHeader
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'sticky-table-y-wrapper', id: 'sticky-table-y-wrapper' },
+            { className: 'sticky-table-header-wrapper' },
             _react2.default.createElement(
               'div',
-              { className: 'sticky-table-column', id: 'sticky-table-column' },
+              { className: ['sticky-table-corner', this.props.stickyHeaderCount && this.props.stickyColumnCount ? '' : 'hidden'].join(' ') },
               _react2.default.createElement(
                 _Table2.default,
                 null,
-                stickyColumn
+                stickyCornerRows
               )
             ),
             _react2.default.createElement(
               'div',
-              { className: 'sticky-table-x-wrapper', id: 'sticky-table-x-wrapper' },
+              { className: ['sticky-table-header', this.props.stickyHeaderCount ? '' : 'hidden'].join(' ') },
               _react2.default.createElement(
                 _Table2.default,
                 null,
-                rows
+                stickyHeaderRows
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'sticky-table-y-wrapper' },
+            _react2.default.createElement(
+              'div',
+              { className: ['sticky-table-column', this.props.stickyColumnCount ? '' : 'hidden'].join(' ') },
+              _react2.default.createElement(
+                _Table2.default,
+                null,
+                stickyColumnRows
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'sticky-table-x-wrapper' },
+              _react2.default.createElement(
+                _Table2.default,
+                null,
+                bodyRows
               )
             )
           )
@@ -488,7 +572,6 @@
   StickyTable.propTypes = {
     stickyHeaderCount: _propTypes2.default.number,
     stickyColumnCount: _propTypes2.default.number,
-
     onScroll: _propTypes2.default.func
   };
   StickyTable.defaultProps = {
