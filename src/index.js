@@ -257,18 +257,19 @@ class StickyTable extends PureComponent {
    * @returns {undefined}
    */
   setScrollBarDims() {
+    var width = this.getNodeSize(this.dom.bodyTable.firstChild).width;
+    this.dom.xScrollbar.firstChild.style.width = width + 'px';
+
     this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
+
+    var height = this.getNodeSize(this.dom.bodyTable).height + this.xScrollSize - this.dom.stickyHeader.offsetHeight;
+    this.dom.yScrollbar.firstChild.style.height = height + 'px';
+
     this.yScrollSize = this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
 
     if (!this.isFirefox) {
       this.setScrollBarPaddings();
     }
-
-    var width = this.getNodeSize(this.dom.bodyTable.firstChild).width;
-    this.dom.xScrollbar.firstChild.style.width = width + 'px';
-
-    var height = this.getNodeSize(this.dom.bodyTable).height + this.xScrollSize - this.dom.stickyHeader.offsetHeight;
-    this.dom.yScrollbar.firstChild.style.height = height + 'px';
 
     if (this.xScrollSize) this.dom.xScrollbar.style.height = this.xScrollSize + 1 + 'px';
     if (this.yScrollSize)  this.dom.yScrollbar.style.width = this.yScrollSize + 1  + 'px';
