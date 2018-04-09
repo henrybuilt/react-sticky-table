@@ -257,12 +257,12 @@ class StickyTable extends PureComponent {
    * @returns {undefined}
    */
   setScrollBarDims() {
-    var width = this.getNodeSize(this.dom.bodyTable.firstChild).width;
+    var width = this.getNodeSize(this.dom.bodyTable.firstChild).width + this.dom.stickyColumn.offsetWidth;
     this.dom.xScrollbar.firstChild.style.width = width + 'px';
 
     this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
 
-    var height = this.getNodeSize(this.dom.bodyTable).height + this.xScrollSize - this.dom.stickyHeader.offsetHeight;
+    var height = this.dom.bodyTable.offsetHeight + this.dom.stickyHeader.offsetHeight;
     this.dom.yScrollbar.firstChild.style.height = height + 'px';
 
     this.yScrollSize = this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
@@ -416,7 +416,12 @@ class StickyTable extends PureComponent {
    * @returns {undefined}
    */
   render() {
-    var rows = React.Children.toArray(this.props.children);
+    //This is probably sub-optimal because render only needs
+    //to be called for react components that are sub-classed
+    //and don't have props.children that are <Cell>s
+    var rows = React.Children.toArray(this.props.children).map(row => {
+      return new row.type(row.props).render(); // eslint-disable-line new-cap
+    });
 
     var stickyCornerRows = this.getStickyCornerRows(rows);
     var stickyColumnRows = this.getStickyColumnRows(rows);
