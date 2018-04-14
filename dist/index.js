@@ -104,12 +104,12 @@
 
       var _this = _possibleConstructorReturn(this, (StickyTable.__proto__ || Object.getPrototypeOf(StickyTable)).call(this, props));
 
-      _this.id = Math.floor(Math.random() * 1000000000) + '';
-
       _this.rowCount = 0;
       _this.columnCount = 0;
       _this.xScrollSize = 0;
       _this.yScrollSize = 0;
+
+      _this.dom = {};
 
       _this.stickyHeaderCount = props.stickyHeaderCount === 0 ? 0 : _this.stickyHeaderCount || 1;
 
@@ -131,10 +131,7 @@
       value: function componentDidMount() {
         var _this2 = this;
 
-        this.dom = {};
-
-        if (document.getElementById('sticky-table-' + this.id)) {
-          this.dom.wrapper = document.getElementById('sticky-table-' + this.id);
+        if (this.dom.wrapper) {
           this.dom.bodyTable = this.dom.wrapper.querySelector('.sticky-table-x-wrapper .sticky-table-table');
           this.dom.xScrollbar = this.dom.wrapper.querySelector('.x-scrollbar');
           this.dom.yScrollbar = this.dom.wrapper.querySelector('.y-scrollbar');
@@ -266,7 +263,11 @@
             _ref$forceWrapperResi = _ref.forceWrapperResize,
             forceWrapperResize = _ref$forceWrapperResi === undefined ? false : _ref$forceWrapperResi;
 
-        var wrapperSize = { width: this.dom.wrapper.offsetWidth, height: this.dom.wrapper.offsetWidth };
+        var wrapperSize = {
+          width: this.dom.wrapper.offsetWidth,
+          height: this.dom.wrapper.offsetWidth
+        };
+
         var tableCellSizes = {
           corner: { width: this.dom.stickyCornerTable.offsetWidth, height: this.dom.stickyCornerTable.offsetHeight },
           header: { width: this.dom.stickyHeaderTable.offsetWidth, height: this.dom.stickyHeaderTable.offsetHeight },
@@ -274,14 +275,17 @@
           body: { width: this.dom.bodyTable.offsetWidth, height: this.dom.bodyTable.offsetHeight }
         };
 
-        if (forceCellTableResize || !this.oldTableCellSizes || JSON.stringify(tableCellSizes) !== JSON.stringify(this.oldTableCellSizes)) {
+        var tableCellSizesChanged = JSON.stringify(tableCellSizes) !== JSON.stringify(this.oldTableCellSizes);
+        var wrapperSizeChanged = JSON.stringify(wrapperSize) !== JSON.stringify(this.oldWrapperSize);
+
+        if (forceCellTableResize || !this.oldTableCellSizes || tableCellSizesChanged) {
           this.setRowHeights();
           this.setColumnWidths();
 
           this.oldTableCellSizes = tableCellSizes;
         }
 
-        if (forceWrapperResize || !this.oldWrapperSize || JSON.stringify(wrapperSize) !== JSON.stringify(this.oldWrapperSize)) {
+        if (forceWrapperResize || !this.oldWrapperSize || wrapperSizeChanged || tableCellSizesChanged) {
           this.setScrollBarDims();
           this.setScrollBarWrapperDims();
           this.setScrollData();
@@ -496,6 +500,8 @@
     }, {
       key: 'render',
       value: function render() {
+        var _this9 = this;
+
         //This is probably sub-optimal because render only needs
         //to be called for react components that are sub-classed
         //and don't have props.children that are <Cell>s
@@ -511,9 +517,13 @@
         this.rowCount = rows.length;
         this.columnCount = rows[0] && _react2.default.Children.toArray(rows[0].props.children).length || 0;
 
+        var setWrapperElement = function setWrapperElement(element) {
+          if (element) _this9.dom.wrapper = element;
+        };
+
         return _react2.default.createElement(
           'div',
-          { className: 'sticky-table ' + (this.props.className || ''), id: 'sticky-table-' + this.id },
+          { className: 'sticky-table ' + (this.props.className || ''), ref: setWrapperElement },
           _react2.default.createElement(
             'div',
             { className: 'x-scrollbar' },
