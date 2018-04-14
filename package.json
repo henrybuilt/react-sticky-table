@@ -1,6 +1,6 @@
 {
   "name": "react-sticky-table",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "index.js",
   "module": "./index.js",
   "description": "Dynamically sized fixed header and columns for tables",
