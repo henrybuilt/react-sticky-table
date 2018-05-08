@@ -199,7 +199,7 @@ class StickyTable extends PureComponent {
    * Handle real cell resize events
    * @returns {undefined}
    */
-  considerResizing({forceCellTableResize=false, forceWrapperResize=false} = {}) {
+  considerResizing({forceCellTableResize=true, forceWrapperResize=false} = {}) {
     var wrapperSize = {
       width: this.dom.wrapper.offsetWidth,
       height: this.dom.wrapper.offsetWidth
@@ -345,11 +345,13 @@ class StickyTable extends PureComponent {
 
         //IMPORTANT: minWidth is a necessary property here
         //because display: table-cell desparately wants to be dynamic/minimum in size
-        cells.forEach(cell => cell.style.width = cell.style.minWidth = '');
+        cells[1].style.width = cells[1].style.minWidth = '';
 
-        var columnWidth = Math.max(this.getNodeSize(cells[0]).width, this.getNodeSize(cells[1]).width);
+        var bodyWidth = this.getNodeSize(cells[0]).width;
+        var headerWidth = this.getNodeSize(cells[1]).width;
 
-        cells.forEach(cell => cell.style.width = cell.style.minWidth = `${columnWidth}px`);
+        cells[0].style.minWidth = headerWidth + 'px';
+        cells[1].style.minWidth = bodyWidth + 'px';
       };
 
       for (column = 0; column < this.columnCount; column++) {

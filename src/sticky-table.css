@@ -50,6 +50,7 @@
 }
 .sticky-table .sticky-table-table {
   overflow: visible;
+  min-width: 100%;
 }
 /*
 Hack to make table paint on it's own layer.
