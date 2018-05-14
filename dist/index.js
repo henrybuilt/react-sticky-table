@@ -309,8 +309,8 @@
     }, {
       key: 'setScrollBarWrapperDims',
       value: function setScrollBarWrapperDims() {
-        this.dom.yScrollbar.style.height = 'calc(100% - ' + this.dom.stickyHeader.offsetHeight + 'px)';
-        this.dom.yScrollbar.style.top = this.dom.stickyHeader.offsetHeight + 'px';
+        this.dom.yScrollbar.style.height = 'calc(100% - ' + this.xScrollSize + 'px)';
+        this.dom.yScrollbar.style.top = 0;
       }
     }, {
       key: 'setScrollBarDims',
