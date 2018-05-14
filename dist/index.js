@@ -315,7 +315,7 @@
     }, {
       key: 'setScrollBarDims',
       value: function setScrollBarDims() {
-        var width = this.getNodeSize(this.dom.bodyTable.firstChild).width + this.dom.stickyColumn.offsetWidth;
+        var width = this.getNodeSize(this.dom.bodyTable.firstChild).width + this.dom.stickyColumn.offsetWidth + this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
         this.dom.xScrollbar.firstChild.style.width = width + 'px';
 
         this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
