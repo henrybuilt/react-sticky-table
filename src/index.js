@@ -254,6 +254,8 @@ class StickyTable extends PureComponent {
   setScrollBarWrapperDims() {
     this.dom.yScrollbar.style.height = 'calc(100% - ' + this.dom.stickyHeader.offsetHeight + 'px)';
     this.dom.yScrollbar.style.top = this.dom.stickyHeader.offsetHeight + 'px';
+    this.dom.xScrollbar.style.width = 'calc(100% - ' + this.dom.stickyColumn.offsetWidth + 'px)';
+    this.dom.xScrollbar.style.left = this.dom.stickyColumn.offsetWidth + 'px';
   }
 
   /**
@@ -266,7 +268,7 @@ class StickyTable extends PureComponent {
 
     this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
 
-    var height = this.dom.bodyTable.offsetHeight + this.dom.stickyHeader.offsetHeight;
+    var height = this.dom.bodyTable.offsetHeight - this.dom.stickyHeader.offsetHeight;
     this.dom.yScrollbar.firstChild.style.height = height + 'px';
 
     this.yScrollSize = this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
