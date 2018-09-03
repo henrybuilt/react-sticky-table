@@ -371,7 +371,9 @@
           };
 
           for (row = 0; row < this.rowCount; row++) {
-            setTimeout(resizeRow(row));
+            setTimeout(function () {
+              return resizeRow(row);
+            });
           }
         }
       }
@@ -416,7 +418,9 @@
           };
 
           for (column = 0; column < this.columnCount; column++) {
-            setTimeout(resizeColumn(column));
+            setTimeout(function () {
+              return resizeColumn(column);
+            });
           }
         }
       }

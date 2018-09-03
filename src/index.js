@@ -312,7 +312,7 @@ class StickyTable extends PureComponent {
       };
 
       for (row = 0; row < this.rowCount; row++) {
-        setTimeout(resizeRow(row));
+        setTimeout(() => resizeRow(row));
       }
     }
   }
@@ -353,7 +353,7 @@ class StickyTable extends PureComponent {
       };
 
       for (column = 0; column < this.columnCount; column++) {
-        setTimeout(resizeColumn(column));
+        setTimeout(() => resizeColumn(column));
       }
     }
   }
