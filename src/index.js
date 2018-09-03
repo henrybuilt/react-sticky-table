@@ -266,7 +266,7 @@ class StickyTable extends PureComponent {
 
     this.xScrollSize = this.dom.xScrollbar.offsetHeight - this.dom.xScrollbar.clientHeight;
 
-    var height = this.dom.bodyTable.offsetHeight + this.dom.stickyHeader.offsetHeight;
+    var height = this.dom.bodyTable.offsetHeight;
     this.dom.yScrollbar.firstChild.style.height = height + 'px';
 
     this.yScrollSize = this.dom.yScrollbar.offsetWidth - this.dom.yScrollbar.clientWidth;
