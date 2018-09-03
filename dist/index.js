@@ -337,7 +337,7 @@
       value: function setRowHeights() {
         var _this3 = this;
 
-        var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow, row;
+        var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow;
 
         if (this.rowCount > 0 && this.props.stickyColumnCount > 0) {
           bodyRows = this.dom.bodyTable.childNodes;
@@ -350,11 +350,11 @@
             cells = [];
 
             if (row < _this3.props.stickyHeaderCount) {
-              //It's a sticky column
+              //It's a sticky row
               cells[0] = stickyCornerRows[row].childNodes[0];
               cells[1] = stickyHeaderRows[row].childNodes[0];
             } else {
-              //It's a body column
+              //It's a body row
               cells[0] = stickyColumnRows[row - _this3.props.stickyHeaderCount].childNodes[0];
               cells[1] = bodyRows[row - _this3.props.stickyHeaderCount].childNodes[0];
             }
@@ -370,10 +370,14 @@
             });
           };
 
-          for (row = 0; row < this.rowCount; row++) {
+          var _loop = function _loop(row) {
             setTimeout(function () {
               return resizeRow(row);
             });
+          };
+
+          for (var row = 0; row < this.rowCount; row++) {
+            _loop(row);
           }
         }
       }
@@ -382,7 +386,7 @@
       value: function setColumnWidths() {
         var _this4 = this;
 
-        var firstBodyRowCells, firstStickyHeaderRowCells, firstStickyCornerRowCells, firstStickyColumnRowCells, cells, resizeColumn, column;
+        var firstBodyRowCells, firstStickyHeaderRowCells, firstStickyCornerRowCells, firstStickyColumnRowCells, cells, resizeColumn;
 
         if (this.columnCount > 0 && this.props.stickyHeaderCount > 0) {
           firstBodyRowCells = this.dom.bodyTable.childNodes[0].childNodes;
@@ -417,10 +421,14 @@
             });
           };
 
-          for (column = 0; column < this.columnCount; column++) {
+          var _loop2 = function _loop2(column) {
             setTimeout(function () {
               return resizeColumn(column);
             });
+          };
+
+          for (var column = 0; column < this.columnCount; column++) {
+            _loop2(column);
           }
         }
       }

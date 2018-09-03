@@ -284,7 +284,7 @@ class StickyTable extends PureComponent {
    * @returns {undefined}
    */
   setRowHeights() {
-    var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow, row;
+    var bodyRows, stickyHeaderRows, stickyCornerRows, stickyColumnRows, cells, columnHeight, resizeRow;
 
     if (this.rowCount > 0 && this.props.stickyColumnCount > 0) {
       bodyRows = this.dom.bodyTable.childNodes;
@@ -293,13 +293,13 @@ class StickyTable extends PureComponent {
       stickyCornerRows = this.dom.stickyCornerTable.childNodes;
       stickyHeaderRows = this.dom.stickyHeaderTable.childNodes;
 
-      resizeRow = row => {
+      resizeRow = (row) => {
         cells = [];
 
-        if (row < this.props.stickyHeaderCount) { //It's a sticky column
+        if (row < this.props.stickyHeaderCount) { //It's a sticky row
           cells[0] = stickyCornerRows[row].childNodes[0];
           cells[1] = stickyHeaderRows[row].childNodes[0];
-        } else { //It's a body column
+        } else { //It's a body row
           cells[0] = stickyColumnRows[row - this.props.stickyHeaderCount].childNodes[0];
           cells[1] = bodyRows[row - this.props.stickyHeaderCount].childNodes[0];
         }
@@ -311,7 +311,7 @@ class StickyTable extends PureComponent {
         cells.forEach(cell => cell.style.height = `${Math.round(columnHeight)}px`);
       };
 
-      for (row = 0; row < this.rowCount; row++) {
+      for (let row = 0; row < this.rowCount; row++) {
         setTimeout(() => resizeRow(row));
       }
     }
@@ -323,7 +323,7 @@ class StickyTable extends PureComponent {
    */
   setColumnWidths() {
     var firstBodyRowCells, firstStickyHeaderRowCells, firstStickyCornerRowCells, firstStickyColumnRowCells,
-      cells, resizeColumn, column;
+      cells, resizeColumn;
 
     if (this.columnCount > 0 && this.props.stickyHeaderCount > 0) {
       firstBodyRowCells = this.dom.bodyTable.childNodes[0].childNodes;
@@ -352,7 +352,7 @@ class StickyTable extends PureComponent {
         cells.forEach(cell => cell.style.width = cell.style.minWidth = `${columnWidth}px`);
       };
 
-      for (column = 0; column < this.columnCount; column++) {
+      for (let column = 0; column < this.columnCount; column++) {
         setTimeout(() => resizeColumn(column));
       }
     }
