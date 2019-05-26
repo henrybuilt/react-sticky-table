@@ -38,7 +38,6 @@ describe('StickyTable', () => {
     );
 
     expect(table.find('.sticky-table-cell')).to.have.length(4);
-    expect(table.find('.sticky-table-column .sticky-table-cell')).to.have.length(0);
   });
 
   it('should render the correct number of stickyColumnCount', () => {
@@ -60,9 +59,6 @@ describe('StickyTable', () => {
     );
 
     expect(table.find('.sticky-table-cell')).to.have.length(8);
-    expect(table.find('.sticky-table-header .sticky-table-cell')).to.have.length(1);
-    expect(table.find('.sticky-table-column .sticky-table-cell')).to.have.length(3);
-    expect(table.find('.sticky-table-corner .sticky-table-cell')).to.have.length(3);
   });
 
   it('shouldn\'t render headers when opting out', () => {
@@ -80,8 +76,6 @@ describe('StickyTable', () => {
     );
 
     expect(table.find('.sticky-table-cell')).to.have.length(4);
-    expect(table.find('.sticky-table-header .sticky-table-cell')).to.have.length(0);
-    expect(table.find('.sticky-table-column .sticky-table-cell')).to.have.length(2);
   });
 
   it('should support sibling components and arrays', () => {

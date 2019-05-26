@@ -6,18 +6,19 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 ## Features
 
-- Any number of fixed columns & headers
+- 0 dependencies, pure css, highly performant.
+- 0 or 1 fixed column & header
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
 - Table rows/columns resize as content resizes
-- Custom cells (just make sure your custom cell has `display: table-cell` set)
+- Custom cells (just make sure your custom cell has `display: table-cell` and the css selector `.sticky-table-cell`)
 - Multiple tables per page
 - Scrollbars that are smooth and visible at all times
-- Native vertical scrolling
-- 0 dependencies
+- Native scrolling
 
 #### Doesn't yet support
 
+- Any number of fixed columns & headers
 - Client side sorting
 - IE <= 7
 
