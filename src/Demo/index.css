@@ -48,7 +48,7 @@ h1{
   border-bottom: 2px solid #e5e5e5;
   background-color: #fff;
 }
-.sticky-table .sticky-table-corner, .sticky-table .sticky-table-column {
+.sticky-table .sticky-table-corner, .sticky-table .sticky-table-cell:first-child {
   border-right: 2px solid #e5e5e5;
 }
 .sticky-table .sticky-header {
