@@ -114,6 +114,8 @@
     _createClass(StickyTable, [{
       key: 'render',
       value: function render() {
+        var _this2 = this;
+
         var _props = this.props,
             stickyColumnCount = _props.stickyColumnCount,
             stickyHeaderCount = _props.stickyHeaderCount;
@@ -124,7 +126,20 @@
 
         return _react2.default.createElement(
           'div',
-          { className: 'sticky-table sticky-table-' + this.index + (this.props.className || '') },
+          { className: 'sticky-table sticky-table-' + this.index + (this.props.className || ''), onScroll: function onScroll(e) {
+              var target = e.nativeEvent.target;
+
+              if (_this2.props.onScroll) {
+                _this2.props.onScroll({
+                  scrollTop: target.scrollTop,
+                  scrollHeight: target.scrollHeight,
+                  clientHeight: target.clientHeight,
+                  scrollLeft: target.scrollLeft,
+                  scrollWidth: target.scrollWidth,
+                  clientWidth: target.clientWidth
+                });
+              }
+            } },
           _react2.default.createElement(
             'style',
             null,
