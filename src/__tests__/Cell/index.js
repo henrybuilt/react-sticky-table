@@ -1,9 +1,12 @@
 import React from 'react';
 
-import {mount} from 'enzyme';
+import {mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import {expect} from 'chai';
 
 import {Cell} from '../../index';
+
+configure({ adapter: new Adapter() });
 
 describe('Cell', () => {
   it('should render children properly', () => {

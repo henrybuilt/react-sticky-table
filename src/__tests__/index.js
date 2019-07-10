@@ -1,9 +1,12 @@
 import React from 'react';
 
-import {mount} from 'enzyme';
+import {mount, configure} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import {expect} from 'chai';
 
 import {StickyTable, Row, Cell} from '../index';
+
+configure({ adapter: new Adapter() });
 
 describe('StickyTable', () => {
   it('should render the correct number of children', () => {

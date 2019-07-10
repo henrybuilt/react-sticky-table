@@ -1,0 +1,6 @@
+.resizing-cells .row:not(:first-child) .cell:not(:first-child){
+  cursor: pointer;
+}
+.resizing-cells .row:not(:first-child) .cell:not(:first-child):hover{
+  background-color: #f5f5f5;
+}
