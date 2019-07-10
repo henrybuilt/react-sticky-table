@@ -63,8 +63,8 @@ export default class BasicExample extends Component {
 
 ## Options
 
-- `stickyHeaderCount`: default: `1`, value: `any integer >= 0`
-- `stickyColumnCount`: default: `1`, value: `any integer >= 0`
+- `stickyHeaderCount`: default: `1`, value: `0 or 1`
+- `stickyColumnCount`: default: `1`, value: `0 or 1`
 
 Disable sticky header:
 
@@ -76,27 +76,6 @@ Disable sticky column:
 
 ```javascript
 <StickyTable stickyColumnCount={0}>
-```
-
-## Events
-
-Scroll event:
-
-```javascript
-<StickyTable onScroll={event => {}}>
-```
-
-Scroll event object:
-
-```javascript
-{
-  scrollTop: 0,
-  scrollHeight: 2304,
-  clientHeight: 259,
-  scrollLeft: 0,
-  scrollWidth: 27953,
-  clientWidth: 887
-}
 ```
 
 ## License
