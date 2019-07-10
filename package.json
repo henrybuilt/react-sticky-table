@@ -70,7 +70,7 @@
     "build": "npm run build-js && npm run build-css",
     "build-css": "cat src/**/*.css src/*.css > dist/react-sticky-table.css",
     "build-js": "babel --plugins '@babel/plugin-transform-modules-umd' src --ignore __tests__ --out-dir ./dist",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -o ./docs",
     "prepare": "npm run build",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
