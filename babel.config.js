@@ -12,7 +12,7 @@ module.exports = {
       }
     ]
   ],
-  plugins: ['@babel/plugin-proposal-class-properties'],
+  plugins: ['@babel/plugin-proposal-class-properties', 'emotion'],
   env: {
     test: {
       presets: [
@@ -25,7 +25,7 @@ module.exports = {
         ],
         '@babel/preset-react'
       ],
-      plugins: ['@babel/plugin-proposal-class-properties']
+      plugins: ['@babel/plugin-proposal-class-properties', 'emotion']
     }
   }
 };
