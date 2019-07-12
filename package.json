@@ -6,7 +6,11 @@
   "bugs": {
     "url": "https://github.com/henrybuilt/react-sticky-table/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
+    "babel-plugin-emotion": "^10.0.14"
+  },
   "devDependencies": {
     "@babel/cli": "7.4.4",
     "@babel/core": "7.4.5",
@@ -67,7 +71,7 @@
     "url": "https://github.com/henrybuilt/react-sticky-table.git"
   },
   "scripts": {
-    "build": "npm run build-js && npm run build-css",
+    "build": "npm run build-js",
     "build-css": "cat src/**/*.css src/*.css > dist/react-sticky-table.css",
     "build-js": "babel --plugins '@babel/plugin-transform-modules-umd' src --ignore __tests__ --out-dir ./dist",
     "build-storybook": "build-storybook -o ./docs",
