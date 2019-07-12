@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
-import styled from "@emotion/styled";
+import { jsx } from '@emotion/core';
+import styled from '@emotion/styled';
 
 const Table = styled.div`
   white-space: nowrap;
@@ -10,9 +10,14 @@ const Table = styled.div`
   box-sizing: border-box;
 `;
 
+Table.displayName = 'Table';
+
 const Row = styled.div`
   display: table-row;
 `;
+
+Row.displayName = 'Row';
+
 const Cell = styled.div`
   display: table-cell;
   box-sizing: border-box;
@@ -21,6 +26,8 @@ const Cell = styled.div`
   border-bottom: 2px solid #e5e5e5;
   background-color: #fff;
 `;
+
+Cell.displayName = 'Cell';
 
 const Wrapper = styled.div`
   position: relative;
@@ -51,6 +58,8 @@ const Wrapper = styled.div`
     z-index: 3;
   }
 `;
+
+Wrapper.displayName = 'Wrapper';
 
 function StickyTable({
   stickyColumnCount = 1,
