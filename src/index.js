@@ -8,7 +8,7 @@ const Table = styled.div`
   border: 2px solid #e5e5e5;
   display: table;
   box-sizing: border-box;
-`
+`;
 
 const Row = styled.div`
   display: table-row;
