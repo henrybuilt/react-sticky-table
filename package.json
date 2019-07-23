@@ -7,9 +7,7 @@
     "url": "https://github.com/henrybuilt/react-sticky-table/issues"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.14",
-    "@emotion/styled": "^10.0.14",
-    "babel-plugin-emotion": "^10.0.14"
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",

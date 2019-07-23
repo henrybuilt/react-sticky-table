@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 const Table = styled.div`
   white-space: nowrap;
@@ -14,6 +14,10 @@ Table.displayName = 'Table';
 
 const Row = styled.div`
   display: table-row;
+
+  & ${Cell}:first-child {
+    border-right: 2px solid #e5e5e5;
+  }
 `;
 
 Row.displayName = 'Row';
@@ -56,6 +60,10 @@ const Wrapper = styled.div`
     top: 0;
     left: 0;
     z-index: 3;
+
+    &:first-child {
+      border-right: 2px solid #e5e5e5;
+    }
   }
 `;
 
