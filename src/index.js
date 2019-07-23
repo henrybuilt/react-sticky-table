@@ -2,17 +2,19 @@
 import { jsx } from '@emotion/core';
 import styled from 'styled-components';
 
-const Table = styled.div`
+const Table = styled('div').attrs({
+  className: 'sticky-table-table'
+})`
   white-space: nowrap;
-  margin-top: 2rem;
-  border: 2px solid #e5e5e5;
   display: table;
   box-sizing: border-box;
 `;
 
 Table.displayName = 'Table';
 
-const Row = styled.div`
+const Row = styled('div').attrs({
+  className: 'sticky-table-cell'
+})`
   display: table-row;
 
   & ${Cell}:first-child {
@@ -22,7 +24,9 @@ const Row = styled.div`
 
 Row.displayName = 'Row';
 
-const Cell = styled.div`
+const Cell = styled('div').attrs({
+  className: 'sticky-table-cell'
+})`
   display: table-cell;
   box-sizing: border-box;
 
@@ -33,7 +37,9 @@ const Cell = styled.div`
 
 Cell.displayName = 'Cell';
 
-const Wrapper = styled.div`
+const Wrapper = styled('div').attrs({
+  className: 'sticky-table'
+})`
   position: relative;
   overflow: auto;
   height: 100%;
