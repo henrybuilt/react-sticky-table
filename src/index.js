@@ -44,7 +44,7 @@ class StickyTable extends PureComponent {
     stickyHeaderCount = Math.min(stickyHeaderCount, 1);
 
     return (
-      <div className={`sticky-table sticky-table-${this.index}` + (this.props.className || '')}>
+      <div className={['sticky-table', `sticky-table-${this.index}`, this.props.className || ''].join(' ')}>
         <style>
           {`
             .sticky-table-${this.index} .sticky-table-row:nth-child(-n+${stickyHeaderCount}) .sticky-table-cell {
