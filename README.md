@@ -20,7 +20,7 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 - Any number of fixed columns & headers
 - Client side sorting
-- IE <= 7
+- IE <= 11
 
 ## Getting Started
 
