@@ -6,7 +6,7 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 ## Features
 
-- 0 dependencies, pure css, highly performant.
+- 0 dependencies, no css import necessary, highly performant.
 - 0 or 1 fixed column & header
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify width and height in pixels)
@@ -24,13 +24,9 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 ## Getting Started
 
-Install `react-sticky-table` using `npm`.
-
 ```
 npm install react-sticky-table --save
 ```
-
-Make sure you import the mandatory stylesheet: [react-sticky-table/dist/react-sticky-table.css](https://github.com/henrybuilt/react-sticky-table/blob/master/dist/react-sticky-table.css). It should be unobtrusive.
 
 ## Example
 ```javascript
