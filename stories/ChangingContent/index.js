@@ -49,6 +49,8 @@ export default class ChangingContent extends Component {
     return (
       <div>
         <Button onClick={this.changeContent.bind(this)}>Change content</Button>
+        <br />
+        <br />
         <div style={{ width: "100%", height: "200px" }}>
           <StickyTable stickyColumnCount={0}>{this.state.rows}</StickyTable>
         </div>

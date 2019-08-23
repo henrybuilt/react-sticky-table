@@ -12,7 +12,7 @@ const Table = styled('div').attrs({
 Table.displayName = 'Table';
 
 const Row = styled('div').attrs({
-  className: 'sticky-table-cell'
+  className: 'sticky-table-row'
 })`
   display: table-row;
 
