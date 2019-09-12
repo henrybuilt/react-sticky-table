@@ -77,11 +77,13 @@ Wrapper.displayName = 'Wrapper';
 function StickyTable({
   stickyColumnCount = 1,
   stickyHeaderCount = 1,
+  wrapperRef,
   children,
   ...rest
 }) {
   return (
     <Wrapper
+      ref={wrapperRef}
       stickyColumnCount={stickyColumnCount}
       stickyHeaderCount={stickyHeaderCount}
       {...rest}
