@@ -11,18 +11,6 @@ const Table = styled('div').attrs({
 
 Table.displayName = 'Table';
 
-const Row = styled('div').attrs({
-  className: 'sticky-table-row'
-})`
-  display: table-row;
-
-  & ${Cell}:first-child {
-    border-right: 2px solid #e5e5e5;
-  }
-`;
-
-Row.displayName = 'Row';
-
 const Cell = styled('div').attrs({
   className: 'sticky-table-cell'
 })`
@@ -35,6 +23,18 @@ const Cell = styled('div').attrs({
 `;
 
 Cell.displayName = 'Cell';
+
+const Row = styled('div').attrs({
+  className: 'sticky-table-row'
+})`
+  display: table-row;
+
+  & ${Cell}:first-child {
+    border-right: 2px solid #e5e5e5;
+  }
+`;
+
+Row.displayName = 'Row';
 
 const Wrapper = styled('div').attrs({
   className: 'sticky-table'
