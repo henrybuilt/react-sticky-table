@@ -16,7 +16,6 @@ const Cell = styled('div').attrs({
 })`
   display: table-cell;
   box-sizing: border-box;
-
   padding: 0.5rem 0.75rem;
   border-bottom: 2px solid #e5e5e5;
   background-color: #fff;

@@ -19,6 +19,7 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 #### Doesn't yet support
 
 - Any number of fixed columns & headers
+- Fixed right column/footer
 - Client side sorting
 - IE <= 11
 
@@ -60,6 +61,7 @@ export default class BasicExample extends Component {
 
 - `stickyHeaderCount`: default: `1`, value: `0 or 1`
 - `stickyColumnCount`: default: `1`, value: `0 or 1`
+- `wrapperRef`: default: `undefined`, value: `React ref` - a reference you can use for the wrapper element that has scroll events on it
 
 Disable sticky header:
 
