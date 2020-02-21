@@ -1,7 +1,7 @@
 {
   "name": "react-sticky-table",
   "description": "Dynamically sized fixed header and columns for tables",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "author": "Henrybuilt",
   "bugs": {
     "url": "https://github.com/henrybuilt/react-sticky-table/issues"
@@ -78,7 +78,7 @@
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js",
     "testonly": "BABEL_ENV=test && mocha $npm_package_options_mocha",
-    "prepublishOnly": "npm run build && npm run build-storybook && git add -A && git commit -am \"built\" && npm version patch && git push"
+    "build-all": "npm run build && npm run build-storybook && git add -A && git commit -am \"built\""
   },
   "source": "src/index.js"
 }
