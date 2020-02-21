@@ -18,10 +18,10 @@
     "@babel/preset-react": "7.0.0",
     "@babel/register": "7.4.4",
     "@babel/runtime": "7.4.5",
-    "@storybook/addon-actions": "^5.1.9",
-    "@storybook/addon-links": "^5.1.9",
-    "@storybook/addons": "^5.1.9",
-    "@storybook/react": "^5.1.9",
+    "@storybook/addon-actions": "^5.3.13",
+    "@storybook/addon-links": "^5.3.13",
+    "@storybook/addons": "^5.3.13",
+    "@storybook/react": "^5.3.13",
     "babel-eslint": "10.0.2",
     "babel-loader": "8.0.6",
     "chai": "4.2.0",
@@ -72,13 +72,13 @@
     "build": "npm run build-js",
     "build-js": "babel --plugins '@babel/plugin-transform-modules-umd' src --ignore __tests__ --out-dir ./dist",
     "build-storybook": "build-storybook -o ./docs",
-    "prepare": "npm run build",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
     "storybook": "start-storybook -p 6006",
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js",
-    "testonly": "BABEL_ENV=test &&  mocha $npm_package_options_mocha"
+    "testonly": "BABEL_ENV=test && mocha $npm_package_options_mocha",
+    "prepublishOnly": "npm run build && npm run build-storybook && git add -A && git commit -am \"built\" && npm version patch && git push"
   },
   "source": "src/index.js"
 }
