@@ -47,14 +47,14 @@ const Wrapper = styled('div').attrs({
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: ${props => props.headerZ || 2};
   }
 
   & ${Row} ${Cell}:nth-child(-n+${props => props.stickyColumnCount}) {
     position: -webkit-sticky;
     position: sticky;
     left: 0;
-    z-index: 2;
+    z-index: ${props => props.columnZ || 2};
   }
   & ${Row}:nth-child(-n+${props =>
   props.stickyHeaderCount}) ${Cell}:nth-child(-n+${props =>
@@ -63,7 +63,7 @@ const Wrapper = styled('div').attrs({
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 3;
+    z-index: ${props => Math.max(props.headerZ || 2, props.columnZ || 2) + 1};
 
     &:first-child {
       border-right: 2px solid #e5e5e5;
