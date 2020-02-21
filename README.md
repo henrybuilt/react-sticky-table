@@ -57,10 +57,12 @@ export default class BasicExample extends Component {
 }
 ```
 
-## Options
+## Props
 
 - `stickyHeaderCount`: default: `1`, value: `0 or 1`
 - `stickyColumnCount`: default: `1`, value: `0 or 1`
+- `headerZ`: default: `2`
+- `columnZ`: default: `2` (not - top left cell is (max of headerZ, columnZ) + 1)
 - `wrapperRef`: default: `undefined`, value: `React ref` - a reference you can use for the wrapper element that has scroll events on it
 
 Disable sticky header:
