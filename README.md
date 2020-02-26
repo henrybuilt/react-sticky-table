@@ -6,22 +6,21 @@ Responsive and dynamically-sized fixed headers and columns for tables inspired b
 
 ## Features
 
-- 0 dependencies, no css import necessary, highly performant.
-- 0 or 1 fixed column & header
+- 0 dependencies, no css import necessary, no js, highly performant.
+- 0 or 1 sticky header, left column, right column, footer
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
-- Dynamic row height & column width (no need to specify width and height in pixels)
+- Dynamic row height & column width (no need to specify fixed width/height in pixels)
 - Table rows/columns resize as content resizes
 - Custom cells (just make sure your custom cell has `display: table-cell` and the css selector `.sticky-table-cell`)
 - Multiple tables per page
 - Scrollbars that are smooth and visible at all times
 - Native scrolling
 
-#### Doesn't yet support
+### Top todos
 
-- Any number of fixed columns & headers
-- Fixed right column/footer
-- Client side sorting
-- IE <= 11
+- Any number of fixed rows/columns
+- Use VirtualDom implementation
+- Support IE <= 11
 
 ## Getting Started
 
@@ -31,9 +30,8 @@ npm install react-sticky-table --save
 
 ## Example
 ```javascript
-import React, { Component } from 'react';
-
-import { StickyTable, Row, Cell } from 'react-sticky-table';
+import React, {Component} from 'react';
+import {StickyTable, Row, Cell} from 'react-sticky-table';
 
 export default class BasicExample extends Component {
   render() {
