@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 describe('StickyTable', () => {
   it('should render the correct number of children', () => {
     const table = mount(
-      <StickyTable stickyColumnCount={1}>
+      <StickyTable leftStickyColumnCount={1}>
         <Row>
           <Cell>header 1</Cell>
           <Cell>header 2</Cell>
@@ -28,7 +28,7 @@ describe('StickyTable', () => {
 
   it('shouldn\'t render columns when opting out', () => {
     const table = mount(
-      <StickyTable stickyColumnCount={0}>
+      <StickyTable leftStickyColumnCount={0}>
         <Row>
           <Cell>header 1</Cell>
           <Cell>header 2</Cell>
@@ -43,9 +43,9 @@ describe('StickyTable', () => {
     expect(table.find(Cell)).to.have.length(4);
   });
 
-  it('should render the correct number of stickyColumnCount', () => {
+  it('should render the correct number of leftStickyColumnCount', () => {
     const table = mount(
-      <StickyTable stickyColumnCount={3}>
+      <StickyTable leftStickyColumnCount={3}>
         <Row>
           <Cell>header 1</Cell>
           <Cell>header 2</Cell>
@@ -66,7 +66,7 @@ describe('StickyTable', () => {
 
   it('shouldn\'t render headers when opting out', () => {
     const table = mount(
-      <StickyTable stickyColumnCount={1} stickyHeaderCount={0}>
+      <StickyTable leftStickyColumnCount={1} stickyHeaderCount={0}>
         <Row>
           <Cell>header 1</Cell>
           <Cell>header 2</Cell>
@@ -83,7 +83,7 @@ describe('StickyTable', () => {
 
   it('should support sibling components and arrays', () => {
     const table = mount(
-      <StickyTable stickyColumnCount={1}>
+      <StickyTable leftStickyColumnCount={1}>
         <Row>
           <Cell>header 1</Cell>
           {[<Cell key={1}>header 2</Cell>]}

@@ -59,10 +59,19 @@ export default class BasicExample extends Component {
 
 ## Props
 
-- `stickyHeaderCount`: default: `1`, value: `0 or 1`
-- `stickyColumnCount`: default: `1`, value: `0 or 1`
-- `headerZ`: default: `2`
-- `columnZ`: default: `2` (not - top left cell is (max of headerZ, columnZ) + 1)
+- sticky count
+  - `stickyHeaderCount`: `0` or `1` - default: `1`
+  - `leftStickyColumnCount`: `0` or `1` - default: `1`
+  - `rightStickyColumnCount`: `0` or `1` - default: `0`
+  - `stickyFooterCount`: `0` or `1` - default: `0`
+- z-index
+  - `headerZ`: default: `2` (sticky corners are the greater of their two sides + 1)
+  - `leftColumnZ`: default: `2`
+  - `rightColumnZ`: default: `2`
+  - `footerZ`: default: `2`
+- border
+  - `borderWidth`: default: `'2px'`
+  - `borderColor`: default: `'#e5e5e5'`
 - `wrapperRef`: default: `undefined`, value: `React ref` - a reference you can use for the wrapper element that has scroll events on it
 
 Disable sticky header:
@@ -74,7 +83,13 @@ Disable sticky header:
 Disable sticky column:
 
 ```javascript
-<StickyTable stickyColumnCount={0}>
+<StickyTable leftStickyColumnCount={0}>
+```
+
+Disable borders:
+
+```javascript
+<StickyTable borderWidth={0}>
 ```
 
 ## License

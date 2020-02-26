@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+var getBorder = (props) => `${props.borderWidth === undefined ? '2px' : (props.borderWidth || '0px')} solid ${props.borderColor || '#e5e5e5'}`
+
 const Table = styled('div').attrs({
   className: 'sticky-table-table'
 })`
@@ -17,7 +19,6 @@ const Cell = styled('div').attrs({
   display: table-cell;
   box-sizing: border-box;
   padding: 0.5rem 0.75rem;
-  border-bottom: 2px solid #e5e5e5;
   background-color: #fff;
 `;
 
@@ -27,10 +28,6 @@ const Row = styled('div').attrs({
   className: 'sticky-table-row'
 })`
   display: table-row;
-
-  & ${Cell}:first-child {
-    border-right: 2px solid #e5e5e5;
-  }
 `;
 
 Row.displayName = 'Row';
@@ -43,49 +40,68 @@ const Wrapper = styled('div').attrs({
   height: 100%;
   box-sizing: border-box;
 
+
+  & ${Row}:not(:last-child) ${Cell} {
+    border-bottom: ${getBorder};
+  }
+
   & ${Row}:nth-child(${props => `-n+${props.stickyHeaderCount}`}) ${Cell} {
     position: -webkit-sticky;
     position: sticky;
-    top: 0;
+    top: 0px;
     z-index: ${props => props.headerZ || 2};
   }
-
-  & ${Row} ${Cell}:nth-child(-n+${props => props.stickyColumnCount}) {
+  & ${Row}:nth-last-child(-n+${props => props.stickyFooterCount}) ${Cell} {
     position: -webkit-sticky;
     position: sticky;
-    left: 0;
-    z-index: ${props => props.columnZ || 2};
+    bottom: 0px;
+    z-index: ${props => props.footerZ || 2};
+    border-top: ${getBorder};
   }
-  & ${Row}:nth-child(-n+${props =>
-  props.stickyHeaderCount}) ${Cell}:nth-child(-n+${props =>
-  props.stickyColumnCount}) {
+  & ${Row} ${Cell}:nth-child(-n+${props => props.leftStickyColumnCount}) {
     position: -webkit-sticky;
     position: sticky;
-    top: 0;
-    left: 0;
-    z-index: ${props => Math.max(props.headerZ || 2, props.columnZ || 2) + 1};
+    left: 0px;
+    z-index: ${props => props.leftColumnZ || 2};
+    border-right: ${getBorder};
+  }
+  & ${Row} ${Cell}:nth-last-child(-n+${props => props.rightStickyColumnCount}) {
+    position: -webkit-sticky;
+    position: sticky;
+    right: 0px;
+    z-index: ${props => props.rightColumnZ || 2};
+    border-left: ${getBorder};
+  }
 
-    &:first-child {
-      border-right: 2px solid #e5e5e5;
-    }
+  & ${Row}:nth-child(-n+${props => props.stickyHeaderCount}) ${Cell}:nth-child(-n+${props => props.leftStickyColumnCount}) {
+    z-index: ${props => Math.max(props.headerZ || 2, props.leftColumnZ || 2) + 1};
+  }
+  & ${Row}:nth-child(-n+${props => props.stickyHeaderCount}) ${Cell}:nth-last-child(-n+${props => props.rightStickyColumnCount}) {
+    z-index: ${props => Math.max(props.headerZ || 2, props.rightColumnZ || 2) + 1};
+  }
+  & ${Row}:nth-last-child(-n+${props => props.stickyFooterCount}) ${Cell}:nth-child(-n+${props => props.leftStickyColumnCount}) {
+    z-index: ${props => Math.max(props.footerZ || 2, props.leftColumnZ || 2) + 1};
+  }
+  & ${Row}:nth-last-child(-n+${props => props.stickyFooterCount}) ${Cell}:nth-last-child(-n+${props => props.rightStickyColumnCount}) {
+    z-index: ${props => Math.max(props.footerZ || 2, props.rightColumnZ || 2) + 1};
   }
 `;
 
 Wrapper.displayName = 'Wrapper';
 
 function StickyTable({
-  stickyColumnCount = 1,
+  leftStickyColumnCount = 1,
   stickyHeaderCount = 1,
   wrapperRef,
   children,
-  ...rest
+  ...restProps
 }) {
   return (
     <Wrapper
       ref={wrapperRef}
-      stickyColumnCount={stickyColumnCount}
+      leftStickyColumnCount={leftStickyColumnCount}
       stickyHeaderCount={stickyHeaderCount}
-      {...rest}
+      {...restProps}
     >
       <Table>{children}</Table>
     </Wrapper>
