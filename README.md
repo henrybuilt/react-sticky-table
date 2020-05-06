@@ -7,7 +7,7 @@ Responsive and dynamically-sized fixed headers, footers, and columns for tables.
 ## Features
 
 - 0 dependencies, no css import necessary, no js, highly performant.
-- 0 or 1 sticky header, left column, right column, footer
+- 0, 1, or AS MANY sticky headers, left columns, right columns, footers as you want.
 - Responsive table dimensions (wrap it in any size container and it will fill that container)
 - Dynamic row height & column width (no need to specify fixed width/height in pixels)
 - Table rows/columns resize as content resizes
@@ -18,7 +18,6 @@ Responsive and dynamically-sized fixed headers, footers, and columns for tables.
 
 ### Top todos
 
-- Any number of fixed rows/columns
 - Use VirtualDom implementation
 - Support IE <= 11
 
@@ -58,15 +57,15 @@ export default class BasicExample extends Component {
 ## Props
 
 - sticky count
-  - `stickyHeaderCount`: `0` or `1` - default: `1`
-  - `leftStickyColumnCount`: `0` or `1` - default: `1`
-  - `rightStickyColumnCount`: `0` or `1` - default: `0`
-  - `stickyFooterCount`: `0` or `1` - default: `0`
+  - `stickyHeaderCount`: `int` - default: `1`
+  - `leftStickyColumnCount`: `int` - default: `1`
+  - `rightStickyColumnCount`: `int` - default: `0`
+  - `stickyFooterCount`: `int` - default: `0`
 - z-index
-  - `headerZ`: default: `2` (sticky corners are the greater of their two sides + 1)
-  - `leftColumnZ`: default: `2`
-  - `rightColumnZ`: default: `2`
-  - `footerZ`: default: `2`
+  - `headerZ`: `int` - default: `2` (sticky corners are the greater of their two sides + 1)
+  - `leftColumnZ`: `int` - default: `2`
+  - `rightColumnZ`: `int` - default: `2`
+  - `footerZ`: `int` - default: `2`
 - border
   - `borderWidth`: default: `'2px'`
   - `borderColor`: default: `'#e5e5e5'`
