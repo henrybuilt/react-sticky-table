@@ -12,9 +12,11 @@ import NoColumn from './NoColumn/index';
 import NoHeader from './NoHeader/index';
 import ResizingCells from './ResizingCells/index';
 import CustomZ from './CustomZ/index';
+import MultipleChangingStickies from './MultipleChangingStickies/index';
 
 storiesOf('Basic', module)
   .add('basic', () => <Basic />)
+  .add('multiple changing stickies', () => <MultipleChangingStickies />)
   .add('sticky on all sides', () => <StickyAllSides />)
   .add('only sticky header', () => <NoColumn />)
   .add('only sticky column', () => <NoHeader />)
