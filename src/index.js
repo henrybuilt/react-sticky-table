@@ -76,6 +76,8 @@ const Wrapper = styled('div').attrs(() => ({
     var insets = props.stickyInsets;
     var styles = '';
     var i;
+    console.log(props)
+    console.log('styles', props.stickyInsets)
 
     for (i = 0; i < insets.header.length; i++) {
       styles += `& ${Row}:nth-child(${i + 1}) ${Cell} { top: ${insets.header[i]}px; }`
@@ -168,7 +170,7 @@ class StickyTable extends React.Component {
       ['leftColumn', 'width', 'leftStickyColumnCount'],
       ['rightColumn', 'width', 'rightStickyColumnCount']
     ].forEach(([stickyKey, sizeKey, countPropKey]) => {
-      var insets = [0];
+      var insets = props[countPropKey] > 1 ? [0] : [];
       var count = props[countPropKey];
       var netInset = 0;
 
