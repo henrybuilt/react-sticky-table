@@ -172,13 +172,12 @@ class StickyTable extends React.Component {
       var count = props[countPropKey];
       var netInset = 0;
 
-      //HINT we only want this loop for the second sticky and up
+      // HINT we only want this loop for the second sticky and up
       for (s = 1; s < count; s++) {
-        var node = stickyKey === 'header' || stickyKey === 'leftColumn' ? cellNodes[0] : cellNodes[cellNodes.length - 1];
+        var node = stickyKey === 'header' || stickyKey === 'leftColumn' ? cellNodes[s - 1] : cellNodes[cellNodes.length - s];
 
         if (node) {
           var boundingRect = node.getBoundingClientRect();
-
           netInset += boundingRect[sizeKey];
         }
 
