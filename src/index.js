@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 
 var getBorder = (props) => `${props.borderWidth === undefined ? '2px' : (props.borderWidth || '0px')} solid ${props.borderColor || '#e5e5e5'}`
 
-const Table = styled('div').attrs({
+const Table = styled('div').attrs(() => ({
   className: 'sticky-table-table'
-})`
+}))`
   white-space: nowrap;
   display: table;
   box-sizing: border-box;
@@ -13,9 +13,9 @@ const Table = styled('div').attrs({
 
 Table.displayName = 'Table';
 
-const Cell = styled('div').attrs({
+const Cell = styled('div').attrs(() => ({
   className: 'sticky-table-cell'
-})`
+}))`
   display: table-cell;
   box-sizing: border-box;
   padding: 0.5rem 0.75rem;
@@ -24,17 +24,17 @@ const Cell = styled('div').attrs({
 
 Cell.displayName = 'Cell';
 
-const Row = styled('div').attrs({
+const Row = styled('div').attrs(() => ({
   className: 'sticky-table-row'
-})`
+}))`
   display: table-row;
 `;
 
 Row.displayName = 'Row';
 
-const Wrapper = styled('div').attrs({
+const Wrapper = styled('div').attrs(() => ({
   className: 'sticky-table'
-})`
+}))`
   position: relative;
   overflow: auto;
   height: 100%;
@@ -159,7 +159,7 @@ class StickyTable extends React.Component {
 
   checkForStickySizeChanges() {
     var s, stickyInsets = {};
-    var {props, tableNode} = this;
+    var { props, tableNode } = this;
     var cellNodes = tableNode.querySelectorAll('.sticky-table-cell');
 
     [
@@ -190,7 +190,7 @@ class StickyTable extends React.Component {
 
     //HINT avoid a render unless there's actually a change
     if (JSON.stringify(stickyInsets) !== JSON.stringify(this.state.stickyInsets)) {
-      this.setState({stickyInsets});
+      this.setState({ stickyInsets });
     }
   }
 
@@ -198,8 +198,8 @@ class StickyTable extends React.Component {
     this.tableNode = tableNode
   }
 
-  render () {
-    var {leftStickyColumnCount=1, stickyHeaderCount=1, wrapperRef, children, ...restProps} = this.props;
+  render() {
+    var { leftStickyColumnCount = 1, stickyHeaderCount = 1, wrapperRef, children, ...restProps } = this.props;
 
     return (
       <Wrapper
