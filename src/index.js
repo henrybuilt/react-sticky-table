@@ -76,8 +76,6 @@ const Wrapper = styled('div').attrs(() => ({
     var insets = props.stickyInsets;
     var styles = '';
     var i;
-    console.log(props)
-    console.log('styles', props.stickyInsets)
 
     for (i = 0; i < insets.header.length; i++) {
       styles += `& ${Row}:nth-child(${i + 1}) ${Cell} { top: ${insets.header[i]}px; }`
@@ -161,7 +159,7 @@ class StickyTable extends React.Component {
 
   checkForStickySizeChanges() {
     var s, stickyInsets = {};
-    var { props, tableNode } = this;
+    var {props, tableNode} = this;
     var cellNodes = tableNode.querySelectorAll('.sticky-table-cell');
 
     [
@@ -183,6 +181,7 @@ class StickyTable extends React.Component {
 
           if (node) {
             var boundingRect = node.getBoundingClientRect();
+
             netInset += boundingRect[sizeKey];
           }
 
@@ -195,7 +194,7 @@ class StickyTable extends React.Component {
 
     //HINT avoid a render unless there's actually a change
     if (JSON.stringify(stickyInsets) !== JSON.stringify(this.state.stickyInsets)) {
-      this.setState({ stickyInsets });
+      this.setState({stickyInsets});
     }
   }
 
@@ -204,7 +203,7 @@ class StickyTable extends React.Component {
   }
 
   render() {
-    var { leftStickyColumnCount = 1, stickyHeaderCount = 1, wrapperRef, children, ...restProps } = this.props;
+    var {leftStickyColumnCount=1, stickyHeaderCount=1, wrapperRef, children, ...restProps} = this.props;
 
     return (
       <Wrapper
