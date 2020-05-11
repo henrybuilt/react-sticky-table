@@ -160,6 +160,7 @@ class StickyTable extends React.Component {
   checkForStickySizeChanges() {
     var s, stickyInsets = {};
     var {props, tableNode} = this;
+    var rowNodes = tableNode.querySelectorAll('.sticky-table-row');
     var cellNodes = tableNode.querySelectorAll('.sticky-table-cell');
 
     [
@@ -177,7 +178,22 @@ class StickyTable extends React.Component {
 
         // HINT we only want this loop for the second sticky and up
         for (s = 1; s < count; s++) {
-          var node = stickyKey === 'header' || stickyKey === 'leftColumn' ? cellNodes[s - 1] : cellNodes[cellNodes.length - s];
+          var node = undefined;
+
+          switch (stickyKey) {
+            case 'header':
+              node = rowNodes[s - 1]
+              break;
+            case 'footer':
+              node = rowNodes[rowNodes.length - s]
+              break;
+            case 'leftColumn':
+              node = cellNodes[s - 1]
+              break;
+            case 'rightColumn':
+              node = cellNodes[cellNodes.length - s]
+              break;
+          }
 
           if (node) {
             var boundingRect = node.getBoundingClientRect();
