@@ -2,6 +2,8 @@
 
 Responsive and dynamically-sized fixed headers, footers, and columns for tables.
 
+SEEKING EXAMPLE LINKS - please comment in [this issue](https://github.com/henrybuilt/react-sticky-table/issues/94) with your applications using react-sticky-table
+
 [Demo](https://henrybuilt.github.io/react-sticky-table/)
 
 ## Features
