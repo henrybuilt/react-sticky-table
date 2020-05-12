@@ -23,7 +23,7 @@ export default class MultipleResizingStickies extends Component {
     return (
       <div className='resizing-cells'>
         <div style={{width: '100%', height: '400px'}}>
-          <StickyTable leftStickyColumnCount={2} rightStickyColumnCount={2} stickyHeaderCount={2} stickyFooterCount={2}>
+          <StickyTable leftStickyColumnCount={3} rightStickyColumnCount={3} stickyHeaderCount={3} stickyFooterCount={3}>
             {rows}
           </StickyTable>
         </div>

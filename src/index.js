@@ -181,18 +181,18 @@ class StickyTable extends React.Component {
           var node = undefined;
 
           switch (stickyKey) {
-            case 'header':
-              node = rowNodes[s - 1]
-              break;
-            case 'footer':
-              node = rowNodes[rowNodes.length - s]
-              break;
-            case 'leftColumn':
-              node = cellNodes[s - 1]
-              break;
-            case 'rightColumn':
-              node = cellNodes[cellNodes.length - s]
-              break;
+          case 'header':
+            node = rowNodes[s - 1].childNodes[0];
+            break;
+          case 'footer':
+            node = rowNodes[rowNodes.length - s].childNodes[0];
+            break;
+          case 'leftColumn':
+            node = cellNodes[s - 1];
+            break;
+          case 'rightColumn':
+            node = cellNodes[cellNodes.length - s];
+            break;
           }
 
           if (node) {
