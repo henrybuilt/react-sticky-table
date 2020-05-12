@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 
 var getBorder = (props) => `${props.borderWidth === undefined ? '2px' : (props.borderWidth || '0px')} solid ${props.borderColor || '#e5e5e5'}`
 
-const Table = styled('div').attrs({
+const Table = styled('div').attrs(() => ({
   className: 'sticky-table-table'
-})`
+}))`
   white-space: nowrap;
   display: table;
   box-sizing: border-box;
@@ -13,9 +13,9 @@ const Table = styled('div').attrs({
 
 Table.displayName = 'Table';
 
-const Cell = styled('div').attrs({
+const Cell = styled('div').attrs(() => ({
   className: 'sticky-table-cell'
-})`
+}))`
   display: table-cell;
   box-sizing: border-box;
   padding: 0.5rem 0.75rem;
@@ -24,17 +24,17 @@ const Cell = styled('div').attrs({
 
 Cell.displayName = 'Cell';
 
-const Row = styled('div').attrs({
+const Row = styled('div').attrs(() => ({
   className: 'sticky-table-row'
-})`
+}))`
   display: table-row;
 `;
 
 Row.displayName = 'Row';
 
-const Wrapper = styled('div').attrs({
+const Wrapper = styled('div').attrs(() => ({
   className: 'sticky-table'
-})`
+}))`
   position: relative;
   overflow: auto;
   height: 100%;
@@ -160,6 +160,7 @@ class StickyTable extends React.Component {
   checkForStickySizeChanges() {
     var s, stickyInsets = {};
     var {props, tableNode} = this;
+    var rowNodes = tableNode.querySelectorAll('.sticky-table-row');
     var cellNodes = tableNode.querySelectorAll('.sticky-table-cell');
 
     [
@@ -168,21 +169,40 @@ class StickyTable extends React.Component {
       ['leftColumn', 'width', 'leftStickyColumnCount'],
       ['rightColumn', 'width', 'rightStickyColumnCount']
     ].forEach(([stickyKey, sizeKey, countPropKey]) => {
-      var insets = [0];
-      var count = props[countPropKey];
-      var netInset = 0;
+      var insets = [];
 
-      //HINT we only want this loop for the second sticky and up
-      for (s = 1; s < count; s++) {
-        var node = stickyKey === 'header' || stickyKey === 'leftColumn' ? cellNodes[0] : cellNodes[cellNodes.length - 1];
+      if (props[countPropKey] > 1) {
+        insets = [0]
+        var count = props[countPropKey];
+        var netInset = 0;
 
-        if (node) {
-          var boundingRect = node.getBoundingClientRect();
+        // HINT we only want this loop for the second sticky and up
+        for (s = 1; s < count; s++) {
+          var node = undefined;
 
-          netInset += boundingRect[sizeKey];
+          switch (stickyKey) {
+            case 'header':
+              node = rowNodes[s - 1]
+              break;
+            case 'footer':
+              node = rowNodes[rowNodes.length - s]
+              break;
+            case 'leftColumn':
+              node = cellNodes[s - 1]
+              break;
+            case 'rightColumn':
+              node = cellNodes[cellNodes.length - s]
+              break;
+          }
+
+          if (node) {
+            var boundingRect = node.getBoundingClientRect();
+
+            netInset += boundingRect[sizeKey];
+          }
+
+          insets.push(netInset);
         }
-
-        insets.push(netInset);
       }
 
       stickyInsets[stickyKey] = insets;
@@ -198,7 +218,7 @@ class StickyTable extends React.Component {
     this.tableNode = tableNode
   }
 
-  render () {
+  render() {
     var {leftStickyColumnCount=1, stickyHeaderCount=1, wrapperRef, children, ...restProps} = this.props;
 
     return (

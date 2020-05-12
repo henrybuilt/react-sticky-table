@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { withKnobs, number, text } from '@storybook/addon-knobs/react'
 
 import './demo.css';
 
@@ -13,6 +14,8 @@ import NoHeader from './NoHeader/index';
 import ResizingCells from './ResizingCells/index';
 import CustomZ from './CustomZ/index';
 import MultipleChangingStickies from './MultipleChangingStickies/index';
+import Playground from './Playground/index';
+
 
 storiesOf('Basic', module)
   .add('basic', () => <Basic />)
@@ -24,5 +27,14 @@ storiesOf('Basic', module)
   .add('resizing cells', () => <ResizingCells />)
   .add('custom borders', () => <Borders />)
   .add('no borders', () => <NoBorders />)
-  .add('custom z-index', () => <CustomZ />);
+  .add('custom z-index', () => <CustomZ />)
+  .addDecorator(withKnobs)
+  .add('playground', () => <Playground
+    stickyHeaderCount={number('HeaderSticky', 0, { min: 0 })}
+    leftStickyColumnCount={number('LeftSticky', 0, { min: 0 })}
+    rightStickyColumnCount={number('RightSticky', 0, { min: 0 })}
+    stickyFooterCount={number('FooterSticky', 0, { min: 0 })}
+    width={text('width', '100%')}
+    height={text('height', '200px')}
+  />);
 
