@@ -28,8 +28,10 @@ storiesOf('Basic', module)
   .add('custom borders', () => <Borders />)
   .add('no borders', () => <NoBorders />)
   .add('custom z-index', () => <CustomZ />)
+
+storiesOf('Playground')
   .addDecorator(withKnobs)
-  .add('playground', () => <Playground
+  .add('sticky tests', () => <Playground
     stickyHeaderCount={number('HeaderSticky', 0, { min: 0 })}
     leftStickyColumnCount={number('LeftSticky', 0, { min: 0 })}
     rightStickyColumnCount={number('RightSticky', 0, { min: 0 })}
