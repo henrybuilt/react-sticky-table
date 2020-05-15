@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, number, text } from '@storybook/addon-knobs/react'
+import { withInfo } from '@storybook/addon-info';
 
 import './demo.css';
 
@@ -18,6 +19,7 @@ import Playground from './Playground/index';
 
 
 storiesOf('Basic', module)
+  .addDecorator(withInfo)
   .add('basic', () => <Basic />)
   .add('multiple changing stickies', () => <MultipleChangingStickies />)
   .add('sticky on all sides', () => <StickyAllSides />)
