@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -22,6 +23,10 @@ const Cell = styled('div').attrs(() => ({
   background-color: #fff;
 `;
 
+Cell.propTypes = {
+  childern: PropTypes.any
+}
+
 Cell.displayName = 'Cell';
 
 const Row = styled('div').attrs(() => ({
@@ -29,6 +34,11 @@ const Row = styled('div').attrs(() => ({
 }))`
   display: table-row;
 `;
+
+Row.propTypes = {
+  /** Childrens of the Row. Can enforce this with a custom function to thor error if not Cells */
+  children: PropTypes.node.isRequired
+}
 
 Row.displayName = 'Row';
 
@@ -219,7 +229,7 @@ class StickyTable extends React.Component {
   }
 
   render() {
-    var {leftStickyColumnCount=1, stickyHeaderCount=1, wrapperRef, children, ...restProps} = this.props;
+    var {leftStickyColumnCount, stickyHeaderCount, wrapperRef, children, ...restProps} = this.props;
 
     return (
       <Wrapper
@@ -233,6 +243,24 @@ class StickyTable extends React.Component {
       </Wrapper>
     );
   }
+}
+
+StickyTable.propTypes = {
+  borderWidth: PropTypes.string,
+  borderColor: PropTypes.string,
+  children: PropTypes.any.isRequired,
+  leftStickyColumnCount: PropTypes.number,
+  rightStickyColumnCount: PropTypes.number,
+  stickyHeaderCount: PropTypes.number,
+  stickyFooterCount: PropTypes.number,
+  wrapperRef: PropTypes.any,
+}
+
+StickyTable.defaultProps = {
+  borderWidth: '2px',
+  borderColor: '#e5e5e5',
+  leftStickyColumnCount: 1,
+  stickyHeaderCount: 1
 }
 
 export { StickyTable, Table, Row, Cell };

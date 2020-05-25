@@ -16,6 +16,7 @@ import ResizingCells from './ResizingCells/index';
 import CustomZ from './CustomZ/index';
 import MultipleChangingStickies from './MultipleChangingStickies/index';
 import Playground from './Playground/index';
+import { StickyTable, Row, Cell } from '../src';
 
 
 storiesOf('Basic', module)
@@ -30,6 +31,22 @@ storiesOf('Basic', module)
   .add('custom borders', () => <Borders />)
   .add('no borders', () => <NoBorders />)
   .add('custom z-index', () => <CustomZ />)
+  .add('actual', () => (
+    <StickyTable>
+      <Row>
+        <Cell>First Header</Cell>
+        <Cell>Second Header</Cell>
+        <Cell>Third Header</Cell>
+        <Cell>Fourth Header</Cell>
+      </Row>
+      <Row>
+        <Cell>First Cell</Cell>
+        <Cell>Second Cell</Cell>
+        <Cell>Third Cell</Cell>
+        <Cell>Fourth Cell</Cell>
+      </Row>
+    </StickyTable>
+  ));
 
 storiesOf('Playground')
   .addDecorator(withKnobs)
