@@ -1,7 +1,7 @@
 {
   "name": "react-sticky-table",
   "description": "Dynamically sized fixed header and columns for tables",
-  "version": "5.1.6",
+  "version": "5.1.7",
   "author": "Henrybuilt",
   "bugs": {
     "url": "https://github.com/henrybuilt/react-sticky-table/issues"
