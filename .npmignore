@@ -10,3 +10,7 @@ npm-debug.log
 lib
 docs
 stories
+.storybook
+src
+babel.config.js
+scripts
