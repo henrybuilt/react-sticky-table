@@ -142,6 +142,11 @@ class StickyTable extends React.Component {
       p.stickyHeaderCount, p.stickyFooterCount, p.leftStickyColumnCount, p.rightStickyColumnCount
     ].some(count => count > 1);
 
+    //HINT clear out stickyInsets of a new interval won't be set
+    if (!shouldSchedule && this.multipleStickiesInterval) {
+      this.setState({stickyInsets: {header: [], footer: [], leftColumn: [], rightColumn: []}});
+    }
+
     this.clearMultipleStickiesInterval();
 
     if (shouldSchedule) {

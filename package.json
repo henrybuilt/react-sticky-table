@@ -77,7 +77,8 @@
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js",
     "testonly": "BABEL_ENV=test && mocha $npm_package_options_mocha",
-    "build-all": "npm run build && npm run build-storybook && git add -A && git commit -am \"built\""
+    "build-all": "npm run build && npm run build-storybook && git add -A && git commit -am \"built\"",
+    "prepublishOnly": "npm run build && npm version patch && git push"
   },
   "source": "src/index.js"
 }
