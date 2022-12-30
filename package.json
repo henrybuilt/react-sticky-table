@@ -33,7 +33,7 @@
     "ignore-styles": "^5.0.1",
     "jsdom": "15.1.1",
     "jsdom-global": "^3.0.2",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "nodemon": "^1.9.1",
     "prop-types": "^15.5.7",
     "react": "^16.13.1",
